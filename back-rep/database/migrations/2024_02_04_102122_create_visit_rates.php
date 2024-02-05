@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->timestamps();
             $table->string('visit_rate_min');
-            $table->enum('month',['1,2,3,4,5,6,7,8,9,10,11,12']);
+            $table->enum('month',['1','2','3','4','5','6','7','8','9','10','11','12']);
             $table->year('year');
             $table->foreignId('doctor_id')->constrained('doctors')->onUpdate('cascade')->onDelete('cascade');
             $table->unique(['doctor_id', 'month', 'year']);

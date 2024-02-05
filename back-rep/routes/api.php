@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\DoctorController;
 use App\Http\Controllers\Api\GovernateController;
+use App\Http\Controllers\Api\VisitRateController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\UserController;
@@ -23,3 +24,4 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::apiResource('users', UserController::class);
 Route::apiResource('governates', GovernateController::class);
 Route::apiResource('doctors', DoctorController::class);
+Route::apiResource('visit_rates', VisitRateController::class);

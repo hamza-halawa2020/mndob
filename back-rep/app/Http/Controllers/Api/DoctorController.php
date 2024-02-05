@@ -10,6 +10,14 @@ use App\Models\Doctor;
 use Illuminate\Http\Request;
 use Exception;
 
+
+use App\Models\User;
+
+use App\Models\users_and_doctors;
+use Illuminate\Support\Facades\Auth;
+
+
+
 class DoctorController extends Controller
 {
     /**
@@ -23,33 +31,72 @@ class DoctorController extends Controller
         } catch (Exception $e) {
             return response()->json($e, 500);
         }
-
     }
 
     /**
      * Store a newly created resource in storage.
      */
+
     public function store(StoreDoctorRequest $request)
     {
         try {
+
             $this->validate($request, [
                 'name_ar' => 'required|string',
                 'name_en' => 'required|string',
                 'class' => 'required',
                 'gov_id' => 'required',
+                'user_id' => '',
             ]);
+
             $doctor = Doctor::create([
                 "name_ar" => $request->name_ar,
                 'name_en' => $request->name_en,
                 'class' => $request->class,
                 'gov_id' => $request->gov_id,
+                'user_id' => $request->user_id,
             ]);
+            users_and_doctors::create([
+                // 'user_id' => auth()->id(), 
+                'user_id' => $request->user_id,
+                'doctor_id' => $doctor->id,
+            ]);
+
             return response()->json(['data' => new DoctroResource($doctor)], 200);
 
         } catch (Exception $e) {
             return response()->json($e, 500);
         }
     }
+
+
+
+
+
+
+
+
+    // public function store(StoreDoctorRequest $request)
+    // {
+    //     try {
+    //         $this->validate($request, [
+    //             'name_ar' => 'required|string',
+    //             'name_en' => 'required|string',
+    //             'class' => 'required',
+    //             'gov_id' => 'required',
+    //         ]);
+    //         $doctor = Doctor::create([
+    //             "name_ar" => $request->name_ar,
+    //             'name_en' => $request->name_en,
+    //             'class' => $request->class,
+    //             'gov_id' => $request->gov_id,
+    //         ]);
+    //         return response()->json(['data' => new DoctroResource($doctor)], 200);
+
+    //     } catch (Exception $e) {
+    //         return response()->json($e, 500);
+    //     }
+    // }
 
     /**
      * Display the specified resource.

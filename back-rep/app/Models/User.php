@@ -26,10 +26,7 @@ class User extends Authenticatable
         'password',
     ];
     
-public function doctors()
-{
-    return $this->belongsToMany(Doctor::class);
-}
+
 
     /**
      * The attributes that should be hidden for serialization.
