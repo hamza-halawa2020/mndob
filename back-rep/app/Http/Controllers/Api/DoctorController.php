@@ -54,7 +54,7 @@ class DoctorController extends Controller
                 'name_en' => $request->name_en,
                 'class' => $request->class,
                 'gov_id' => $request->gov_id,
-                'user_id' => $request->user_id,
+                // 'user_id' => $request->user_id,
             ]);
             users_and_doctors::create([
                 // 'user_id' => auth()->id(), 
