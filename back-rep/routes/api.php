@@ -7,6 +7,7 @@ use App\Http\Controllers\Api\VisitRateController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\UserController;
+use App\Http\Controllers\Api\AuthController;
 
 /*
 |--------------------------------------------------------------------------
@@ -27,3 +28,18 @@ Route::apiResource('governates', GovernateController::class);
 Route::apiResource('doctors', DoctorController::class);
 Route::apiResource('visit_rates', VisitRateController::class);
 Route::apiResource('visits', VisitingController::class);
+
+
+Route::group([
+
+    'middleware' => 'api',
+    'prefix' => 'auth'
+
+], function ($router) {
+
+    Route::post('login', [AuthController::class, 'login']);
+    // Route::post('logout', 'AuthController@logout');
+    // Route::post('refresh', 'AuthController@refresh');
+    // Route::post('me', 'AuthController@me');
+
+});

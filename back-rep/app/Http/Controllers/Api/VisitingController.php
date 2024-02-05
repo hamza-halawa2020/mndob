@@ -29,10 +29,11 @@ class VisitingController extends Controller
     public function store(Request $request)
     {
         // try {
-            $this->$request->validate([
+            $this->validate($request, [
                 'user_doctor_id' => 'required',
-                'visit_date' => 'required'
+                'visit_date' => 'required',
             ]);
+            
 
             $visit = Visiting::create([
                 "user_doctor_id" => $request->user_doctor_id,
