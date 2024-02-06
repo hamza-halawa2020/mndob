@@ -23,15 +23,44 @@ class DoctorController extends Controller
     {
         $this->middleware('auth:sanctum');
     }
-    public function index()
+
+
+    public function index(Request $request)
     {
         try {
-            $doctors = Doctor::all();
-            return DoctroResource::collection($doctors);
+            $authenticatedUserId = Auth::id();
+
+            $isUser = User::where('id', $authenticatedUserId)->exists();
+            $isDoctor = Doctor::where('id', $authenticatedUserId)->exists();
+
+            if ($isUser) {
+                $doctors = users_and_doctors::where('user_id', $authenticatedUserId)
+                    ->with('user', 'doctor')
+                    ->get();
+
+                return DoctroResource::collection($doctors);
+            } else if ($isDoctor) {
+                $doctors = users_and_doctors::where('doctor_id', $authenticatedUserId)
+                    ->with('user', 'doctor')
+                    ->get();
+                return response()->json(['message' => 'Unauthorized.'], 403);
+
+            } else {
+                return response()->json(['message' => 'Unauthorized.'], 403);
+            }
         } catch (Exception $e) {
             return response()->json($e, 500);
         }
     }
+
+
+
+
+
+
+
+
+
 
     /**
      * Store a newly created resource in storage.
@@ -69,15 +98,29 @@ class DoctorController extends Controller
     /**
      * Display the specified resource.
      */
+
     public function show(string $id)
     {
         try {
-            $doctor = Doctor::findOrFail($id);
-            return new DoctroResource($doctor);
+            $authenticatedUserId = Auth::id();
+            // $isUser = User::where('id', $authenticatedUserId)->exists();
+            if ($authenticatedUserId) {
+                $doctor = users_and_doctors::where('doctor_id', $id)
+                    ->where('user_id', $authenticatedUserId)
+                    ->with('user', 'doctor')
+                    ->first();
+                if ($doctor) {
+                    return new DoctroResource($doctor);
+                } else {
+                    return response()->json(['message' => 'Doctor not found.'], 404);
+                }
+            }
         } catch (Exception $e) {
-            return response()->json($e, 500);
+            return response()->json(['message' => 'An unexpected error occurred.'], 500);
         }
     }
+
+
 
     /**
      * Update the specified resource in storage.
