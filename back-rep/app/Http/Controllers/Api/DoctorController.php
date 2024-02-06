@@ -5,16 +5,12 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\DoctroResource;
 use App\Http\Requests\StoreDoctorRequest;
-
+use Illuminate\Support\Facades\Auth;
 use App\Models\Doctor;
 use Illuminate\Http\Request;
 use Exception;
-
-
 use App\Models\User;
-
 use App\Models\users_and_doctors;
-use Illuminate\Support\Facades\Auth;
 
 
 
@@ -23,6 +19,10 @@ class DoctorController extends Controller
     /**
      * Display a listing of the resource.
      */
+    function __construct()
+    {
+        $this->middleware('auth:sanctum');
+    }
     public function index()
     {
         try {
@@ -40,25 +40,20 @@ class DoctorController extends Controller
     public function store(StoreDoctorRequest $request)
     {
         try {
+            $authenticatedUserId = Auth::id();
 
-            $this->validate($request, [
-                'name_ar' => 'required|string',
-                'name_en' => 'required|string',
-                'class' => 'required',
-                'gov_id' => 'required',
-                'user_id' => '',
-            ]);
+            $validatedData = $request->validated();
 
             $doctor = Doctor::create([
-                "name_ar" => $request->name_ar,
-                'name_en' => $request->name_en,
-                'class' => $request->class,
-                'gov_id' => $request->gov_id,
-                'user_id' => $request->user_id,
+                "name_ar" => $validatedData['name_ar'],
+                'name_en' => $validatedData['name_en'],
+                'class' => $validatedData['class'],
+                'gov_id' => $validatedData['gov_id'],
+                'user_id' => $authenticatedUserId,
             ]);
+
             users_and_doctors::create([
-                // 'user_id' => auth()->id(), 
-                'user_id' => $request->user_id,
+                'user_id' => $authenticatedUserId,
                 'doctor_id' => $doctor->id,
             ]);
 
@@ -70,33 +65,6 @@ class DoctorController extends Controller
     }
 
 
-
-
-
-
-
-
-    // public function store(StoreDoctorRequest $request)
-    // {
-    //     try {
-    //         $this->validate($request, [
-    //             'name_ar' => 'required|string',
-    //             'name_en' => 'required|string',
-    //             'class' => 'required',
-    //             'gov_id' => 'required',
-    //         ]);
-    //         $doctor = Doctor::create([
-    //             "name_ar" => $request->name_ar,
-    //             'name_en' => $request->name_en,
-    //             'class' => $request->class,
-    //             'gov_id' => $request->gov_id,
-    //         ]);
-    //         return response()->json(['data' => new DoctroResource($doctor)], 200);
-
-    //     } catch (Exception $e) {
-    //         return response()->json($e, 500);
-    //     }
-    // }
 
     /**
      * Display the specified resource.

@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { GovernatesService } from '../services/governates/governates.service';
+import { DoctorService } from '../services/doctor/doctor.service';
 
 @Component({
   selector: 'app-add-doctor',
@@ -11,8 +12,11 @@ import { GovernatesService } from '../services/governates/governates.service';
 export class AddDoctorComponent {
   formSubmitted: boolean = false;
   governorates: any;
-  auth: any;
-  constructor(private router: Router, private gov: GovernatesService) {}
+  constructor(
+    private router: Router,
+    private gov: GovernatesService,
+    private doctor: DoctorService
+  ) {}
 
   ngOnInit(): void {
     this.getGovernorates();
@@ -53,18 +57,16 @@ export class AddDoctorComponent {
   loginSubmitted() {
     if (this.loginForm.valid) {
       this.formSubmitted = true;
-      console.log('loginForm',this.loginForm);
-      
-      // this.auth.registerUser(this.loginForm.value).subscribe({
-      //   next: (res: any) => {
-      //     console.log('success registeration');
-      //     this.loginForm.reset();
-      //     this.router.navigate(['login']);
-      //   },
-      //   error: () => {
-      //     console.log("can't signup", this.loginForm.value);
-      //   },
-      // });
+      this.doctor.addDoctor(this.loginForm.value).subscribe(
+        (res: any) => {
+          this.loginForm.reset();
+          alert(`done`);
+        },
+        (error) => {
+          console.log('An error occurred while adding a doctor:', error);
+          // Optionally reset the form here
+        }
+      );
     } else {
       console.log('Form is invalid. Please fill all the required fields.');
     }

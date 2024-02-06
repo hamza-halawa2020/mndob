@@ -38,6 +38,7 @@ export class LoginComponent {
       this.formSubmitted = true;
       this.auth.login(this.loginForm.value).subscribe({
         next: (res: any) => {
+          this.auth.setRoleInCookie(res.role);
           this.auth.setTokenInCookie(res.token);
           console.log('success login');
 

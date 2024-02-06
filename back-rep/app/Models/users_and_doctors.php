@@ -8,16 +8,19 @@ use Illuminate\Database\Eloquent\Model;
 class users_and_doctors extends Model
 {
     use HasFactory;
+    protected $table = 'users_and_doctors';
     protected $fillable = [
         'user_id',
         'doctor_id',
     ];
-    public function users()
+
+    public function user()
     {
-        return $this->belongsToMany(User::class);
+        return $this->belongsTo(User::class);
     }
-    public function doctors()
+
+    public function client()
     {
-        return $this->belongsToMany(Doctor::class);
+        return $this->belongsTo(Doctor::class);
     }
 }

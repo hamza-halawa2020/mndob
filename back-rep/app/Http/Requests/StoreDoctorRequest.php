@@ -22,7 +22,11 @@ class StoreDoctorRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'name_ar' => 'required|string',
+            'name_en' => 'required|string',
+            'gov_id' => 'required',
+            'class' => 'required',
+            // 'user_id' => 'required',
         ];
     }
 }

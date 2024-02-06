@@ -14,9 +14,8 @@ return new class extends Migration
         Schema::create('users_and_doctors', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
-            $table->foreignId('user_id')->constrained('users')->onUpdate('cascade')->onDelete('cascade');
-            $table->foreignId('doctor_id')->constrained('doctors')->onUpdate('cascade')->onDelete('cascade');
-
+            $table->foreignId('user_id')->references('id')->on('users')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreignId('doctor_id')->references('id')->on('doctors')->onUpdate('cascade')->onDelete('cascade');
         });
     }
 
