@@ -4,13 +4,15 @@ import { HomeComponent } from './home/home.component';
 import { AddDoctorComponent } from './add-doctor/add-doctor.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
+import { AllDoctorsComponent } from './all-doctors/all-doctors.component';
 
 
 
 @NgModule({
   declarations: [
     HomeComponent,
-    AddDoctorComponent
+    AddDoctorComponent,
+    AllDoctorsComponent
   ],
   imports: [
     CommonModule,

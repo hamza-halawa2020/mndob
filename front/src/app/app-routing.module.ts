@@ -6,22 +6,25 @@ import { HomeComponent } from './user/home/home.component';
 import { AddDoctorComponent } from './user/add-doctor/add-doctor.component';
 import { AuthGuard } from './guards/auth.guard';
 import { unauthGuard } from './guards/unauth.guard';
+import { AllDoctorsComponent } from './user/all-doctors/all-doctors.component';
 
 const routes: Routes = [
   {
     path: '',
     component: HomeComponent,
     canActivate: [AuthGuard],
-
-
   },
   {
     path: 'add-doctor',
     component: AddDoctorComponent,
     canActivate: [AuthGuard],
-
-
   },
+  {
+    path: 'all-doctors',
+    component: AllDoctorsComponent,
+    canActivate: [AuthGuard],
+  },
+  
   {
     path: 'login',
     component: LoginComponent,
