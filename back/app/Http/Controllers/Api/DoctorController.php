@@ -24,7 +24,6 @@ class DoctorController extends Controller
         $this->middleware('auth:sanctum');
     }
 
-
     public function index(Request $request)
     {
         try {
@@ -52,15 +51,6 @@ class DoctorController extends Controller
             return response()->json($e, 500);
         }
     }
-
-
-
-
-
-
-
-
-
 
     /**
      * Store a newly created resource in storage.
@@ -92,9 +82,6 @@ class DoctorController extends Controller
             return response()->json($e, 500);
         }
     }
-
-
-
     /**
      * Display the specified resource.
      */
@@ -119,9 +106,6 @@ class DoctorController extends Controller
             return response()->json(['message' => 'An unexpected error occurred.'], 500);
         }
     }
-
-
-
     /**
      * Update the specified resource in storage.
      */
