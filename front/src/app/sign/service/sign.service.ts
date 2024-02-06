@@ -15,17 +15,13 @@ export class LoginService {
     private cookieService: CookieService
   ) {}
   login(userData: any) {
-    return this.http.post(`${this.apiUrl}auth/login`, userData, {
+    return this.http.post(`${this.apiUrl}login`, userData, {
       withCredentials: true,
     });
   }
 
   registerUser(userData: any) {
     return this.http.post(`${this.apiUrl}users`, userData);
-  }
-
-  getGovernorates() {
-    return this.http.get(`${this.apiUrl}governates`);
   }
 
   setTokenInCookie(token: string) {
