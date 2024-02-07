@@ -14,5 +14,11 @@ class Doctor extends Model
         'class',
         'gov_id'
     ];
+
+    public function visitRates()
+{
+    return $this->hasMany(Visit_rate::class);
+}
+
     
 }

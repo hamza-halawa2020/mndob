@@ -1,0 +1,26 @@
+.month-select {
+    display: inline-block;
+    position: relative;
+  }
+  
+  .month-select select {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #fff;
+    cursor: pointer;
+  }
+  
+  .month-select::before {
+    content: "\25BC"; /* down arrow */
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    transform: translateY(-50%);
+    color: #555;
+    pointer-events: none;
+  }
+  

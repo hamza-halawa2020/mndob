@@ -5,21 +5,21 @@ import { environment } from 'src/app/environments';
 @Injectable({
   providedIn: 'root'
 })
-export class DoctorService {
+export class VisitRateService {
 
   private apiUrl = environment.backEndUrl;
   constructor(
     private http: HttpClient,
   ) {}
 
-  getAllDoctors() {
-    return this.http.get(`${this.apiUrl}doctors`);
+  getAllVisitRates() {
+    return this.http.get(`${this.apiUrl}visit_rates`);
   }
-  getDoctorById(doctorId: number) {
-    const url = `${this.apiUrl}doctors/${doctorId}`;
+  getVisitRateById(id: number) {
+    const url = `${this.apiUrl}visit_rates/${id}`;
     return this.http.get(url);
   }
-  addDoctor(doctor: any) {
-    return this.http.post(`${this.apiUrl}doctors`, doctor);
+  addVisitRate(id: any) {
+    return this.http.post(`${this.apiUrl}visit_rates`, id);
   }
 }

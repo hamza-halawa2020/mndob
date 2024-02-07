@@ -25,35 +25,68 @@ class DoctorController extends Controller
         $this->middleware('auth:sanctum');
     }
 
+    // public function index(Request $request)
+    // {
+    //     try {
+    //         $authenticatedUserId = Auth::id();
+    //         $isUser = User::where('id', $authenticatedUserId)->exists();
+    //         $isDoctor = Doctor::where('id', $authenticatedUserId)->exists();
+    //         if ($isUser) {
+    //             $doctors = users_and_doctors::where('user_id', $authenticatedUserId)
+    //                 ->with('user', 'doctor')
+    //                 ->get();
+    //             foreach ($doctors as $doctor) {
+    //                 $governorateName = Governate::where('id', $doctor->doctor->gov_id)->value('name_en');
+    //                 // $governorateName_ar = Governate::where('id', $doctor->doctor->gov_id)->value('name_ar');
+    //                 $doctor->doctor->gov_name_en = $governorateName;
+    //                 // $doctor->doctor->gov_name_ar = $governorateName_ar;
+    //             }
+    //             return DoctroResource::collection($doctors);
+    //         } else if ($isDoctor) {
+    //             $doctors = users_and_doctors::where('doctor_id', $authenticatedUserId)
+    //                 ->with('user', 'doctor')
+    //                 ->get();
+    //             return response()->json(['message' => 'Unauthorized.'], 403);
+    //         } else {
+    //             return response()->json(['message' => 'Unauthorized.'], 403);
+    //         }
+    //     } catch (Exception $e) {
+    //         return response()->json($e, 500);
+    //     }
+    // }
+
+
     public function index(Request $request)
-    {
-        try {
-            $authenticatedUserId = Auth::id();
-            $isUser = User::where('id', $authenticatedUserId)->exists();
-            $isDoctor = Doctor::where('id', $authenticatedUserId)->exists();
-            if ($isUser) {
-                $doctors = users_and_doctors::where('user_id', $authenticatedUserId)
-                    ->with('user', 'doctor')
-                    ->get();
-                foreach ($doctors as $doctor) {
-                    $governorateName = Governate::where('id', $doctor->doctor->gov_id)->value('name_en');
-                    // $governorateName_ar = Governate::where('id', $doctor->doctor->gov_id)->value('name_ar');
-                    $doctor->doctor->gov_name_en = $governorateName;
-                    // $doctor->doctor->gov_name_ar = $governorateName_ar;
-                }
-                return DoctroResource::collection($doctors);
-            } else if ($isDoctor) {
-                $doctors = users_and_doctors::where('doctor_id', $authenticatedUserId)
-                    ->with('user', 'doctor')
-                    ->get();
-                return response()->json(['message' => 'Unauthorized.'], 403);
-            } else {
-                return response()->json(['message' => 'Unauthorized.'], 403);
+{
+    try {
+        $authenticatedUserId = Auth::id();
+        $isUser = User::where('id', $authenticatedUserId)->exists();
+        $isDoctor = Doctor::where('id', $authenticatedUserId)->exists();
+
+        if ($isUser) {
+            $doctors = users_and_doctors::where('user_id', $authenticatedUserId)
+                ->with('user', 'doctor', 'doctor.visitRates') // Include visit rates relationship
+                ->get();
+
+            foreach ($doctors as $doctor) {
+                $governorateName = Governate::where('id', $doctor->doctor->gov_id)->value('name_en');
+                $doctor->doctor->gov_name_en = $governorateName;
             }
-        } catch (Exception $e) {
-            return response()->json($e, 500);
+
+            return DoctroResource::collection($doctors);
+        } else if ($isDoctor) {
+            $doctors = users_and_doctors::where('doctor_id', $authenticatedUserId)
+                ->with('user', 'doctor', 'doctor.visitRates') // Include visit rates relationship
+                ->get();
+                
+            return response()->json(['message' => 'Unauthorized.'], 403);
+        } else {
+            return response()->json(['message' => 'Unauthorized.'], 403);
         }
+    } catch (Exception $e) {
+        return response()->json($e, 500);
     }
+}
 
     /**
      * Store a newly created resource in storage.
@@ -89,29 +122,6 @@ class DoctorController extends Controller
      * Display the specified resource.
      */
 
-    // public function show(string $id)
-    // {
-    //     try {
-    //         $authenticatedUserId = Auth::id();
-    //         // $isUser = User::where('id', $authenticatedUserId)->exists();
-    //         if ($authenticatedUserId) {
-    //             $doctor = users_and_doctors::where('doctor_id', $id)
-    //                 ->where('user_id', $authenticatedUserId)
-    //                 ->with('user', 'doctor')
-    //                 ->first();
-    //             if ($doctor) {
-    //                 return new DoctroResource($doctor);
-    //             } else {
-    //                 return response()->json(['message' => 'Doctor not found.'], 404);
-    //             }
-    //         }
-    //     } catch (Exception $e) {
-    //         return response()->json(['message' => 'An unexpected error occurred.'], 500);
-    //     }
-    // }
-
-
-
     public function show(string $id)
 {
     try {
@@ -119,7 +129,7 @@ class DoctorController extends Controller
         if ($authenticatedUserId) {
             $doctor = users_and_doctors::where('doctor_id', $id)
                 ->where('user_id', $authenticatedUserId)
-                ->with('user', 'doctor')
+                ->with('user', 'doctor','doctor.visitRates')
                 ->first();
             if ($doctor) {
                 $governorateName = Governate::where('id', $doctor->doctor->gov_id)->value('name_en');

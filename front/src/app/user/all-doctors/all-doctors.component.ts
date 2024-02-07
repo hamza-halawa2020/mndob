@@ -27,4 +27,19 @@ export class AllDoctorsComponent {
       }
     );
   }
+
+  getNewestVisitRate(visitRates: any[]): any {
+    if (visitRates.length === 0) {
+      return null;
+    }
+    visitRates.sort((a, b) => {
+      const yearDiff = parseInt(b.year) - parseInt(a.year);
+      if (yearDiff !== 0) {
+        return yearDiff;
+      }
+      return parseInt(b.month) - parseInt(a.month);
+    });
+    return visitRates[0];
+  }
+
 }

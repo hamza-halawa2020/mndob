@@ -48,12 +48,6 @@ export class AddDoctorComponent {
       // console.log('governorates', this.governorates);
     });
   }
-  getClass() {
-    this.gov.getGovernorates().subscribe((data) => {
-      this.governorates = Object.values(data)[0];
-      // console.log('governorates', this.governorates);
-    });
-  }
 
   loginSubmitted() {
     if (this.loginForm.valid) {

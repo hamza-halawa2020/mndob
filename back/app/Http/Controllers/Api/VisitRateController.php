@@ -14,6 +14,10 @@ class VisitRateController extends Controller
     /**
      * Display a listing of the resource.
      */
+    function __construct()
+    {
+        $this->middleware('auth:sanctum');
+    }
     public function index()
     {
         try {
@@ -29,13 +33,16 @@ class VisitRateController extends Controller
      */
     public function store(Request $request)
     {
+        Validator::extend('valid_visit_rate', function ($attribute, $value) {
+            return $value >= 1 && $value <= 9;
+        });
 
         Validator::extend('the_same_year', function ($attribute, $value) {
             return ($value) == date('Y');
         });
         try {
             $this->validate($request, [
-                'visit_rate_min' => 'required',
+                'visit_rate_min' => 'required|valid_visit_rate',
                 'month' => 'required',
                 'year' => 'required|the_same_year',
                 'doctor_id' => 'required',

@@ -4,10 +4,33 @@
     <div class="card mt-3">
       <div class="card-body">
         <h5 class="card-title">ID: {{ Details.doctor.id }}</h5>
-        <p class="card-text">Name: {{ Details.doctor.name_en }}</p>
-        <p class="card-text">Name: {{ Details.doctor.name_ar }}</p>
+        <p class="card-text">Name En: {{ Details.doctor.name_en }}</p>
+        <p class="card-text">Name Ar: {{ Details.doctor.name_ar }}</p>
         <p class="card-text">Class: {{ Details.doctor.class }}</p>
         <p class="card-text">Governate: {{ Details.doctor.gov_name_en }}</p>
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Visit Rate</th>
+              <th>Month</th>
+              <th>Year</th>
+            </tr>
+          </thead>
+          <tbody>
+            <ng-container *ngIf="Details.doctor.visit_rates && Details.doctor.visit_rates.length > 0; else noRates">
+              <tr *ngFor="let rate of Details.doctor.visit_rates">
+                <td>{{ rate.visit_rate_min }}</td>
+                <td>{{ rate.month }}</td>
+                <td>{{ rate.year }}</td>
+              </tr>
+            </ng-container>
+            <ng-template #noRates>
+              <tr>
+                <td colspan="3" class="text-center">No visit rates available.</td>
+              </tr>
+            </ng-template>
+          </tbody>
+        </table>
       </div>
     </div>
   </div>
