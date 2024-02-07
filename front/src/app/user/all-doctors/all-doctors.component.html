@@ -1,22 +1,15 @@
 <div class="container">
-    <h2>All Doctors</h2>
-    <table class="table">
-      <thead>
-        <tr>
-          <th>ID</th>
-          <th>Name</th>
-          <th>Class</th>
-          <th>Gov ID</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let doctor of doctors">
-          <td>{{ doctor.doctor.id }}</td>
-          <td>{{ doctor.doctor.name_ar }}</td>
-          <td>{{ doctor.doctor.class }}</td>
-          <td>{{ doctor.doctor.gov_id }}</td>
-        </tr>
-      </tbody>
-    </table>
+  <h2 class="text-center">All Doctors</h2>
+  <div class="row">
+    <div class="col-sm-3" *ngFor="let doctor of doctors">
+      <div class="card mb-3 bg-dark">
+        <div class="card-body text-light">
+          <p class="card-title">ID: {{ doctor.doctor.id }}</p>
+          <h5 class="card-text">{{ doctor.doctor.name_ar }}</h5>
+          <p class="card-text">Governate: {{ doctor.doctor.gov_name_en }}</p>
+          <p class="card-text">Class: {{ doctor.doctor.class }}</p>
+        </div>
+      </div>
+    </div>
   </div>
-  
+</div>

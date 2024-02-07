@@ -1,5 +1,8 @@
 <div class="container my-5 d-flex justify-content-center align-items-center">
   <div class="container">
+    <div class="container alert alert-warning text-center" *ngIf="error" role="alert">
+      {{error}}
+    </div>
     <div class="row justify-content-center align-items-center">
       <div class="col-md-6 shadow-lg">
         <form

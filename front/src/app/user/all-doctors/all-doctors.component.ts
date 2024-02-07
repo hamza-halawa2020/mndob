@@ -19,7 +19,7 @@ export class AllDoctorsComponent {
     this.doctorService.getAllDoctors().subscribe(
       (data: any) => {
         this.doctors = Object.values(data)[0];
-        console.log('doctors',this.doctors);
+        // console.log('doctors',this.doctors);
         
       },
       (error) => {

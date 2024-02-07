@@ -9,7 +9,8 @@ import { LoginService } from '../service/sign.service';
 })
 export class LoginComponent {
   formSubmitted: boolean = false;
-  constructor(private router: Router,private auth:LoginService) {}
+  error: any;
+  constructor(private router: Router, private auth: LoginService) {}
 
   ngOnInit(): void {}
 
@@ -36,21 +37,20 @@ export class LoginComponent {
   loginSubmitted() {
     if (this.loginForm.valid) {
       this.formSubmitted = true;
-      this.auth.login(this.loginForm.value).subscribe({
-        next: (res: any) => {
+      this.auth.login(this.loginForm.value).subscribe(
+        (res: any) => {
           this.auth.setRoleInCookie(res.role);
           this.auth.setTokenInCookie(res.token);
-          console.log('success login');
-
+          this.error = 'success login';
           this.loginForm.reset();
           this.router.navigate(['']);
         },
-        error: () => {
-          console.log("can't login");
-        },
-      });
+        () => {
+          this.error = "can't login";
+        }
+      );
     } else {
-      console.log('Form is invalid. Please fill all the required fields.');
+      this.error = 'Form is invalid. Please fill all the required fields.';
     }
   }
 }

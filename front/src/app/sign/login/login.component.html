@@ -1,101 +1,112 @@
 <div class="container my-5 d-flex justify-content-center align-items-center">
-    <div class="container">
-      <div class="row justify-content-center align-items-center">
-        <div class="col-md-6 shadow-lg">
-          <form
-            class="bg-white py-5"
-            [formGroup]="loginForm"
-            (ngSubmit)="loginSubmitted()"
-          >
-            <div class="text-center p-2 mb-3 bg-light">
-              <h3 class="pt-2">👋Welcome Back</h3>
-            </div>
-            <div class="mb-3">
-              <label for="email" class="form-label"
-                >E-mail<span class="text-danger">*</span></label
-              >
-              <input
-                type="email"
-                class="form-control"
-                id="email"
-                formControlName="email"
-                placeholder="E-mail"
-              />
-              <div
-                class="form-text text-success"
-                *ngIf="Email.valid && (Email.touched || Email.dirty)"
-              >
-                <i class="fa-solid fa-check"></i>looks good!
-              </div>
-              <div
-                class="form-text text-danger"
-                *ngIf="Email.errors?.['required'] && (Email.dirty || Email.touched)"
-              >
-                <i class="fa-solid fa-circle-exclamation"></i>E-mail is important.
-              </div>
-              <div
-                class="form-text text-danger"
-                *ngIf="Email.errors?.['pattern'] && (Email.dirty || Email.touched)"
-              >
-                <i class="fa-solid fa-circle-exclamation"></i>E-mail is invalid</div>
-            </div>
-            <div class="mb-3">
-              <label for="password" class="form-label"
-                >password<span class="text-danger">*</span></label
-              >
-              <input
-                type="password"
-                class="form-control"
-                id="password"
-                formControlName="password"
-                placeholder="******"
-              />
-              <div
-                class="form-text text-success"
-                *ngIf="password.valid && (password.touched || password.dirty)"
-              >
+  <div class="container">
+    <div
+      class="container alert alert-warning text-center"
+      *ngIf="error"
+      role="alert"
+    >
+      {{ error }}
+    </div>
+    <div class="row justify-content-center align-items-center">
+      <div class="col-md-6 shadow-lg">
+        <form
+          class="bg-white py-5"
+          [formGroup]="loginForm"
+          (ngSubmit)="loginSubmitted()"
+        >
+          <div class="text-center p-2 mb-3 bg-light">
+            <h3 class="pt-2">👋Welcome Back</h3>
+          </div>
+          <div class="mb-3">
+            <label for="email" class="form-label"
+              >E-mail<span class="text-danger">*</span></label
+            >
+            <input
+              type="email"
+              class="form-control"
+              id="email"
+              formControlName="email"
+              placeholder="E-mail"
+            />
+            <div
+              class="form-text text-success"
+              *ngIf="Email.valid && (Email.touched || Email.dirty)"
+            >
               <i class="fa-solid fa-check"></i>looks good!
             </div>
-              <div
-                class="form-text text-danger"
-                *ngIf="password.errors?.['required'] && (password.dirty || password.touched)"
-              >
-                <i class="fa-solid fa-circle-exclamation"> </i>password is important
-              </div>
-              <div
-                class="form-text text-danger"
-                *ngIf="(password.errors?.['minlength'] || password.errors?.['maxlength']) && (password.dirty || password.touched)"
-              >
-                <i class="fa-solid fa-circle-exclamation"></i>password must be between 6 to 12</div>
+            <div
+              class="form-text text-danger"
+              *ngIf="Email.errors?.['required'] && (Email.dirty || Email.touched)"
+            >
+              <i class="fa-solid fa-circle-exclamation"></i>E-mail is important.
             </div>
-            <div class="d-grid mb-3">
-              <button
-                type="submit"
-                [disabled]="loginForm.invalid"
-                class="btn btn-primary"
-              >
-                Submit
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="16"
-                  height="16"
-                  fill="currentColor"
-                  class="bi bi-box-arrow-in-right"
-                  viewBox="0 0 16 16"
-                >
-                  <path
-                    fill-rule="evenodd"
-                    d="M6 3.5a.5.5 0 0 1 .5-.5h8a.5.5 0 0 1 .5.5v9a.5.5 0 0 1-.5.5h-8a.5.5 0 0 1-.5-.5v-2a.5.5 0 0 0-1 0v2A1.5 1.5 0 0 0 6.5 14h8a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 14.5 2h-8A1.5 1.5 0 0 0 5 3.5v2a.5.5 0 0 0 1 0z"
-                  />
-                  <path
-                    fill-rule="evenodd"
-                    d="M11.854 8.354a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5H1.5a.5.5 0 0 0 0 1h8.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3z"
-                  />
-                </svg>
-              </button>
+            <div
+              class="form-text text-danger"
+              *ngIf="Email.errors?.['pattern'] && (Email.dirty || Email.touched)"
+            >
+              <i class="fa-solid fa-circle-exclamation"></i>E-mail is invalid
             </div>
-          </form>
-        </div>
+          </div>
+          <div class="mb-3">
+            <label for="password" class="form-label"
+              >password<span class="text-danger">*</span></label
+            >
+            <input
+              type="password"
+              class="form-control"
+              id="password"
+              formControlName="password"
+              placeholder="******"
+            />
+            <div
+              class="form-text text-success"
+              *ngIf="password.valid && (password.touched || password.dirty)"
+            >
+              <i class="fa-solid fa-check"></i>looks good!
+            </div>
+            <div
+              class="form-text text-danger"
+              *ngIf="password.errors?.['required'] && (password.dirty || password.touched)"
+            >
+              <i class="fa-solid fa-circle-exclamation"> </i>password is
+              important
+            </div>
+            <div
+              class="form-text text-danger"
+              *ngIf="(password.errors?.['minlength'] || password.errors?.['maxlength']) && (password.dirty || password.touched)"
+            >
+              <i class="fa-solid fa-circle-exclamation"></i>password must be
+              between 6 to 12
+            </div>
+          </div>
+          <div class="d-grid mb-3">
+            <button
+              type="submit"
+              [disabled]="loginForm.invalid"
+              class="btn btn-primary"
+            >
+              Submit
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="16"
+                height="16"
+                fill="currentColor"
+                class="bi bi-box-arrow-in-right"
+                viewBox="0 0 16 16"
+              >
+                <path
+                  fill-rule="evenodd"
+                  d="M6 3.5a.5.5 0 0 1 .5-.5h8a.5.5 0 0 1 .5.5v9a.5.5 0 0 1-.5.5h-8a.5.5 0 0 1-.5-.5v-2a.5.5 0 0 0-1 0v2A1.5 1.5 0 0 0 6.5 14h8a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 14.5 2h-8A1.5 1.5 0 0 0 5 3.5v2a.5.5 0 0 0 1 0z"
+                />
+                <path
+                  fill-rule="evenodd"
+                  d="M11.854 8.354a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5H1.5a.5.5 0 0 0 0 1h8.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3z"
+                />
+              </svg>
+            </button>
+          </div>
+        </form>
       </div>
     </div>
   </div>
+</div>

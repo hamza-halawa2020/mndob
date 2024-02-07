@@ -5,6 +5,7 @@ import { AddDoctorComponent } from './add-doctor/add-doctor.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { AllDoctorsComponent } from './all-doctors/all-doctors.component';
+import { DoctorDetailsComponent } from './doctor-details/doctor-details.component';
 
 
 
@@ -12,7 +13,8 @@ import { AllDoctorsComponent } from './all-doctors/all-doctors.component';
   declarations: [
     HomeComponent,
     AddDoctorComponent,
-    AllDoctorsComponent
+    AllDoctorsComponent,
+    DoctorDetailsComponent
   ],
   imports: [
     CommonModule,

@@ -12,8 +12,9 @@ import { DoctorService } from '../services/doctor/doctor.service';
 export class AddDoctorComponent {
   formSubmitted: boolean = false;
   governorates: any;
+  error: any;
+
   constructor(
-    private router: Router,
     private gov: GovernatesService,
     private doctor: DoctorService
   ) {}
@@ -58,17 +59,16 @@ export class AddDoctorComponent {
     if (this.loginForm.valid) {
       this.formSubmitted = true;
       this.doctor.addDoctor(this.loginForm.value).subscribe(
-        (res: any) => {
+        () => {
           this.loginForm.reset();
-          alert(`done`);
+          this.error = 'done';
         },
-        (error) => {
-          console.log('An error occurred while adding a doctor:', error);
-          // Optionally reset the form here
+        () => {
+          this.error = 'Error doctors';
         }
       );
     } else {
-      console.log('Form is invalid. Please fill all the required fields.');
+      this.error = 'Error doctors';
     }
   }
 }

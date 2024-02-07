@@ -7,12 +7,18 @@ import { GovernatesService } from 'src/app/user/services/governates/governates.s
 @Component({
   selector: 'app-signup',
   templateUrl: './signup.component.html',
-  styleUrls: ['./signup.component.css']
+  styleUrls: ['./signup.component.css'],
 })
 export class SignupComponent {
   formSubmitted: boolean = false;
-  governorates:any;
-  constructor(private router: Router,private auth:LoginService,private gov:GovernatesService) {}
+  governorates: any;
+  error: any;
+
+  constructor(
+    private router: Router,
+    private auth: LoginService,
+    private gov: GovernatesService
+  ) {}
 
   ngOnInit(): void {
     this.getGovernorates();
@@ -23,12 +29,8 @@ export class SignupComponent {
       Validators.required,
       Validators.pattern(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/),
     ]),
-    name_en: new FormControl('', [
-      Validators.required,
-    ]),
-    name_ar: new FormControl('', [
-      Validators.required,
-    ]),
+    name_en: new FormControl('', [Validators.required]),
+    name_ar: new FormControl('', [Validators.required]),
     password: new FormControl('', [
       Validators.required,
       Validators.minLength(6),
@@ -59,23 +61,21 @@ export class SignupComponent {
     });
   }
 
-
-
   loginSubmitted() {
     if (this.loginForm.valid) {
       this.formSubmitted = true;
-      this.auth.registerUser(this.loginForm.value).subscribe({
-        next: (res: any) => {
-          console.log('success registeration');
+      this.auth.registerUser(this.loginForm.value).subscribe(
+        () => {
+          this.error = 'success registeration';
           this.loginForm.reset();
           this.router.navigate(['login']);
         },
-        error: () => {
-          console.log("can't signup", this.loginForm.value);
-        },
-      });
+        () => {
+          this.error = "can't signup";
+        }
+      );
     } else {
-      console.log('Form is invalid. Please fill all the required fields.');
+      this.error = 'Form is invalid. Please fill all the required fields.';
     }
   }
 }
