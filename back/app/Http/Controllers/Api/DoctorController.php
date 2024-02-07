@@ -8,6 +8,7 @@ use App\Http\Requests\StoreDoctorRequest;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Doctor;
 use App\Models\Governate;
+use App\Models\Visit_rate;
 use Illuminate\Http\Request;
 use Exception;
 use App\Models\User;
@@ -57,36 +58,36 @@ class DoctorController extends Controller
 
 
     public function index(Request $request)
-{
-    try {
-        $authenticatedUserId = Auth::id();
-        $isUser = User::where('id', $authenticatedUserId)->exists();
-        $isDoctor = Doctor::where('id', $authenticatedUserId)->exists();
+    {
+        try {
+            $authenticatedUserId = Auth::id();
+            $isUser = User::where('id', $authenticatedUserId)->exists();
+            $isDoctor = Doctor::where('id', $authenticatedUserId)->exists();
 
-        if ($isUser) {
-            $doctors = users_and_doctors::where('user_id', $authenticatedUserId)
-                ->with('user', 'doctor', 'doctor.visitRates') // Include visit rates relationship
-                ->get();
+            if ($isUser) {
+                $doctors = users_and_doctors::where('user_id', $authenticatedUserId)
+                    ->with('user', 'doctor', 'doctor.visitRates') // Include visit rates relationship
+                    ->get();
 
-            foreach ($doctors as $doctor) {
-                $governorateName = Governate::where('id', $doctor->doctor->gov_id)->value('name_en');
-                $doctor->doctor->gov_name_en = $governorateName;
+                foreach ($doctors as $doctor) {
+                    $governorateName = Governate::where('id', $doctor->doctor->gov_id)->value('name_en');
+                    $doctor->doctor->gov_name_en = $governorateName;
+                }
+
+                return DoctroResource::collection($doctors);
+            } else if ($isDoctor) {
+                $doctors = users_and_doctors::where('doctor_id', $authenticatedUserId)
+                    ->with('user', 'doctor', 'doctor.visitRates') // Include visit rates relationship
+                    ->get();
+
+                return response()->json(['message' => 'Unauthorized.'], 403);
+            } else {
+                return response()->json(['message' => 'Unauthorized.'], 403);
             }
-
-            return DoctroResource::collection($doctors);
-        } else if ($isDoctor) {
-            $doctors = users_and_doctors::where('doctor_id', $authenticatedUserId)
-                ->with('user', 'doctor', 'doctor.visitRates') // Include visit rates relationship
-                ->get();
-                
-            return response()->json(['message' => 'Unauthorized.'], 403);
-        } else {
-            return response()->json(['message' => 'Unauthorized.'], 403);
+        } catch (Exception $e) {
+            return response()->json($e, 500);
         }
-    } catch (Exception $e) {
-        return response()->json($e, 500);
     }
-}
 
     /**
      * Store a newly created resource in storage.
@@ -118,31 +119,33 @@ class DoctorController extends Controller
             return response()->json($e, 500);
         }
     }
+
+
     /**
      * Display the specified resource.
      */
 
     public function show(string $id)
-{
-    try {
-        $authenticatedUserId = Auth::id();
-        if ($authenticatedUserId) {
-            $doctor = users_and_doctors::where('doctor_id', $id)
-                ->where('user_id', $authenticatedUserId)
-                ->with('user', 'doctor','doctor.visitRates')
-                ->first();
-            if ($doctor) {
-                $governorateName = Governate::where('id', $doctor->doctor->gov_id)->value('name_en');
-                $doctor->doctor->gov_name_en = $governorateName;
-                return new DoctroResource($doctor);
-            } else {
-                return response()->json(['message' => 'Doctor not found.'], 404);
+    {
+        try {
+            $authenticatedUserId = Auth::id();
+            if ($authenticatedUserId) {
+                $doctor = users_and_doctors::where('doctor_id', $id)
+                    ->where('user_id', $authenticatedUserId)
+                    ->with('user', 'doctor', 'doctor.visitRates')
+                    ->first();
+                if ($doctor) {
+                    $governorateName = Governate::where('id', $doctor->doctor->gov_id)->value('name_en');
+                    $doctor->doctor->gov_name_en = $governorateName;
+                    return new DoctroResource($doctor);
+                } else {
+                    return response()->json(['message' => 'Doctor not found.'], 404);
+                }
             }
+        } catch (Exception $e) {
+            return response()->json(['message' => 'An unexpected error occurred.'], 500);
         }
-    } catch (Exception $e) {
-        return response()->json(['message' => 'An unexpected error occurred.'], 500);
     }
-}
 
     /**
      * Update the specified resource in storage.
