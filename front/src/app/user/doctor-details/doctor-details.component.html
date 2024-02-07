@@ -1,1 +1,17 @@
-<p>doctor-details works!</p>
+<div class="container">
+  <div *ngIf="Details">
+    <h2 class="text-center">Doctor Details</h2>
+    <div class="card mt-3">
+      <div class="card-body">
+        <h5 class="card-title">ID: {{ Details.doctor.id }}</h5>
+        <p class="card-text">Name: {{ Details.doctor.name_en }}</p>
+        <p class="card-text">Name: {{ Details.doctor.name_ar }}</p>
+        <p class="card-text">Class: {{ Details.doctor.class }}</p>
+        <p class="card-text">Governate: {{ Details.doctor.gov_name_en }}</p>
+      </div>
+    </div>
+  </div>
+  <div *ngIf="!Details" class="text-center mt-3">
+    <p>Loading doctor details...</p>
+  </div>
+</div>

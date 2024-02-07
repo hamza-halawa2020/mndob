@@ -7,6 +7,8 @@ import { AddDoctorComponent } from './user/add-doctor/add-doctor.component';
 import { AuthGuard } from './guards/auth.guard';
 import { unauthGuard } from './guards/unauth.guard';
 import { AllDoctorsComponent } from './user/all-doctors/all-doctors.component';
+import { DoctorDetailsComponent } from './user/doctor-details/doctor-details.component';
+import { VisitRateComponent } from './user/visit-rate/visit-rate.component';
 
 const routes: Routes = [
   {
@@ -24,7 +26,16 @@ const routes: Routes = [
     component: AllDoctorsComponent,
     canActivate: [AuthGuard],
   },
-  
+  {
+    path: 'doctors/:id',
+    component: DoctorDetailsComponent,
+    canActivate: [AuthGuard],
+  },
+  {
+    path: 'visit-rate',
+    component: VisitRateComponent,
+    canActivate: [AuthGuard],
+  },
   {
     path: 'login',
     component: LoginComponent,

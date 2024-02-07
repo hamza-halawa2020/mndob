@@ -6,6 +6,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { AllDoctorsComponent } from './all-doctors/all-doctors.component';
 import { DoctorDetailsComponent } from './doctor-details/doctor-details.component';
+import { VisitRateComponent } from './visit-rate/visit-rate.component';
 
 
 
@@ -14,7 +15,8 @@ import { DoctorDetailsComponent } from './doctor-details/doctor-details.componen
     HomeComponent,
     AddDoctorComponent,
     AllDoctorsComponent,
-    DoctorDetailsComponent
+    DoctorDetailsComponent,
+    VisitRateComponent
   ],
   imports: [
     CommonModule,

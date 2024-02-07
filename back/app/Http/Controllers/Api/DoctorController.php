@@ -89,26 +89,51 @@ class DoctorController extends Controller
      * Display the specified resource.
      */
 
+    // public function show(string $id)
+    // {
+    //     try {
+    //         $authenticatedUserId = Auth::id();
+    //         // $isUser = User::where('id', $authenticatedUserId)->exists();
+    //         if ($authenticatedUserId) {
+    //             $doctor = users_and_doctors::where('doctor_id', $id)
+    //                 ->where('user_id', $authenticatedUserId)
+    //                 ->with('user', 'doctor')
+    //                 ->first();
+    //             if ($doctor) {
+    //                 return new DoctroResource($doctor);
+    //             } else {
+    //                 return response()->json(['message' => 'Doctor not found.'], 404);
+    //             }
+    //         }
+    //     } catch (Exception $e) {
+    //         return response()->json(['message' => 'An unexpected error occurred.'], 500);
+    //     }
+    // }
+
+
+
     public function show(string $id)
-    {
-        try {
-            $authenticatedUserId = Auth::id();
-            // $isUser = User::where('id', $authenticatedUserId)->exists();
-            if ($authenticatedUserId) {
-                $doctor = users_and_doctors::where('doctor_id', $id)
-                    ->where('user_id', $authenticatedUserId)
-                    ->with('user', 'doctor')
-                    ->first();
-                if ($doctor) {
-                    return new DoctroResource($doctor);
-                } else {
-                    return response()->json(['message' => 'Doctor not found.'], 404);
-                }
+{
+    try {
+        $authenticatedUserId = Auth::id();
+        if ($authenticatedUserId) {
+            $doctor = users_and_doctors::where('doctor_id', $id)
+                ->where('user_id', $authenticatedUserId)
+                ->with('user', 'doctor')
+                ->first();
+            if ($doctor) {
+                $governorateName = Governate::where('id', $doctor->doctor->gov_id)->value('name_en');
+                $doctor->doctor->gov_name_en = $governorateName;
+                return new DoctroResource($doctor);
+            } else {
+                return response()->json(['message' => 'Doctor not found.'], 404);
             }
-        } catch (Exception $e) {
-            return response()->json(['message' => 'An unexpected error occurred.'], 500);
         }
+    } catch (Exception $e) {
+        return response()->json(['message' => 'An unexpected error occurred.'], 500);
     }
+}
+
     /**
      * Update the specified resource in storage.
      */
