@@ -2,9 +2,9 @@
   <h2 class="text-center">All Doctors</h2>
   <div class="row">
     <div class="col-sm-3" *ngFor="let doctor of doctors">
-      <div class="card-wrapper mt-3" [routerLink]="'/doctors/' + doctor.doctor.id">
+      <div class="card-wrapper mt-3">
         <div class="card bg-dark">
-          <div class="card-body text-light">
+          <div class="card-body text-light"   [routerLink]="'/doctors/' + doctor.doctor.id">
             <p class="card-title">ID: {{ doctor.doctor.id }}</p>
             <h5 class="card-text">{{ doctor.doctor.name_ar }}</h5>
             <h5 class="card-text">{{ doctor.doctor.name_en }}</h5>
@@ -16,8 +16,13 @@
               <!-- - Year: {{ getNewestVisitRate(doctor.doctor.visit_rates).year }} -->
             </p>
             <p *ngIf="doctor.doctor.visit_rates.length === 0">No visit rates available.</p>
+
+            
           </div>
+          <div class="btn btn-warning text-black">Add Visit</div>
+
         </div>
+
       </div>
     </div>
   </div>

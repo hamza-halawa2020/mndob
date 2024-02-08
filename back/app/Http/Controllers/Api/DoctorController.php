@@ -63,21 +63,18 @@ class DoctorController extends Controller
             $authenticatedUserId = Auth::id();
             $isUser = User::where('id', $authenticatedUserId)->exists();
             $isDoctor = Doctor::where('id', $authenticatedUserId)->exists();
-
             if ($isUser) {
                 $doctors = users_and_doctors::where('user_id', $authenticatedUserId)
-                    ->with('user', 'doctor', 'doctor.visitRates') // Include visit rates relationship
+                    ->with('user', 'doctor', 'doctor.visitRates', 'doctor.visiting')
                     ->get();
-
                 foreach ($doctors as $doctor) {
                     $governorateName = Governate::where('id', $doctor->doctor->gov_id)->value('name_en');
                     $doctor->doctor->gov_name_en = $governorateName;
                 }
-
                 return DoctroResource::collection($doctors);
             } else if ($isDoctor) {
                 $doctors = users_and_doctors::where('doctor_id', $authenticatedUserId)
-                    ->with('user', 'doctor', 'doctor.visitRates') // Include visit rates relationship
+                    ->with('user', 'doctor', 'doctor.visitRates', 'doctor.visiting')
                     ->get();
 
                 return response()->json(['message' => 'Unauthorized.'], 403);
@@ -132,7 +129,7 @@ class DoctorController extends Controller
             if ($authenticatedUserId) {
                 $doctor = users_and_doctors::where('doctor_id', $id)
                     ->where('user_id', $authenticatedUserId)
-                    ->with('user', 'doctor', 'doctor.visitRates')
+                    ->with('user', 'doctor', 'doctor.visitRates', 'doctor.visiting')
                     ->first();
                 if ($doctor) {
                     $governorateName = Governate::where('id', $doctor->doctor->gov_id)->value('name_en');

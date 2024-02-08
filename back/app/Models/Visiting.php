@@ -9,7 +9,8 @@ class Visiting extends Model
 {
     use HasFactory;
     protected $fillable = [
-        'user_doctor_id',
         'visit_date',
+        'user_id',
+        'doctor_id',
     ];
 }

@@ -22,7 +22,7 @@ class StoreVisitingRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'user_doctor_id' => 'required',
+            'doctor_id' => 'required',
             'visit_date' => 'required',
         ];
     }

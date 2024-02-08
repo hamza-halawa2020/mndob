@@ -7,12 +7,17 @@ use App\Http\Resources\VisitingResource;
 use App\Models\Visiting;
 use Illuminate\Http\Request;
 use Exception;
+use Illuminate\Support\Facades\Auth;
 
 class VisitingController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
+    function __construct()
+    {
+        $this->middleware('auth:sanctum');
+    }
     public function index()
     {
         try {
@@ -22,27 +27,27 @@ class VisitingController extends Controller
             return response()->json($e, 500);
         }
     }
-
     /**
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
     {
-        // try {
+        try {
+            $authenticatedUserId = Auth::id();
+
             $this->validate($request, [
-                'user_doctor_id' => 'required',
+                'doctor_id' => 'required',
                 'visit_date' => 'required',
             ]);
-            
-
             $visit = Visiting::create([
-                "user_doctor_id" => $request->user_doctor_id,
+                "user_id" => $authenticatedUserId,
+                "doctor_id" => $request->doctor_id,
                 'visit_date' => $request->visit_date,
             ]);
             return response()->json(['data' => new VisitingResource($visit)], 200);
-        // } catch (Exception $e) {
-        //     return response()->json($e, 500);
-        // }
+        } catch (Exception $e) {
+            return response()->json($e, 500);
+        }
     }
 
     /**

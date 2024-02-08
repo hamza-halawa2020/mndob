@@ -16,9 +16,13 @@ class Doctor extends Model
     ];
 
     public function visitRates()
-{
-    return $this->hasMany(Visit_rate::class);
-}
+    {
+        return $this->hasMany(Visit_rate::class);
+    }
+    public function visiting()
+    {
+        return $this->hasMany(Visiting::class);
+    }
 
-    
+
 }
