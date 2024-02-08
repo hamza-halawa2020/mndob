@@ -1,16 +1,4 @@
-<form (ngSubmit)="addVisit()">
-    <div class="form-group">
-      <label for="userId">User ID</label>
-      <input type="number" class="form-control" id="userId" required [(ngModel)]="userId">
+    <div class="container alert alert-warning text-center" *ngIf="error" role="alert">
+      {{error}}
     </div>
-    <div class="form-group">
-      <label for="doctorId">Doctor ID</label>
-      <input type="number" class="form-control" id="doctorId" required [(ngModel)]="doctorId">
-    </div>
-    <div class="form-group">
-      <label for="visitDate">Visit Date</label>
-      <input type="date" class="form-control" id="visitDate" required [(ngModel)]="visitDate">
-    </div>
-    <button type="submit" class="btn btn-primary">Add Visit</button>
-  </form>
-  
+<button class="btn btn-warning text-black w-100" (click)="addVisit()">Add Visit</button>

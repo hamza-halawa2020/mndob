@@ -18,7 +18,13 @@
               </tr>
             </thead>
             <tbody>
-              <ng-container *ngIf="Details.doctor.visit_rates && Details.doctor.visit_rates.length > 0; else noRates">
+              <ng-container
+                *ngIf="
+                  Details.doctor.visit_rates &&
+                    Details.doctor.visit_rates.length > 0;
+                  else noRates
+                "
+              >
                 <tr *ngFor="let rate of Details.doctor.visit_rates">
                   <td>{{ rate.visit_rate_min }}</td>
                   <td>{{ rate.month }}</td>
@@ -27,22 +33,30 @@
               </ng-container>
               <ng-template #noRates>
                 <tr>
-                  <td colspan="3" class="text-center">No visit rates available.</td>
+                  <td colspan="3" class="text-center">
+                    No visit rates available.
+                  </td>
                 </tr>
               </ng-template>
             </tbody>
           </table>
         </div>
-        <div class="btn bg-black text-light">Add Visit</div>
         <div class="table-responsive">
           <table class="table table-striped mt-4">
+            <app-add-visit [doctorId]="Details.doctor.id"></app-add-visit>
+
             <thead>
               <tr>
                 <th>Visit Date</th>
               </tr>
             </thead>
             <tbody>
-              <ng-container *ngIf="Details.doctor.visiting && Details.doctor.visiting.length > 0; else noDate">
+              <ng-container
+                *ngIf="
+                  Details.doctor.visiting && Details.doctor.visiting.length > 0;
+                  else noDate
+                "
+              >
                 <tr *ngFor="let visit of Details.doctor.visiting">
                   <td>{{ visit.visit_date }}</td>
                 </tr>

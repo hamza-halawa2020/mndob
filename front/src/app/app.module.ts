@@ -7,6 +7,7 @@ import { SharedModule } from './shared/shared.module';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { UserModule } from './user/user.module';
 import { TokenAuthInterceptor } from './interceptor/token-auth.interceptor';
+import { DatePipe } from '@angular/common';
 
 @NgModule({
   declarations: [
@@ -25,7 +26,8 @@ import { TokenAuthInterceptor } from './interceptor/token-auth.interceptor';
     provide: HTTP_INTERCEPTORS,
     useClass:TokenAuthInterceptor,
     multi: true
-  }
+  },
+  [DatePipe]
 ],
   bootstrap: [AppComponent]
 })

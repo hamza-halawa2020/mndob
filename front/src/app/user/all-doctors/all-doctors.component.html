@@ -4,25 +4,27 @@
     <div class="col-sm-3" *ngFor="let doctor of doctors">
       <div class="card-wrapper mt-3">
         <div class="card bg-dark">
-          <div class="card-body text-light"   [routerLink]="'/doctors/' + doctor.doctor.id">
+          <div
+            class="card-body text-light"
+            [routerLink]="'/doctors/' + doctor.doctor.id"
+          >
             <p class="card-title">ID: {{ doctor.doctor.id }}</p>
             <h5 class="card-text">{{ doctor.doctor.name_ar }}</h5>
             <h5 class="card-text">{{ doctor.doctor.name_en }}</h5>
             <p class="card-text">Governate: {{ doctor.doctor.gov_name_en }}</p>
             <p class="card-text">Class: {{ doctor.doctor.class }}</p>
             <p *ngIf="doctor.doctor.visit_rates.length > 0">
-              Last Visit Rate: {{ getNewestVisitRate(doctor.doctor.visit_rates).visit_rate_min }}
+              Last Visit Rate:
+              {{ getNewestVisitRate(doctor.doctor.visit_rates).visit_rate_min }}
               <!-- - Month: {{ getNewestVisitRate(doctor.doctor.visit_rates).month }} -->
               <!-- - Year: {{ getNewestVisitRate(doctor.doctor.visit_rates).year }} -->
             </p>
-            <p *ngIf="doctor.doctor.visit_rates.length === 0">No visit rates available.</p>
-
-            
+            <p *ngIf="doctor.doctor.visit_rates.length === 0">
+              No visit rates available.
+            </p>
           </div>
-          <div class="btn btn-warning text-black">Add Visit</div>
-
+          <app-add-visit [doctorId]="doctor.doctor.id"></app-add-visit>
         </div>
-
       </div>
     </div>
   </div>

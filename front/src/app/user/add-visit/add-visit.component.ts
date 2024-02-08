@@ -1,4 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
+import { VisitsService } from '../services/visit/visits.service';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-add-visit',
@@ -6,17 +8,27 @@ import { Component } from '@angular/core';
   styleUrls: ['./add-visit.component.css']
 })
 export class AddVisitComponent {
-
-  userId: any;
-  doctorId: any ;
-  visitDate?: any ;
-
+  @Input() doctorId: any;
+  error: any;
+  visitDate: any = {};
+  constructor(
+    private visitService: VisitsService,
+    private datePipe: DatePipe
+  ) {}
   addVisit() {
-    console.log('User ID:', this.userId);
-    console.log('Doctor ID:', this.doctorId);
-    console.log('Visit Date:', this.visitDate);
-    // this.userId = null;
-    // this.doctorId = null;
-    // this.visitDate = null;
+    this.visitDate.doctor_id = this.doctorId; 
+    const currentDate = new Date();
+    const formattedDate = this.datePipe.transform(currentDate, 'yyyy-MM-dd');
+    this.visitDate.visit_date = formattedDate;
+    this.visitService.addVisit(this.visitDate).subscribe(
+      () => {
+        this.error = 'success';
+        // console.log(this.visitDate);
+      },
+      () => {
+        this.error = 'error';
+        // console.log(this.visitDate);
+      }
+    );
   }
 }

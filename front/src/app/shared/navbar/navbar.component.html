@@ -11,6 +11,15 @@
             <a class="nav-link" routerLink="">Home</a>
           </li>
           <li class="nav-item">
+            <a class="nav-link" *ngIf="isLoggedIn()"routerLink="all-doctors">All Doctors</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" *ngIf="isLoggedIn()"routerLink="add-doctor">Add New Doctor</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" *ngIf="isLoggedIn()"routerLink="visit-rate">Add Visit Rate to the doctor</a>
+          </li>
+          <li class="nav-item">
             <a class="nav-link" routerLink="login" *ngIf="!isLoggedIn()">Login</a>
           </li>
           <li class="nav-item">
