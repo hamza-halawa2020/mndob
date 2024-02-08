@@ -14,8 +14,15 @@ export class DoctorDetailsComponent {
     private activateRoute: ActivatedRoute,
     private doctorDetails: DoctorService
   ) {}
+
+
   ngOnInit(): void {
     this.getDoctor();
+  }
+ showAddVisit = false;
+
+  openAddVisitModal() {
+    this.showAddVisit = true;
   }
   getDoctor() {
     this.activateRoute.params.subscribe((params) => {

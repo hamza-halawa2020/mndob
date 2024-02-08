@@ -34,7 +34,6 @@ class VisitingController extends Controller
     {
         try {
             $authenticatedUserId = Auth::id();
-
             $this->validate($request, [
                 'doctor_id' => 'required',
                 'visit_date' => 'required',
