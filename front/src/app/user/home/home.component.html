@@ -4,12 +4,33 @@
       <div class="card mb-4">
         <div class="card-body">
           <h5 class="card-title">Total Doctors</h5>
-          <p class="card-text">{{ totalDoctorsCount?.length }}</p>
+          <p class="card-text">{{ totalDoctorsCount }}</p>
         </div>
       </div>
       <div class="card mb-4">
         <div class="card-body">
-          <h5 class="card-title">Visited Doctors</h5>
+          <div class="container">
+            <div class="row">
+              <div class="col-md-12">
+                <h4>Visited Doctors every Month</h4>
+
+                <table class="table">
+                  <thead>
+                    <tr>
+                      <th>Date</th>
+                      <th>Number of Visits</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let visit of visitsByMonthArray | keyvalue">
+                      <td>{{ visit.key }}</td>
+                      <td>{{ visit.value }}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>

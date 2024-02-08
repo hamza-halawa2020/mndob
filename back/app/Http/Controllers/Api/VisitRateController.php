@@ -5,9 +5,12 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\VisiteRateResource;
 use App\Models\Visit_rate;
+use App\Models\users_and_doctors;
+
 use Illuminate\Http\Request;
 use Exception;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Auth;
 
 class VisitRateController extends Controller
 {
@@ -41,6 +44,16 @@ class VisitRateController extends Controller
             return ($value) == date('Y');
         });
         try {
+            $authenticatedUserId = Auth::id();
+
+            $isUserAllowedToVisit = users_and_doctors::where('user_id', $authenticatedUserId)
+                ->where('doctor_id', $request->doctor_id)
+                ->exists();
+
+            if (!$isUserAllowedToVisit) {
+                return response()->json(['message' => 'Unauthorized. You do not have a relationship with the specified doctor.'], 403);
+            }
+
             $this->validate($request, [
                 'visit_rate_min' => 'required|valid_visit_rate',
                 'month' => 'required',

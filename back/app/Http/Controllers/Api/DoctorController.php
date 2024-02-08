@@ -26,37 +26,6 @@ class DoctorController extends Controller
         $this->middleware('auth:sanctum');
     }
 
-    // public function index(Request $request)
-    // {
-    //     try {
-    //         $authenticatedUserId = Auth::id();
-    //         $isUser = User::where('id', $authenticatedUserId)->exists();
-    //         $isDoctor = Doctor::where('id', $authenticatedUserId)->exists();
-    //         if ($isUser) {
-    //             $doctors = users_and_doctors::where('user_id', $authenticatedUserId)
-    //                 ->with('user', 'doctor')
-    //                 ->get();
-    //             foreach ($doctors as $doctor) {
-    //                 $governorateName = Governate::where('id', $doctor->doctor->gov_id)->value('name_en');
-    //                 // $governorateName_ar = Governate::where('id', $doctor->doctor->gov_id)->value('name_ar');
-    //                 $doctor->doctor->gov_name_en = $governorateName;
-    //                 // $doctor->doctor->gov_name_ar = $governorateName_ar;
-    //             }
-    //             return DoctroResource::collection($doctors);
-    //         } else if ($isDoctor) {
-    //             $doctors = users_and_doctors::where('doctor_id', $authenticatedUserId)
-    //                 ->with('user', 'doctor')
-    //                 ->get();
-    //             return response()->json(['message' => 'Unauthorized.'], 403);
-    //         } else {
-    //             return response()->json(['message' => 'Unauthorized.'], 403);
-    //         }
-    //     } catch (Exception $e) {
-    //         return response()->json($e, 500);
-    //     }
-    // }
-
-
     public function index(Request $request)
     {
         try {
