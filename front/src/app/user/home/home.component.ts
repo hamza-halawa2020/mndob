@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { DoctorService } from '../services/doctor/doctor.service';
 import { VisitsService } from '../services/visit/visits.service';
+import { MapType } from '@angular/compiler';
 
 @Component({
   selector: 'app-home',
@@ -9,7 +10,9 @@ import { VisitsService } from '../services/visit/visits.service';
 })
 export class HomeComponent {
   totalDoctorsCount: any;
-  totalVisitsCount: any;
+  visitsByMonthArray: any;
+  visits: any;
+
   constructor(
     private doctorsService: DoctorService,
     private visitsService: VisitsService
@@ -26,77 +29,15 @@ export class HomeComponent {
       // console.log(this.totalDoctorsCount);
     });
   }
-  //   getAllVisits() {
-  //     this.visitsService.getAllVisits().subscribe(
-  //       (response: any) => {
-  //         const visits = response.data;
-  //         if (Array.isArray(visits)) {
-  //           const filteredVisits = this.filterVisits(visits);
-  //           this.totalVisitsCount = filteredVisits.length;
-  //           console.log(this.totalVisitsCount);
-  //         } else {
-  //           console.error('Invalid response format:', response);
-  //         }
-  //       },
-  //       (error) => {
-  //         console.error('Error fetching visits:', error);
-  //       }
-  //     );
-  //   }
 
-  //   filterVisits(visits: any[]): any[] {
-  //     const filteredVisits: any[] = [];
-  //     const visitedDoctorsByMonth = new Map();
-
-  //     visits.forEach((visit) => {
-  //       const doctorId = visit.doctor_id;
-  //       const visitDate = new Date(visit.visit_date);
-  //       const monthYearKey = `${visitDate.getFullYear()}-${
-  //         visitDate.getMonth() + 1
-  //       }`;
-
-  //       if (!visitedDoctorsByMonth.has(monthYearKey)) {
-  //         visitedDoctorsByMonth.set(monthYearKey, new Set());
-  //         visitedDoctorsByMonth.get(monthYearKey).add(doctorId);
-  //         filteredVisits.push(visit);
-  //       } else {
-  //         if (!visitedDoctorsByMonth.get(monthYearKey).has(doctorId)) {
-  //           visitedDoctorsByMonth.get(monthYearKey).add(doctorId);
-  //           filteredVisits.push(visit);
-  //         }
-  //       }
-  //     });
-
-  //     return filteredVisits;
-  //   }
-  // }
-  visitsByMonthArray: any;
-
-  // getAllVisits() {
-  //   this.visitsService.getAllVisits().subscribe(
-  //     (response: any) => {
-  //       const visits = response.data;
-  //       if (Array.isArray(visits)) {
-  //         const visitsByMonth = this.aggregateVisitsByMonth(visits);
-  //         console.log('visitsByMonth', visitsByMonth);
-  //       } else {
-  //         console.error('Invalid response format:', response);
-  //       }
-  //     },
-  //     (error) => {
-  //       console.error('Error fetching visits:', error);
-  //     }
-  //   );
-  // }
   getAllVisits() {
     this.visitsService.getAllVisits().subscribe(
       (response: any) => {
-        const visits = response.data;
-        if (Array.isArray(visits)) {
-          this.visitsByMonthArray = this.aggregateVisitsByMonth(visits);
-        } else {
-          console.error('Invalid response format:', response);
-        }
+        this.visits = Object.values(response)[0];
+        console.log('visits', this.visits);
+
+        this.visitsByMonthArray = this.aggregateVisitsByMonth(this.visits);
+        console.log('visitsByMonthArray', this.visitsByMonthArray);
       },
       (error) => {
         console.error('Error fetching visits:', error);
@@ -104,16 +45,22 @@ export class HomeComponent {
     );
   }
 
-  aggregateVisitsByMonth(visits: any[]): Map<string, number> {
-    const visitsByMonth = new Map<string, number>();
+  aggregateVisitsByMonth(visits: any[]) {
+    const visitsByMonth: { key: string; value: number }[] = [];
 
     visits.forEach((visit) => {
       const visitDate = new Date(visit.visit_date);
       const monthYearKey = `${visitDate.getFullYear()}-${
         visitDate.getMonth() + 1
       }`;
-      const currentCount = visitsByMonth.get(monthYearKey) || 0;
-      visitsByMonth.set(monthYearKey, currentCount + 1);
+      const existingIndex = visitsByMonth.findIndex(
+        (item) => item.key === monthYearKey
+      );
+      if (existingIndex !== -1) {
+        visitsByMonth[existingIndex].value++;
+      } else {
+        visitsByMonth.push({ key: monthYearKey, value: 1 });
+      }
     });
 
     return visitsByMonth;

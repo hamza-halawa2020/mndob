@@ -1,6 +1,6 @@
 <div class="container mt-4">
   <div class="row">
-    <div class="col-md-6">
+    <div class="col-md-4">
       <div class="card mb-4">
         <div class="card-body">
           <h5 class="card-title">Total Doctors</h5>
@@ -9,50 +9,35 @@
       </div>
       <div class="card mb-4">
         <div class="card-body">
-          <div class="container">
-            <div class="row">
-              <div class="col-md-12">
-                <h4>Visited Doctors every Month</h4>
-
-                <table class="table">
-                  <thead>
-                    <tr>
-                      <th>Date</th>
-                      <th>Number of Visits</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr *ngFor="let visit of visitsByMonthArray | keyvalue">
-                      <td>{{ visit.key }}</td>
-                      <td>{{ visit.value }}</td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          </div>
+          <h5 class="card-title">days on and off</h5>
+          <p class="card-text">2024-02-08</p>
         </div>
       </div>
     </div>
-    <div class="col-md-6">
+    <div class="col-md-8">
       <div class="card mb-4">
         <div class="card-body">
-          <h5 class="card-title">Last Date of Visit</h5>
-          <p class="card-text">2024-02-08</p>
-          <!-- Replace with actual date from backend -->
-        </div>
-      </div>
-      <div class="card mb-4">
-        <div class="card-body">
-          <h5 class="card-title">Days Not Visited</h5>
-          <p class="card-text">90</p>
-        </div>
-      </div>
-      <div class="card mb-4">
-        <div class="card-body">
-          <h5 class="card-title">Percentage of Visit</h5>
-          <p class="card-text">10%</p>
-          <!-- Replace with actual percentage from backend -->
+          <h4 class="card-title">Visited Doctors every Month</h4>
+          <div class="table-responsive">
+            <table class="table table-striped">
+              <thead>
+                <tr>
+                  <th>Date</th>
+                  <th>Number of Visits</th>
+                  <th>Percentage of Visit</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let visit of visitsByMonthArray">
+                  <td>{{ visit.key }}</td>
+                  <td>{{ visit.value }}</td>
+                  <td>
+                    {{ ((visit.value / totalDoctorsCount) * 100).toFixed(2) }}%
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
     </div>

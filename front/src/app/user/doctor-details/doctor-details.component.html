@@ -1,4 +1,6 @@
 <div class="container">
+  <app-add-visit [doctorId]="Details?.doctor.id"></app-add-visit>
+
   <div *ngIf="Details">
     <h2 class="text-center mb-4">Doctor Details</h2>
     <div class="card">
@@ -8,8 +10,48 @@
         <p class="card-text">Name Ar: {{ Details.doctor.name_ar }}</p>
         <p class="card-text">Class: {{ Details.doctor.class }}</p>
         <p class="card-text">Governate: {{ Details.doctor.gov_name_en }}</p>
+      </div>
+    </div>
+
+    <!-- Visit Times by Month Table -->
+    <div class="card mt-4">
+      <div class="card-body">
+        <h5 class="card-title">Visit Times by Month</h5>
         <div class="table-responsive">
-          <table class="table table-striped mt-4">
+          <table class="table table-striped">
+            <thead class="thead-dark">
+              <tr>
+                <th>Month</th>
+                <th>Number of Visits</th>
+                <th>Visit Dates</th>
+              </tr>
+            </thead>
+            <tbody>
+              <ng-container *ngFor="let visitTime of visitTimes">
+                <tr>
+                  <td>{{ visitTime.monthYear }}</td>
+                  <td>{{ visitTime.count }}</td>
+                  <td>
+                    <ul class="list-unstyled">
+                      <li *ngFor="let time of visitTime.visitTimes">
+                        {{ time }}
+                      </li>
+                    </ul>
+                  </td>
+                </tr>
+              </ng-container>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- Visit Rates Table -->
+    <div class="card mt-4">
+      <div class="card-body">
+        <h5 class="card-title">Visit Rates</h5>
+        <div class="table-responsive">
+          <table class="table table-striped">
             <thead>
               <tr>
                 <th>Visit Rate</th>
@@ -41,10 +83,15 @@
             </tbody>
           </table>
         </div>
-        <div class="table-responsive">
-          <table class="table table-striped mt-4">
-            <app-add-visit [doctorId]="Details.doctor.id"></app-add-visit>
+      </div>
+    </div>
 
+    <!-- Visit Dates Table -->
+    <div class="card mt-4">
+      <div class="card-body">
+        <h5 class="card-title">Visit Dates</h5>
+        <div class="table-responsive">
+          <table class="table table-striped">
             <thead>
               <tr>
                 <th>Visit Date</th>
@@ -72,6 +119,7 @@
       </div>
     </div>
   </div>
+
   <div *ngIf="!Details" class="text-center mt-3">
     <p>Loading doctor details...</p>
   </div>

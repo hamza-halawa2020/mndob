@@ -9,6 +9,7 @@ import { unauthGuard } from './guards/unauth.guard';
 import { AllDoctorsComponent } from './user/all-doctors/all-doctors.component';
 import { DoctorDetailsComponent } from './user/doctor-details/doctor-details.component';
 import { VisitRateComponent } from './user/visit-rate/visit-rate.component';
+import { NotFoundComponent } from './shared/not-found/not-found.component';
 
 const routes: Routes = [
   {
@@ -46,10 +47,14 @@ const routes: Routes = [
     component: SignupComponent,
     canActivate: [unauthGuard],
   },
+  {
+    path: '**',
+    component: NotFoundComponent,
+  },
 ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}
