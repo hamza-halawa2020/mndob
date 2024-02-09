@@ -44,23 +44,29 @@ export class HomeComponent {
       }
     );
   }
-
   aggregateVisitsByMonth(visits: any[]) {
     const visitsByMonth: { key: string; value: number }[] = [];
+
+    const uniqueVisitsMap = new Map<string, Set<number>>();
 
     visits.forEach((visit) => {
       const visitDate = new Date(visit.visit_date);
       const monthYearKey = `${visitDate.getFullYear()}-${
         visitDate.getMonth() + 1
       }`;
-      const existingIndex = visitsByMonth.findIndex(
-        (item) => item.key === monthYearKey
-      );
-      if (existingIndex !== -1) {
-        visitsByMonth[existingIndex].value++;
-      } else {
-        visitsByMonth.push({ key: monthYearKey, value: 1 });
+
+      // Create a unique key for each month
+      if (!uniqueVisitsMap.has(monthYearKey)) {
+        uniqueVisitsMap.set(monthYearKey, new Set<number>());
       }
+
+      // Add doctor ID to the set for this month
+      uniqueVisitsMap.get(monthYearKey)!.add(visit.doctor_id);
+    });
+
+    // Calculate the count of unique doctors for each month
+    uniqueVisitsMap.forEach((doctorSet, monthYearKey) => {
+      visitsByMonth.push({ key: monthYearKey, value: doctorSet.size });
     });
 
     return visitsByMonth;
