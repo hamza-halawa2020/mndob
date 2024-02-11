@@ -33,7 +33,8 @@
               <div
                 class="form-text text-success"
                 *ngIf="
-                  visit_rate_min.valid && (visit_rate_min.touched || visit_rate_min.dirty)
+                  visit_rate_min.valid &&
+                  (visit_rate_min.touched || visit_rate_min.dirty)
                 "
               >
                 <i class="fa-solid fa-check"></i>looks good!
@@ -46,11 +47,12 @@
                 important.
               </div>
               <div
-              class="form-text text-danger"
-              *ngIf="visit_rate_min.errors?.['pattern'] && (visit_rate_min.dirty || visit_rate_min.touched)"
-            >
-              <i class="fa-solid fa-circle-exclamation"></i>visit_rate_min is invalid
-            </div>
+                class="form-text text-danger"
+                *ngIf="visit_rate_min.errors?.['pattern'] && (visit_rate_min.dirty || visit_rate_min.touched)"
+              >
+                <i class="fa-solid fa-circle-exclamation"></i>visit_rate_min is
+                invalid
+              </div>
             </div>
 
             <div class="col-md-6">
@@ -68,7 +70,7 @@
                   value="{{ allDoctors.doctor.id }}"
                   *ngFor="let allDoctors of allDoctors"
                 >
-                  {{ allDoctors.doctor.name_en }}
+                  {{ allDoctors.doctor.name_ar }}
                 </option>
               </select>
               <div

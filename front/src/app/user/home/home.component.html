@@ -7,53 +7,14 @@
           <h5 class="card-title">Total Doctors</h5>
           <p class="card-text">{{ totalDoctorsCount }}</p>
         </div>
-      </div>     
+      </div>
       <div class="card mb-4">
         <div class="card-body">
           <h5 class="card-title">Doctors Visited Today</h5>
           <p class="card-text">{{ doctorsVisitedToday }}</p>
         </div>
       </div>
-
-
-      <div class="card mb-4">
-
-        <div class="card-body">
-          <h5 class="card-title">Days Off (No Visits) Last 3 Months</h5>
-
-
-          <table class="table table-striped">
-      
-            <thead>
-              <tr>
-                <th>Date</th>
-                <th>Number of Visits</th>
-              </tr>
-            </thead>
-            <tbody>
-              <ng-container *ngFor="let visit of noVisitsByDay">
-                <tr>
-                  <td>{{ visit.date }}</td>
-                  <td>{{ visit.numberOfVisits }}</td>
-                </tr>
-              </ng-container>
-            </tbody>
-          </table>
-
-        </div>
-      </div>
-    
-
-    
-    
-
-  </div>
-
-
-
-
-
-
+    </div>
 
     <!-- Main Content -->
     <div class="col-lg-8">
@@ -74,14 +35,16 @@
                 <tr *ngFor="let visit of visitsByMonthArray">
                   <td>{{ visit.key }}</td>
                   <td>{{ visit.value }}</td>
-                  <td>{{ ((visit.value / totalDoctorsCount) * 100).toFixed(2) }}%</td>
+                  <td>
+                    {{ ((visit.value / totalDoctorsCount) * 100).toFixed(2) }}%
+                  </td>
                 </tr>
               </tbody>
             </table>
           </div>
         </div>
       </div>
-      
+
       <!-- All Visited Doctors Last 3 Months -->
       <div class="card mb-4">
         <div class="card-body">
@@ -95,7 +58,9 @@
                 </tr>
               </thead>
               <tbody>
-                <ng-container *ngFor="let visit of visitsByMonthArrayThreeMonths">
+                <ng-container
+                  *ngFor="let visit of visitsByMonthArrayThreeMonths"
+                >
                   <tr>
                     <td>{{ visit.month }}</td>
                     <td>{{ visit.numberOfVisits }}</td>
@@ -106,12 +71,39 @@
           </div>
         </div>
       </div>
-      
+
       <!-- Visited Doctors by Day Last 3 Months -->
-      <div class="card mb-4">
-        <div class="card-body">
-          <h5 class="card-title">Visited Doctors by Day Last 3 Months</h5>
-          <div class="table-responsive">
+      <div class="row">
+        <div class="card mb-4 col-6">
+          <div class="card-body">
+            <h5 class="card-title mb-6">
+              Visited Doctors by Day current Month
+            </h5>
+            <div class="table-responsive">
+              <table class="table table-striped">
+                <thead>
+                  <tr>
+                    <th>Date</th>
+                    <th>Number of Visits</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <ng-container *ngFor="let visit of visitsByDay">
+                    <tr>
+                      <td>{{ visit.date }}</td>
+                      <td>{{ visit.numberOfVisits }}</td>
+                    </tr>
+                  </ng-container>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <div class="card mb-4 col-6">
+          <div class="card-body">
+            <h5 class="card-title mb-4">Days Off (No Visits) current Month</h5>
+
             <table class="table table-striped">
               <thead>
                 <tr>
@@ -120,7 +112,7 @@
                 </tr>
               </thead>
               <tbody>
-                <ng-container *ngFor="let visit of visitsByDay">
+                <ng-container *ngFor="let visit of noVisitsByDay">
                   <tr>
                     <td>{{ visit.date }}</td>
                     <td>{{ visit.numberOfVisits }}</td>

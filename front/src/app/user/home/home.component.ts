@@ -70,8 +70,8 @@ export class HomeComponent {
     const endDate = new Date();
     const startDate = new Date(
       endDate.getFullYear(),
-      endDate.getMonth() - 2,
-      1
+      endDate.getMonth(),
+      
     );
     const visitCounts = new Map<string, number>();
     const currentDate = new Date(startDate);
@@ -109,7 +109,7 @@ export class HomeComponent {
       1
     );
 
-    for (let i = 0; i < 4; i++) {
+    for (let i = 0; i < 5; i++) {
       const monthStartDate = new Date(
         firstDayOfCurrentMonth.getFullYear(),
         firstDayOfCurrentMonth.getMonth() - i,
@@ -180,7 +180,7 @@ export class HomeComponent {
     return visitsByMonthArray;
   }
 
-  //Visited Doctors by Day Last 3 Months
+  //Visited Doctors by Day current month
   aggregateVisitsByDay(visits: any[]) {
     const visitsByDay: { date: string; numberOfVisits: number }[] = [];
 
@@ -191,7 +191,7 @@ export class HomeComponent {
       1
     );
 
-    for (let i = 0; i < 3; i++) {
+    for (let i = 0; i < 1; i++) {
       const monthStartDate = new Date(
         firstDayOfCurrentMonth.getFullYear(),
         firstDayOfCurrentMonth.getMonth() - i,
