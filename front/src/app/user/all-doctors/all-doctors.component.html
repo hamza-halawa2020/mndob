@@ -1,15 +1,37 @@
 <div class="container">
   <h2 class="text-center">All Doctors</h2>
-  <input type="text" class="form-control mb-3" placeholder="Search" [(ngModel)]="searchTerm" (input)="filterDoctors()">
+
+  <div class="w-25">
+    <label for="">Filter :</label>
+    <select
+      class="form-control"
+      [(ngModel)]="selectedCategoryId"
+      (change)="filterCategory($event)"
+    > 
+      <option value="all" selected>ِAll</option>
+      <option class="rtl" value="{{ option.doctor_id }}" *ngFor="let option of doctors">
+        {{ option.doctor.name_ar }}
+      </option>
+    </select>
+  </div>
+  <div class="mt-4">
+    <input
+      type="text"
+      class="form-control mb-3"
+      placeholder="Search"
+      [(ngModel)]="searchTerm"
+      (input)="filterDoctors()"
+    />
+  </div>
   <div class="row">
-    <!-- <div class="col-sm-3" *ngFor="let doctor of doctors"> -->
-      <div class="col-sm-3" *ngFor="let doctor of filteredDoctors">
+    <div class="col-sm-6 col-md-4 col-lg-3" *ngFor="let doctor of filteredDoctors; let i = index">
       <div class="card-wrapper mt-3">
         <div class="card bg-dark">
           <div
             class="card-body text-light"
             [routerLink]="'/doctors/' + doctor.doctor.id"
           >
+          <p class="card-title">Index: {{ i + 1 }}</p>
             <p class="card-title">ID: {{ doctor.doctor.id }}</p>
             <h5 class="card-text">{{ doctor.doctor.name_ar }}</h5>
             <h5 class="card-text">{{ doctor.doctor.name_en }}</h5>

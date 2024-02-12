@@ -1,8 +1,11 @@
 <div class="container">
-  <app-add-visit [doctorId]="Details?.doctor.id"></app-add-visit>
 
   <div *ngIf="Details">
     <h2 class="text-center mb-4">Doctor Details</h2>
+    <div class="m-3">
+      <app-add-visit [doctorId]="Details?.doctor.id"></app-add-visit>
+
+    </div>
     <div class="card">
       <div class="card-body">
         <h5 class="card-title">ID: {{ Details.doctor.id }}</h5>

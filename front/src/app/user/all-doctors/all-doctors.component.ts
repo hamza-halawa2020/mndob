@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { DoctorService } from '../services/doctor/doctor.service';
-import { normalize } from '@angular/common';
 @Component({
   selector: 'app-all-doctors',
   templateUrl: './all-doctors.component.html',
@@ -10,7 +9,7 @@ export class AllDoctorsComponent {
   doctors: any;
   filteredDoctors: any;
   searchTerm: string = '';
-
+  selectedCategoryId: any = 'all'; 
   constructor(private doctorService: DoctorService) {}
 
   ngOnInit(): void {
@@ -22,7 +21,7 @@ export class AllDoctorsComponent {
       (data: any) => {
         this.doctors = Object.values(data)[0];
         this.filteredDoctors = this.doctors;
-        // console.log('doctors',this.doctors);
+        this.sortDoctorsByName(); // Sort doctors by name
       },
       (error) => {
         console.log('Error fetching doctors:', error);
@@ -43,29 +42,54 @@ export class AllDoctorsComponent {
     });
     return visitRates[0];
   }
+
+  filterCategory(event: any) {
+    let value = event.target.value;
+    if (value == 'all') {
+      this.getAllDoctors();
+    } else {
+      this.getDoctorById(value);
+    }
+  }
+
+  sortDoctorsByName() {
+    this.filteredDoctors.sort((a: any, b: any) => {
+      const nameA = a.doctor.name_ar.toUpperCase();
+      const nameB = b.doctor.name_ar.toUpperCase();
+      if (nameA < nameB) {
+        return -1;
+      }
+      if (nameA > nameB) {
+        return 1;
+      }
+      return 0;
+    });
+  }
+
+
+  getDoctorById(keyWord: number) {
+    this.doctorService.getDoctorById(keyWord).subscribe((data) => {
+      if (data && typeof data === 'object') {
+        this.filteredDoctors = [Object.values(data)[0]];
+      } else {
+        this.filteredDoctors = [];
+      }
+    });
+  }
+  
+
   filterDoctors() {
-    this.filteredDoctors = this.searchTerm
+    const searchTerm = this.searchTerm ? this.searchTerm.trim() : '';
+    this.filteredDoctors = searchTerm
       ? this.doctors.filter((doctor: any) =>
-          this.matchesSearchTerm(doctor)
+          (
+            doctor.doctor.name_en.toLowerCase().includes(searchTerm.toLowerCase()) ||
+            doctor.doctor.name_ar.toLowerCase().includes(searchTerm.toLowerCase()) ||
+            doctor.doctor.gov_name_en.toLowerCase().includes(searchTerm.toLowerCase()) ||
+            doctor.doctor.id.toString().includes(searchTerm.toLowerCase()) ||
+            doctor.doctor.class.toLowerCase().includes(searchTerm.toLowerCase())
+          )
         )
       : this.doctors;
   }
-
-  // Helper function to check if the doctor matches the search term
-  matchesSearchTerm(doctor: any): boolean {
-    const normalizedSearchTerm = normalize(this.searchTerm, 'NFKD').toLowerCase();
-    const normalizedNameEn = normalize(doctor.doctor.name_en, 'NFKD').toLowerCase();
-    const normalizedNameEr = normalize(doctor.doctor.name_er, 'NFKD').toLowerCase();
-    const normalizedGovName = normalize(doctor.doctor.gov_name_en, 'NFKD').toLowerCase();
-    const normalizedId = normalize(doctor.doctor.id.toString(), 'NFKD').toLowerCase();
-    const normalizedClass = normalize(doctor.doctor.class, 'NFKD').toLowerCase();
-
-    return (
-      normalizedNameEn.includes(normalizedSearchTerm) ||
-      normalizedNameEr.includes(normalizedSearchTerm) ||
-      normalizedGovName.includes(normalizedSearchTerm) ||
-      normalizedId.includes(normalizedSearchTerm) ||
-      normalizedClass.includes(normalizedSearchTerm)
-    );
-  }
-}
+}  
