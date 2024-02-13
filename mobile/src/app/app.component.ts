@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { SignService } from './pages/sign/services/sign/sign.service';
 
 @Component({
   selector: 'app-root',
@@ -6,5 +7,19 @@ import { Component } from '@angular/core';
   styleUrls: ['app.component.scss'],
 })
 export class AppComponent {
-  constructor() {}
+
+  constructor(private authService:SignService) {}
+
+  ngOnInit() {}
+
+  isLoggedIn(): boolean {
+    return !!this.authService.isLoggedIn();
+  }
+  isAdmin() {
+    return this.authService.isAdmin();
+  }
+
+  logout() {
+    this.authService.logout();
+  }
 }
