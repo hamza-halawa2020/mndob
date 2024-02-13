@@ -6,6 +6,7 @@ import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { NavbarPageModule } from './pages/shared/navbar/navbar.module';
 import { HttpClientModule } from '@angular/common/http';
+import { IonicStorageModule } from '@ionic/storage-angular';
 
 @NgModule({
   declarations: [AppComponent],
@@ -15,6 +16,7 @@ import { HttpClientModule } from '@angular/common/http';
     AppRoutingModule,
     NavbarPageModule,
     HttpClientModule,
+    IonicStorageModule.forRoot() // Add IonicStorageModule.forRoot() here
   ],
   providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }],
   bootstrap: [AppComponent],

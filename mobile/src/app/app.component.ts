@@ -12,14 +12,4 @@ export class AppComponent {
 
   ngOnInit() {}
 
-  isLoggedIn(): boolean {
-    return !!this.authService.isLoggedIn();
-  }
-  isAdmin() {
-    return this.authService.isAdmin();
-  }
-
-  logout() {
-    this.authService.logout();
-  }
 }
