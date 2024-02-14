@@ -68,12 +68,16 @@ class VisitingController extends Controller
             $this->validate($request, [
                 'doctor_id' => 'required',
                 'visit_date' => 'required',
+                'latitude' => 'required',
+                'longitude' => 'required',
             ]);
 
             $visit = Visiting::create([
                 "user_id" => $authenticatedUserId,
                 "doctor_id" => $request->doctor_id,
                 'visit_date' => $request->visit_date,
+                'latitude' => $request->latitude,
+                'longitude' => $request->longitude,
             ]);
 
             return response()->json(['data' => new VisitingResource($visit)], 200);

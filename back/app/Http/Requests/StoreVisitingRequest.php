@@ -24,6 +24,8 @@ class StoreVisitingRequest extends FormRequest
         return [
             'doctor_id' => 'required',
             'visit_date' => 'required',
+            'latitude' => 'required',
+            'longitude' => 'required',
         ];
     }
 }

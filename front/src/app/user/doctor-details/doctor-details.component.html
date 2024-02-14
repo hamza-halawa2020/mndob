@@ -98,7 +98,10 @@
             <thead>
               <tr>
                 <th>Visit Date</th>
+                <th>latitude</th>
+                <th>longitude</th>
               </tr>
+              
             </thead>
             <tbody>
               <ng-container
@@ -109,6 +112,8 @@
               >
                 <tr *ngFor="let visit of Details.doctor.visiting">
                   <td>{{ visit.visit_date }}</td>
+                  <td>{{ visit.latitude }}</td>
+                  <td>{{ visit.longitude }}</td>
                 </tr>
               </ng-container>
               <ng-template #noDate>

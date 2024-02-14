@@ -26,6 +26,7 @@ class StoreVisitRequest extends FormRequest
             'month' => 'required',
             'year' => 'required',
             'doctor_id' => 'required',
+            
         ];
     }
 }

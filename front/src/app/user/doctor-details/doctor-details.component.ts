@@ -25,6 +25,8 @@ export class DoctorDetailsComponent {
       this.id = +params['id'];
       this.doctorDetails.getDoctorById(this.id).subscribe((data) => {
         this.Details = Object.values(data)[0];
+        console.log(this.Details);
+        
         this.extractVisitTimes();
       });
     });

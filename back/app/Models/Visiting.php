@@ -12,5 +12,7 @@ class Visiting extends Model
         'visit_date',
         'user_id',
         'doctor_id',
+        'latitude',
+        'longitude'
     ];
 }
