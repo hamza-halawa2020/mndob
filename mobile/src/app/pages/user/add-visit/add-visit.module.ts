@@ -15,6 +15,7 @@ import { AddVisitPage } from './add-visit.page';
     IonicModule,
     AddVisitPageRoutingModule
   ],
+  exports:[AddVisitPage],
   declarations: [AddVisitPage]
 })
 export class AddVisitPageModule {}

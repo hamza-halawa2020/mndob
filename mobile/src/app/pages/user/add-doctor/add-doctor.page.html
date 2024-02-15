@@ -1,36 +1,82 @@
-<ion-content class="ion-padding">
-  <ion-grid>
-    <ion-row class="ion-justify-content-center ion-align-items-center">
-      <ion-col size-md="6">
-        <form [formGroup]="loginForm" (ngSubmit)="loginSubmitted()">
-          <ion-card>
-            <ion-card-header>
-              <ion-card-title class="ion-text-center">Add New Doctor</ion-card-title>
-            </ion-card-header>
-            <ion-card-content>
+<ion-content>
+  <div class="flex-center">
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title mode="ios" class="ion-text-center"
+          >👋Welcome</ion-card-title
+        >
+      </ion-card-header>
+      <ion-card-content>
+        <form>
+          <!-- Name Ar and Name En side by side -->
+          <ion-row>
+            <ion-col size="6">
               <ion-item>
-                <ion-label position="floating">Name En<span class="text-danger">*</span></ion-label>
-                <ion-input formControlName="name_en" placeholder="name_en"></ion-input>
+                <ion-label position="floating"
+                  >Name En<ion-text color="danger"><span>*</span></ion-text>
+                </ion-label>
+                <ion-input type="text" name="Name En" required></ion-input>
               </ion-item>
-              <ion-item *ngIf="name_en?.valid && (name_en?.touched || name_en?.dirty)" lines="none" class="ion-text-success">
-                <ion-icon name="checkmark-circle"></ion-icon>
-                <ion-label>Looks good!</ion-label>
+              <!-- Add validation messages here if needed -->
+            </ion-col>
+            <ion-col size="6">
+              <ion-item>
+                <ion-label position="floating"
+                  >name Ar<ion-text color="danger"><span>*</span></ion-text>
+                </ion-label>
+                <ion-input type="text" name="name Ar" required></ion-input>
               </ion-item>
-              <ion-item *ngIf="name_en?.errors?.['required'] && (name_en?.dirty || name_en?.touched)" lines="none" class="ion-text-danger">
-                <ion-icon name="alert-circle"></ion-icon>
-                <ion-label>Name_en? is important.</ion-label>
-              </ion-item>
-              <ion-item *ngIf="name_en?.errors?.['pattern'] && (name_en?.dirty || name_en?.touched)" lines="none" class="ion-text-danger">
-                <ion-icon name="alert-circle"></ion-icon>
-                <ion-label>Name_en is invalid.</ion-label>
-              </ion-item>
+              <!-- Add validation messages here if needed -->
+            </ion-col>
+          </ion-row>
 
-              <!-- Other form inputs -->
-            </ion-card-content>
-          </ion-card>
-          <ion-button type="submit" expand="block" [disabled]="loginForm.invalid" class="ion-margin-top">Submit</ion-button>
+          <ion-row>
+            <ion-col size="6">
+              <ion-list mode="ios">
+                <ion-item>
+                  <ion-label position="floating"
+                    >Governate<ion-text color="danger"
+                      ><span>*</span></ion-text
+                    >
+                  </ion-label>
+                  <ion-select label-placement="floating">
+                    <ion-select-option
+                      *ngFor="let governorate of governorates"
+                      value="{{ governorate.id }}"
+                      >{{ governorate.name_en }}</ion-select-option
+                    >
+                  </ion-select>
+                </ion-item>
+              </ion-list>
+            </ion-col>
+
+            <!-- Add validation messages here if needed -->
+            <ion-col size="6">
+              <ion-list mode="ios">
+                <ion-item>
+                  <ion-label position="floating"
+                    >Class<ion-text color="danger"
+                      ><span>*</span></ion-text
+                    >
+                  </ion-label>
+                  <ion-select label-placement="floating">
+                    <ion-select-option
+                      *ngFor="let governorate of governorates"
+                      value="{{ governorate.id }}"
+                      >{{ governorate.name_en }}</ion-select-option
+                    >
+                  </ion-select>
+                </ion-item>
+              </ion-list>
+            </ion-col>
+          </ion-row>
+          <!-- Add validation messages here if needed -->
+
+          <ion-button mode="ios" type="submit" expand="block"
+            >Submit</ion-button
+          >
         </form>
-      </ion-col>
-    </ion-row>
-  </ion-grid>
+      </ion-card-content>
+    </ion-card>
+  </div>
 </ion-content>

@@ -26,13 +26,15 @@
             <table class="table table-striped">
               <thead>
                 <tr>
+                  <th>Index</th>
                   <th>Date</th>
                   <th>Number of Visits</th>
                   <th>Percentage of Visit</th>
                 </tr>
               </thead>
               <tbody>
-                <tr *ngFor="let visit of visitsByMonthArray">
+                <tr *ngFor="let visit of visitsByMonthArray; let i = index">
+                  <td>{{ i + 1 }}</td>
                   <td>{{ visit.key }}</td>
                   <td>{{ visit.value }}</td>
                   <td>
@@ -53,15 +55,20 @@
             <table class="table table-striped">
               <thead>
                 <tr>
+                  <th>Index</th>
                   <th>Month</th>
                   <th>Number of Visits</th>
                 </tr>
               </thead>
               <tbody>
                 <ng-container
-                  *ngFor="let visit of visitsByMonthArrayThreeMonths"
+                  *ngFor="
+                    let visit of visitsByMonthArrayThreeMonths;
+                    let i = index
+                  "
                 >
                   <tr>
+                    <td>{{ i + 1 }}</td>
                     <td>{{ visit.month }}</td>
                     <td>{{ visit.numberOfVisits }}</td>
                   </tr>
@@ -83,13 +90,17 @@
               <table class="table table-striped">
                 <thead>
                   <tr>
+                    <th>Index</th>
                     <th>Date</th>
                     <th>Number of Visits</th>
                   </tr>
                 </thead>
                 <tbody>
-                  <ng-container *ngFor="let visit of visitsByDay">
+                  <ng-container
+                    *ngFor="let visit of visitsByDay; let i = index"
+                  >
                     <tr>
+                      <td>{{ i + 1 }}</td>
                       <td>{{ visit.date }}</td>
                       <td>{{ visit.numberOfVisits }}</td>
                     </tr>
@@ -104,23 +115,27 @@
           <div class="card-body">
             <h5 class="card-title mb-4">Days Off (No Visits) current Month</h5>
             <div class="table-responsive">
-
-            <table class="table table-striped">
-              <thead>
-                <tr>
-                  <th>Date</th>
-                  <th>Number of Visits</th>
-                </tr>
-              </thead>
-              <tbody>
-                <ng-container *ngFor="let visit of noVisitsByDay">
+              <table class="table table-striped">
+                <thead>
                   <tr>
-                    <td>{{ visit.date }}</td>
-                    <td>{{ visit.numberOfVisits }}</td>
+                    <th>Index</th>
+                    <th>Date</th>
+                    <!-- <th>Number of Visits</th> -->
                   </tr>
-                </ng-container>
-              </tbody>
-            </table>
+                </thead>
+                <tbody>
+                  <ng-container
+                    *ngFor="let visit of noVisitsByDay; let i = index"
+                  >
+                    <tr>
+                      <td>{{ i + 1 }}</td>
+                      <!-- <td>{{ visit.date }}</td> -->
+                      <td>{{ visit.day }}, {{ visit.date }}</td> <!-- Display day name and date -->
+                      <!-- <td>{{ visit.numberOfVisits }}</td> -->
+                    </tr>
+                  </ng-container>
+                </tbody>
+              </table>
             </div>
           </div>
         </div>

@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
+import { GovernatesService } from '../services/governates/governates.service';
 
 @Component({
   selector: 'app-add-visit',
@@ -6,10 +7,10 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./add-visit.page.scss'],
 })
 export class AddVisitPage implements OnInit {
-
-  constructor() { }
-
+  constructor(private gov: GovernatesService) {}
+  @Input() doctorId: any;
   ngOnInit() {
   }
+
 
 }

@@ -65,37 +65,81 @@ export class HomeComponent {
   }
 
   //Days Off (No Visits)
+  // aggregateNoVisitsByDay(visits: any[]) {
+  //   const visitsByDay: { date: string; numberOfVisits: number }[] = [];
+  //   const endDate = new Date();
+  //   const startDate = new Date(
+  //     endDate.getFullYear(),
+  //     endDate.getMonth(),
+
+  //   );
+  //   const visitCounts = new Map<string, number>();
+  //   const currentDate = new Date(startDate);
+  //   while (currentDate <= endDate) {
+  //     visitCounts.set(currentDate.toLocaleDateString(), 0);
+  //     currentDate.setDate(currentDate.getDate() + 1);
+  //   }
+  //   visits.forEach((visit) => {
+  //     const visitDate = new Date(visit.visit_date).toLocaleDateString();
+  //     if (visitCounts.has(visitDate)) {
+  //       visitCounts.set(visitDate, visitCounts.get(visitDate)! + 1);
+  //     }
+  //   });
+  //   visitCounts.forEach((numberOfVisits, date) => {
+  //     if (numberOfVisits === 0) {
+  //       visitsByDay.push({ date, numberOfVisits });
+  //     }
+  //   });
+  //   visitsByDay.sort((a, b) => {
+  //     const dateA = new Date(b.date);
+  //     const dateB = new Date(a.date);
+  //     return dateA.getTime() - dateB.getTime();
+  //   });
+  //   return visitsByDay;
+  // }
+
+  //Days Off (No Visits)
   aggregateNoVisitsByDay(visits: any[]) {
-    const visitsByDay: { date: string; numberOfVisits: number }[] = [];
+    const visitsByDay: { date: string; day: string; numberOfVisits: number }[] =
+      [];
     const endDate = new Date();
-    const startDate = new Date(
-      endDate.getFullYear(),
-      endDate.getMonth(),
-      
-    );
+    const startDate = new Date(endDate.getFullYear(), endDate.getMonth(), 1);
     const visitCounts = new Map<string, number>();
+
     const currentDate = new Date(startDate);
     while (currentDate <= endDate) {
-      visitCounts.set(currentDate.toLocaleDateString(), 0);
+      const dateKey = currentDate.toLocaleDateString();
+      const dayName = currentDate.toLocaleDateString('en-US', {
+        weekday: 'long',
+      });
+      visitCounts.set(dateKey, 0);
+      visitsByDay.push({ date: dateKey, day: dayName, numberOfVisits: 0 });
       currentDate.setDate(currentDate.getDate() + 1);
     }
+
     visits.forEach((visit) => {
       const visitDate = new Date(visit.visit_date).toLocaleDateString();
       if (visitCounts.has(visitDate)) {
         visitCounts.set(visitDate, visitCounts.get(visitDate)! + 1);
       }
     });
-    visitCounts.forEach((numberOfVisits, date) => {
-      if (numberOfVisits === 0) {
-        visitsByDay.push({ date, numberOfVisits });
+
+    visitsByDay.forEach((day) => {
+      if (visitCounts.get(day.date) === 0) {
+        const dayName = new Date(day.date).toLocaleDateString('en-US', {
+          weekday: 'long',
+        });
+        day.day = dayName;
+      } else {
+        day.date = '';
+        day.day = '';
+        day.numberOfVisits = 0;
       }
     });
-    visitsByDay.sort((a, b) => {
-      const dateA = new Date(b.date);
-      const dateB = new Date(a.date);
-      return dateA.getTime() - dateB.getTime();
-    });
-    return visitsByDay;
+
+    const filteredDays = visitsByDay.filter((day) => day.date !== '');
+
+    return filteredDays;
   }
 
   //Visited Doctor every Month Last 3 Months
