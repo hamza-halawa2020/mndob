@@ -45,7 +45,7 @@ export class AddDoctorComponent {
   getGovernorates() {
     this.gov.getGovernorates().subscribe((data) => {
       this.governorates = Object.values(data)[0];
-      // console.log('governorates', this.governorates);
+      console.log('governorates', this.governorates);
     });
   }
 
