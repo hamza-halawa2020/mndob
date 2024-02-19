@@ -2,25 +2,57 @@
   <div class="flex-center">
     <ion-card>
       <ion-card-header>
-        <ion-card-title mode="ios" class="ion-text-center">👋Welcome Back</ion-card-title>
+        <ion-card-title mode="ios" class="ion-text-center"
+          >👋Welcome Back</ion-card-title
+        >
       </ion-card-header>
       <ion-card-content>
-        <form>
-          <ion-item>
-            <ion-label position="floating">E-mail<ion-text color="danger"><span>*</span></ion-text>
-            </ion-label>
-            <ion-input type="email" name="email" required></ion-input>
-          </ion-item>
-          <!-- Add validation messages here if needed -->
-          <ion-item>
+        <form (ngSubmit)="login()" [formGroup]="loginForm">
+          <ion-item [class.invalid]="formSubmitted && email.invalid">
             <ion-label position="floating"
-              >Password<ion-text color="danger"><span>*</span></ion-text></ion-label
+              >E-mail<ion-text color="danger"
+                ><span>*</span></ion-text
+              ></ion-label
             >
-            <ion-input type="password" name="password" required></ion-input>
+            <ion-input
+              type="email"
+              formControlName="email"
+              required
+            ></ion-input>
           </ion-item>
-          <!-- Add validation messages here if needed -->
-          <ion-button mode="ios" type="submit" expand="block">Submit</ion-button>
+          <div *ngIf="formSubmitted && email.invalid" class="error-message">
+            <ion-text color="danger" class="ion-padding-start">
+              Please enter a valid email address.
+            </ion-text>
+          </div>
+
+          <ion-item [class.invalid]="formSubmitted && password.invalid">
+            <ion-label position="floating"
+              >Password<ion-text color="danger"
+                ><span>*</span></ion-text
+              ></ion-label
+            >
+            <ion-input
+              type="password"
+              formControlName="password"
+              required
+            ></ion-input>
+          </ion-item>
+          <div *ngIf="formSubmitted && password.invalid" class="error-message">
+            <ion-text color="danger" class="ion-padding-start">
+              Password is required and must be at least 6 characters long.
+            </ion-text>
+          </div>
+
+          <ion-button mode="ios" [disabled]="loginForm.invalid" type="submit" expand="block"
+            >Submit</ion-button
+          >
         </form>
+        <div *ngIf="error" class="error-message">
+          <ion-text color="danger" class="ion-padding-start"
+            >{{ error }}</ion-text
+          >
+        </div>
       </ion-card-content>
     </ion-card>
   </div>

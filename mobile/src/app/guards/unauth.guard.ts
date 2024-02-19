@@ -5,7 +5,7 @@ import { SignService } from '../pages/sign/services/sign/sign.service';
 @Injectable({
   providedIn: 'root',
 })
-export class AuthGuard implements CanActivate {
+export class UnauthGuard implements CanActivate {
   constructor(private authService: SignService, private router: Router) {}
 
   async canActivate(): Promise<boolean> {

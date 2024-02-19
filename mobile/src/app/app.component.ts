@@ -7,9 +7,7 @@ import { SignService } from './pages/sign/services/sign/sign.service';
   styleUrls: ['app.component.scss'],
 })
 export class AppComponent {
-
-  constructor(private authService:SignService) {}
+  constructor(private authService: SignService) {}
 
   ngOnInit() {}
-
 }

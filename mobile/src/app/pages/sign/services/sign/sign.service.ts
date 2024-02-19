@@ -4,23 +4,24 @@ import { Router } from '@angular/router';
 import { environment } from 'src/environments/environment';
 import { Storage } from '@ionic/storage-angular';
 
+const TOKEN_KEY = 'token';
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class SignService {
   private apiUrl = environment.backEndUrl;
-  
+
   constructor(
     private http: HttpClient,
     private router: Router,
-    // private storage: Storage
+    private storage: Storage
   ) {
-    // this.initStorage();
+    this.initStorage();
   }
 
-  // private async initStorage() {
-  //   await this.storage.create();
-  // }
+  async initStorage() {
+    await this.storage.create();
+  }
 
   login(userData: any) {
     return this.http.post(`${this.apiUrl}login`, userData, {
@@ -33,33 +34,20 @@ export class SignService {
   }
 
   async setToken(token: string) {
-    // await this.storage.set('token', token); // Ensure to wait for the operation to complete
+    await this.storage.set(TOKEN_KEY, token);
   }
 
-  getToken() {
-    // return this.storage.get('token');
+  async isLoggedIn(): Promise<boolean> {
+    return await this.getToken();
   }
 
-  async setRole(role: string) {
-    // await this.storage.set('role', role); // Ensure to wait for the operation to complete
-  }
-
-  getRole() {
-    // return this.storage.get('role');
-  }
-
-  async isLoggedIn() {
-    // const token = await this.getToken(); // Wait for the token retrieval
-    // return !!token;
-  }
-
-  async isAdmin() {
-    // const role = await this.getRole(); // Wait for the role retrieval
-    // return role === 'manager';
+  async getToken() {
+    return await this.storage.get(TOKEN_KEY);
   }
 
   async logout() {
-    // await this.storage.clear(); // Ensure to wait for the operation to complete
+    await this.storage.remove(TOKEN_KEY);
+    // this.storage.clear();
     this.router.navigate(['']);
   }
 }
