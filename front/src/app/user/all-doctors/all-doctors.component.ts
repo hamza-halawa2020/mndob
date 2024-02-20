@@ -21,7 +21,7 @@ export class AllDoctorsComponent {
       (data: any) => {
         this.doctors = Object.values(data)[0];
         this.filteredDoctors = this.doctors;
-        this.sortDoctorsByName(); // Sort doctors by name
+        this.sortDoctorsByName(); 
       },
       (error) => {
         console.log('Error fetching doctors:', error);

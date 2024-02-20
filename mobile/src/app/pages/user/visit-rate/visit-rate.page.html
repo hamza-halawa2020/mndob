@@ -3,79 +3,134 @@
     <ion-card>
       <ion-card-header>
         <ion-card-title mode="ios" class="ion-text-center"
-          >👋Welcome</ion-card-title
+          >Add Visit Rate</ion-card-title
         >
       </ion-card-header>
       <ion-card-content>
-        <form>
+        <form (ngSubmit)="loginSubmitted()" [formGroup]="loginForm">
           <!-- Name Ar and Name En side by side -->
           <ion-row>
             <ion-col size="6">
-              <ion-item>
+              <ion-item
+                [class.invalid]="formSubmitted && visit_rate_min.invalid"
+              >
                 <ion-label position="floating"
                   >Visit Rate<ion-text color="danger"><span>*</span></ion-text>
                 </ion-label>
-                <ion-input type="text" name="visit_rate" required></ion-input>
+                <ion-input
+                  type="text"
+                  formControlName="visit_rate_min"
+                  required
+                ></ion-input>
               </ion-item>
               <!-- Add validation messages here if needed -->
+              <div
+                *ngIf="formSubmitted && visit_rate_min.invalid"
+                class="error-message"
+              >
+                <ion-text color="danger" class="ion-padding-start">
+                  Please enter a valid visit_rate_min .
+                </ion-text>
+              </div>
             </ion-col>
             <ion-col size="6">
-              <ion-item>
-                <ion-label position="floating"
-                  >Doctor Name<ion-text color="danger"><span>*</span></ion-text>
-                </ion-label>
-                <ion-input type="text" name="visit_rate" required></ion-input>
-              </ion-item>
-              <!-- Add validation messages here if needed -->
+              <ion-list mode="ios">
+                <ion-item>
+                  <ion-label position="floating"
+                    >Doctor Name<ion-text color="danger"
+                      ><span>*</span></ion-text
+                    >
+                  </ion-label>
+                  <ion-select
+                    label-placement="floating"
+                    formControlName="doctor_id"
+                  >
+                    <ion-select-option
+                      *ngFor="let allDoctors of allDoctors"
+                      value="{{ allDoctors.doctor.id }}"
+                      >{{ allDoctors.doctor.name_ar }}</ion-select-option
+                    >
+                  </ion-select>
+                </ion-item>
+              </ion-list>
             </ion-col>
+            <div
+              *ngIf="formSubmitted && doctor_id.invalid"
+              class="error-message"
+            >
+              <ion-text color="danger" class="ion-padding-start">
+                Please enter a valid doctor.
+              </ion-text>
+            </div>
           </ion-row>
 
           <ion-row>
             <ion-col size="6">
               <ion-list mode="ios">
                 <ion-item>
-                  <ion-label position="floating"
-                    >Month<ion-text color="danger"
-                      ><span>*</span></ion-text
-                    >
-                  </ion-label>
-                  <ion-select label-placement="floating">
-                    <ion-select-option
-                      *ngFor="let governorate of governorates"
-                      value="{{ governorate.id }}"
-                      >{{ governorate.name_en }}</ion-select-option
-                    >
+                  <ion-label position="floating">Month<ion-text color="danger"><span>*</span></ion-text></ion-label>
+                  <ion-select formControlName="month" label-placement="floating" id="month">
+                    <ion-select-option value="1">January</ion-select-option>
+                    <ion-select-option value="2">February</ion-select-option>
+                    <ion-select-option value="3">March</ion-select-option>
+                    <ion-select-option value="4">April</ion-select-option>
+                    <ion-select-option value="5">May</ion-select-option>
+                    <ion-select-option value="6">June</ion-select-option>
+                    <ion-select-option value="7">July</ion-select-option>
+                    <ion-select-option value="8">August</ion-select-option>
+                    <ion-select-option value="9">September</ion-select-option>
+                    <ion-select-option value="10">October</ion-select-option>
+                    <ion-select-option value="11">November</ion-select-option>
+                    <ion-select-option value="12">December</ion-select-option>
                   </ion-select>
                 </ion-item>
               </ion-list>
             </ion-col>
+            
+            <div *ngIf="formSubmitted && month.invalid" class="error-message">
+              <ion-text color="danger" class="ion-padding-start">
+                Please enter a valid month .
+              </ion-text>
+            </div>
 
             <!-- Add validation messages here if needed -->
             <ion-col size="6">
               <ion-list mode="ios">
                 <ion-item>
-                  <ion-label position="floating"
-                    >Year<ion-text color="danger"
-                      ><span>*</span></ion-text
-                    >
-                  </ion-label>
-                  <ion-select label-placement="floating">
-                    <ion-select-option
-                      *ngFor="let governorate of governorates"
-                      value="{{ governorate.id }}"
-                      >{{ governorate.name_en }}</ion-select-option
-                    >
+                  <!-- <ion-label position="floating"
+                    >Year<ion-text color="danger"><span>*</span></ion-text>
+                  </ion-label> -->
+                  <ion-select formControlName="year" label-placement="floating">
+                    <ng-container *ngFor="let year of getYearRange()">
+                      <ion-select-option [value]="year"
+                        >{{ year }}</ion-select-option
+                      >
+                    </ng-container>
                   </ion-select>
                 </ion-item>
               </ion-list>
             </ion-col>
+            <div *ngIf="formSubmitted && year.invalid" class="error-message">
+              <ion-text color="danger" class="ion-padding-start">
+                Please enter a valid year .
+              </ion-text>
+            </div>
           </ion-row>
           <!-- Add validation messages here if needed -->
 
-          <ion-button mode="ios" type="submit" expand="block"
+          <ion-button
+            mode="ios"
+            [disabled]="loginForm.invalid"
+            type="submit"
+            expand="block"
             >Submit</ion-button
           >
         </form>
+        <div *ngIf="error" class="error-message">
+          <ion-text color="danger" class="ion-padding-start"
+            >{{ error }}</ion-text
+          >
+        </div>
       </ion-card-content>
     </ion-card>
   </div>

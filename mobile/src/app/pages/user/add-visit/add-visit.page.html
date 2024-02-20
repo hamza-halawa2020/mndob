@@ -1,11 +1,38 @@
-<!-- <ion-alert cssClass="warning-alert" header="Warning" message="{{ error }}" buttons={[ { handler: () => {
-        // Optional: You can add any action you want here when the user clicks "OK"
-      }
-    }
-  ]}
-  *ngIf="error"
-></ion-alert> -->
+<ion-grid>
+  <ion-row class="ion-align-items-center">
+    <ion-col size="12" class="ion-text-center">
+      <!-- Error alert -->
+      <ion-alert *ngIf="error" header="Alert" message="{{ error.message }}" buttons="OK"></ion-alert>
+    </ion-col>
+  </ion-row>
 
-<ion-button expand="full" color="warning">
-  Add Visit
-</ion-button>
+
+  
+
+  <!-- Success message -->
+  <ion-row class="ion-align-items-center" *ngIf="error === 'success'">
+    <ion-col size="12" class="ion-text-center">
+      <ion-text color="success">
+        <h2>Visit saved successfully!</h2>
+      </ion-text>
+    </ion-col>
+  </ion-row>
+
+  <!-- Error message -->
+  <ion-row class="ion-align-items-center" *ngIf="error === 'error'">
+    <ion-col size="12" class="ion-text-center">
+      <ion-text color="danger">
+        <h2>Error saving visit. Please try again.</h2>
+      </ion-text>
+    </ion-col>
+  </ion-row>
+
+  <!-- Add Visit button -->
+  <ion-row class="ion-align-items-center">
+    <ion-col size="12">
+      <ion-button expand="block" color="warning" (click)="addVisit()">
+        Add Visit
+      </ion-button>
+    </ion-col>
+  </ion-row>
+</ion-grid>

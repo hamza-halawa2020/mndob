@@ -16,7 +16,7 @@ import { AddVisitPageModule } from '../add-visit/add-visit.module';
     FormsModule,
     IonicModule,
     AllDoctorsPageRoutingModule,
-    AddVisitPageModule
+    AddVisitPageModule,
   ],
   declarations: [AllDoctorsPage]
 })

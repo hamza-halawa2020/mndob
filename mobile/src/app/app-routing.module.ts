@@ -34,7 +34,7 @@ const routes: Routes = [
       ),
   },
   {
-    path: 'doctor-details',
+    path: 'doctor-details/:id',
     canActivate: [AuthGuard],
     loadChildren: () =>
       import('./pages/user/doctor-details/doctor-details.module').then(

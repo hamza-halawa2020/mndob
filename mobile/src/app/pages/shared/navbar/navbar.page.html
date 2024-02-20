@@ -1,72 +1,36 @@
 <ion-footer>
   <ion-toolbar>
     <ion-buttons slot="start">
-      <ion-title routerLink="" routerDirection="root">Riman San</ion-title>
-      <ion-button routerLink="" routerDirection="root">Home</ion-button>
-      <ion-button routerLink="/all-doctors" routerDirection="root"
-        >All Doctors</ion-button
-      >
-      <ion-button routerLink="/add-doctor" routerDirection="root"
-        >Add New Doctor</ion-button
-      >
-      <ion-button routerLink="/visit-rate" routerDirection="root"
-        >Add Visit Rate</ion-button
-      >
+      <ion-button routerLink="" routerDirection="root">
+        <ion-icon name="home"></ion-icon>
+        <ion-label>Home</ion-label>
+      </ion-button>
+      <ion-button routerLink="/all-doctors" routerDirection="root">
+        <ion-icon name="people"></ion-icon>
+        <ion-label>All Doctors</ion-label>
+      </ion-button>
+      <ion-button routerLink="/add-doctor" routerDirection="root">
+        <ion-icon name="person-add"></ion-icon>
+        <ion-label>Add New Doctor</ion-label>
+      </ion-button>
+      <ion-button routerLink="/visit-rate" routerDirection="root">
+        <ion-icon name="calendar"></ion-icon>
+        <ion-label>Add Visit Rate</ion-label>
+      </ion-button>
     </ion-buttons>
     <ion-buttons slot="end">
-      <ion-button routerLink="/login" routerDirection="root">Login</ion-button>
-      <ion-button routerLink="/signup" routerDirection="root"
-        >Signup</ion-button
-      >
-      <ion-button (click)="logout()" routerDirection="root">Log Out</ion-button>
+      <ion-button routerLink="/login" routerDirection="root">
+        <ion-icon name="log-in"></ion-icon>
+        <ion-label>Login</ion-label>
+      </ion-button>
+      <ion-button routerLink="/signup" routerDirection="root">
+        <ion-icon name="person-add"></ion-icon>
+        <ion-label>Signup</ion-label>
+      </ion-button>
+      <ion-button (click)="logout()" routerDirection="root">
+        <ion-icon name="log-out"></ion-icon>
+        <ion-label>Log Out</ion-label>
+      </ion-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-footer>
-
-<!-- <ion-header>
-  <ion-toolbar>
-    <ion-buttons slot="start">
-      <ion-title routerLink="" routerDirection="root"
-        >Riman San</ion-title
-      >
-      <ion-button *ngIf="isLoggedIn()" routerLink="" routerDirection="root"
-        >Home</ion-button
-      >
-      <ion-button
-        *ngIf="isLoggedIn()"
-        routerLink="/all-doctors"
-        routerDirection="root"
-        >All Doctors</ion-button
-      >
-      <ion-button
-        *ngIf="isLoggedIn()"
-        routerLink="/add-doctor"
-        routerDirection="root"
-        >Add New Doctor</ion-button
-      >
-      <ion-button
-        *ngIf="isLoggedIn()"
-        routerLink="/visit-rate"
-        routerDirection="root"
-        >Add Visit Rate</ion-button
-      >
-    </ion-buttons>
-    <ion-buttons slot="end">
-      <ion-button
-        *ngIf="!isLoggedIn()"
-        routerLink="/login"
-        routerDirection="root"
-        >Login</ion-button
-      >
-      <ion-button
-        *ngIf="!isLoggedIn()"
-        routerLink="/signup"
-        routerDirection="root"
-        >Signup</ion-button
-      >
-      <ion-button *ngIf="isLoggedIn()" (click)="logout()" routerDirection="root"
-        >Log Out</ion-button
-      >
-    </ion-buttons>
-  </ion-toolbar>
-</ion-header> -->

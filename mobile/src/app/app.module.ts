@@ -8,7 +8,8 @@ import { NavbarPageModule } from './pages/shared/navbar/navbar.module';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { IonicStorageModule } from '@ionic/storage-angular';
 import { TokenAuthInterceptor } from './interceptors/token-auth.interceptor';
-
+import { DatePipe } from '@angular/common';
+import { Geolocation } from '@ionic-native/geolocation/ngx'; // Import Geolocation
 @NgModule({
   declarations: [AppComponent],
   imports: [
@@ -20,12 +21,10 @@ import { TokenAuthInterceptor } from './interceptors/token-auth.interceptor';
     IonicStorageModule.forRoot(),
   ],
   providers: [
-    {
-      provide: HTTP_INTERCEPTORS,
-      useClass: TokenAuthInterceptor,
-      multi: true,
-    },
+    { provide: HTTP_INTERCEPTORS, useClass: TokenAuthInterceptor, multi: true },
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
+    DatePipe,
+    Geolocation,
   ],
   bootstrap: [AppComponent],
 })

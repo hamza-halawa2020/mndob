@@ -1,13 +1,102 @@
-<ion-header [translucent]="true">
+<ion-header>
   <ion-toolbar>
-    <ion-title>doctor-details</ion-title>
+    <ion-title class="ion-text-center">Doctor Details</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">doctor-details</ion-title>
-    </ion-toolbar>
-  </ion-header>
+<ion-content>
+  <ion-card *ngIf="Details">
+    <ion-card-header>
+      <ion-card-title>Doctor Details</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <app-add-visit [doctorId]="Details?.doctor.id"></app-add-visit>
+      <ion-list>
+        <ion-item>
+          <ion-label>ID:</ion-label>
+          <ion-label>{{ Details.doctor.id }}</ion-label>
+        </ion-item>
+        <ion-item>
+          <ion-label>Name En:</ion-label>
+          <ion-label>{{ Details.doctor.name_en }}</ion-label>
+        </ion-item>
+        <ion-item>
+          <ion-label>Name Ar:</ion-label>
+          <ion-label>{{ Details.doctor.name_ar }}</ion-label>
+        </ion-item>
+        <ion-item>
+          <ion-label>Class:</ion-label>
+          <ion-label>{{ Details.doctor.class }}</ion-label>
+        </ion-item>
+        <ion-item>
+          <ion-label>Governorate:</ion-label>
+          <ion-label>{{ Details.doctor.gov_name_en }}</ion-label>
+        </ion-item>
+      </ion-list>
+    </ion-card-content>
+  </ion-card>
+
+  <!-- Visit Times by Month Table -->
+  <ion-card *ngIf="Details" class="mt-4">
+    <ion-card-header>
+      <ion-card-title>Visit Times by Month</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-list>
+        <ion-item *ngFor="let visitTime of visitTimes">
+          <ion-label>{{ visitTime.monthYear }}</ion-label>
+          <ion-label>{{ visitTime.count }}</ion-label>
+          <ion-label>
+            <ion-list>
+              <ion-item *ngFor="let time of visitTime.visitTimes">
+                {{ time }}
+              </ion-item>
+            </ion-list>
+          </ion-label>
+        </ion-item>
+      </ion-list>
+    </ion-card-content>
+  </ion-card>
+
+  <!-- Visit Rates Table -->
+  <ion-card *ngIf="Details" class="mt-4">
+    <ion-card-header>
+      <ion-card-title>Visit Rates</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-list *ngIf="Details.doctor.visit_rates && Details.doctor.visit_rates.length > 0; else noRates">
+        <ion-item *ngFor="let rate of Details.doctor.visit_rates">
+          <ion-label>Visit Rate: {{ rate.visit_rate_min }}</ion-label>
+          <ion-label>Month: {{ rate.month }}</ion-label>
+          <ion-label>Year: {{ rate.year }}</ion-label>
+        </ion-item>
+      </ion-list>
+      <ng-template #noRates>
+        <p class="ion-text-center">No visit rates available.</p>
+      </ng-template>
+    </ion-card-content>
+  </ion-card>
+
+  <!-- Visit Dates Table -->
+  <ion-card *ngIf="Details" class="mt-4">
+    <ion-card-header>
+      <ion-card-title>Visit Dates</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-list *ngIf="Details.doctor.visiting && Details.doctor.visiting.length > 0; else noDate">
+        <ion-item *ngFor="let visit of Details.doctor.visiting">
+          <ion-label>Visit Date: {{ visit.visit_date }}</ion-label>
+          <ion-label>Latitude: {{ visit.latitude }}</ion-label>
+          <ion-label>Longitude: {{ visit.longitude }}</ion-label>
+        </ion-item>
+      </ion-list>
+      <ng-template #noDate>
+        <p class="ion-text-center">No visits available.</p>
+      </ng-template>
+    </ion-card-content>
+  </ion-card>
+
+  <div *ngIf="!Details" class="ion-text-center mt-3">
+    <p>Loading doctor details...</p>
+  </div>
 </ion-content>
