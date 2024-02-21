@@ -19,4 +19,10 @@ export class VisitsService {
   addVisit(id: any) {
     return this.http.post(`${this.apiUrl}visits`, id);
   }
+
+  getVisitsByDate(date: any){
+    const url = `${this.apiUrl}visits-by-date/${date}`;
+    return this.http.get(url);
+  }
+  
 }

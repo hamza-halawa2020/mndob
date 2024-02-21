@@ -10,26 +10,48 @@ import { VisitService } from '../services/visit/visit.service';
 export class HomePage implements OnInit {
   totalDoctorsCount: any;
   visitsByMonthArray: any;
-  visits: any;
+  visits: any[] = []; // Assuming you have a data source for visits
   doctorsVisitedToday: any;
   visitsByDoctorAndWeek: any;
   visitsByDay: any;
   noVisitsByDay: any;
   visitsByMonthArrayThreeMonths: any;
+  selectedDate: any;
+  doctorVisitsInSelectedDate: any;
+  nameOfDoctorVisitsInSelectedDate: any;
+  startDate: any;
+  endDate: any;
+  selectedMonth: string = new Date().toISOString().substring(0, 7); // Initialize selectedMonth with current month
+
   constructor(
     private doctorsService: DoctorService,
     private visitsService: VisitService
-  ) {}
+  ) {
+    this.selectedDate = new Date().toISOString().substring(0, 10);
+  }
 
   ngOnInit(): void {
     this.getAllDoctors();
     this.getAllVisits();
+    this.getVisitsCount(this.selectedDate);
+    
   }
-
+  //Total Doctors
   getAllDoctors() {
     this.doctorsService.getAllDoctors().subscribe((count) => {
       this.totalDoctorsCount = Object.values(count)[0].length;
     });
+  }
+
+  //Doctors Visited
+  getVisitsCount(selectedDate: any): void {
+    this.visitsService.getVisitsByDate(selectedDate).subscribe((data) => {
+      this.doctorVisitsInSelectedDate = Object.values(data)[0].length;
+      this.nameOfDoctorVisitsInSelectedDate = Object.values(data);
+    });
+  }
+  onDateChange(): void {
+    this.getVisitsCount(this.selectedDate);
   }
 
   //Total Doctors
@@ -38,12 +60,8 @@ export class HomePage implements OnInit {
     const today = new Date().toISOString().slice(0, 10);
 
     this.visitsService.getAllVisits().subscribe(
-      (response: any) => {
+      (response) => {
         this.visits = Object.values(response)[0];
-        this.visitsByMonthArray = this.aggregateVisitsByMonth(this.visits);
-        this.visitsByMonthArrayThreeMonths = this.aggregateVisitsByLast3Months(
-          this.visits
-        );
         const visitsToday = this.visits.filter(
           (visit: { visit_date: string }) =>
             visit.visit_date.slice(0, 10) === today
@@ -54,8 +72,6 @@ export class HomePage implements OnInit {
         const doctorsVisitedTodayCount = uniqueDoctorsVisitedToday.size;
         this.doctorsVisitedToday = doctorsVisitedTodayCount;
 
-        this.visitsByDay = this.aggregateVisitsByDay(this.visits);
-        this.noVisitsByDay = this.aggregateNoVisitsByDay(this.visits);
       },
       (error) => {
         console.error('Error fetching visits:', error);
@@ -63,104 +79,26 @@ export class HomePage implements OnInit {
     );
   }
 
-  //Days Off (No Visits)
-  // aggregateNoVisitsByDay(visits: any[]) {
-  //   const visitsByDay: { date: string; numberOfVisits: number }[] = [];
-  //   const endDate = new Date();
-  //   const startDate = new Date(
-  //     endDate.getFullYear(),
-  //     endDate.getMonth(),
+  aggregateVisitsByMonth(visits: any[], startDate: Date, endDate: Date) {
+    const visitsByMonth: {
+      key: string;
+      numberOfVisits: number;
+      uniqueDoctors: number;
+    }[] = [];
 
-  //   );
-  //   const visitCounts = new Map<string, number>();
-  //   const currentDate = new Date(startDate);
-  //   while (currentDate <= endDate) {
-  //     visitCounts.set(currentDate.toLocaleDateString(), 0);
-  //     currentDate.setDate(currentDate.getDate() + 1);
-  //   }
-  //   visits.forEach((visit) => {
-  //     const visitDate = new Date(visit.visit_date).toLocaleDateString();
-  //     if (visitCounts.has(visitDate)) {
-  //       visitCounts.set(visitDate, visitCounts.get(visitDate)! + 1);
-  //     }
-  //   });
-  //   visitCounts.forEach((numberOfVisits, date) => {
-  //     if (numberOfVisits === 0) {
-  //       visitsByDay.push({ date, numberOfVisits });
-  //     }
-  //   });
-  //   visitsByDay.sort((a, b) => {
-  //     const dateA = new Date(b.date);
-  //     const dateB = new Date(a.date);
-  //     return dateA.getTime() - dateB.getTime();
-  //   });
-  //   return visitsByDay;
-  // }
-
-  //Days Off (No Visits)
-  aggregateNoVisitsByDay(visits: any[]) {
-    const visitsByDay: { date: string; day: string; numberOfVisits: number }[] =
-      [];
-    const endDate = new Date();
-    const startDate = new Date(endDate.getFullYear(), endDate.getMonth(), 1);
-    const visitCounts = new Map<string, number>();
-
-    const currentDate = new Date(startDate);
-    while (currentDate <= endDate) {
-      const dateKey = currentDate.toLocaleDateString();
-      const dayName = currentDate.toLocaleDateString('en-US', {
-        weekday: 'long',
-      });
-      visitCounts.set(dateKey, 0);
-      visitsByDay.push({ date: dateKey, day: dayName, numberOfVisits: 0 });
-      currentDate.setDate(currentDate.getDate() + 1);
-    }
-
-    visits.forEach((visit) => {
-      const visitDate = new Date(visit.visit_date).toLocaleDateString();
-      if (visitCounts.has(visitDate)) {
-        visitCounts.set(visitDate, visitCounts.get(visitDate)! + 1);
-      }
-    });
-
-    visitsByDay.forEach((day) => {
-      if (visitCounts.get(day.date) === 0) {
-        const dayName = new Date(day.date).toLocaleDateString('en-US', {
-          weekday: 'long',
-        });
-        day.day = dayName;
-      } else {
-        day.date = '';
-        day.day = '';
-        day.numberOfVisits = 0;
-      }
-    });
-
-    const filteredDays = visitsByDay.filter((day) => day.date !== '');
-
-    return filteredDays;
-  }
-
-  //Visited Doctor every Month Last 3 Months
-  aggregateVisitsByMonth(visits: any[]) {
-    const visitsByMonth: { key: string; value: number }[] = [];
-
-    const currentDate = new Date();
-    const firstDayOfCurrentMonth = new Date(
-      currentDate.getFullYear(),
-      currentDate.getMonth(),
-      1
-    );
-
-    for (let i = 0; i < 5; i++) {
+    for (
+      let currentMonth = new Date(startDate);
+      currentMonth <= endDate;
+      currentMonth.setMonth(currentMonth.getMonth() + 1)
+    ) {
       const monthStartDate = new Date(
-        firstDayOfCurrentMonth.getFullYear(),
-        firstDayOfCurrentMonth.getMonth() - i,
+        currentMonth.getFullYear(),
+        currentMonth.getMonth(),
         1
       );
       const monthEndDate = new Date(
-        firstDayOfCurrentMonth.getFullYear(),
-        firstDayOfCurrentMonth.getMonth() - i + 1,
+        currentMonth.getFullYear(),
+        currentMonth.getMonth() + 1,
         0
       );
 
@@ -177,103 +115,102 @@ export class HomePage implements OnInit {
       const monthYearKey = `${monthStartDate.getFullYear()}-${
         monthStartDate.getMonth() + 1
       }`;
-      visitsByMonth.push({ key: monthYearKey, value: uniqueDoctorsSet.size });
+      visitsByMonth.push({
+        key: monthYearKey,
+        numberOfVisits: visitsInMonth.length,
+        uniqueDoctors: uniqueDoctorsSet.size,
+      });
     }
 
     return visitsByMonth;
   }
 
-  //All Visited Doctors Last 3 Months
-  aggregateVisitsByLast3Months(visits: any[]) {
-    const visitsByMonthArray: any[] = [];
-
-    const currentDate = new Date();
-    const firstDayOfCurrentMonth = new Date(
-      currentDate.getFullYear(),
-      currentDate.getMonth(),
-      1
+  onMonthChange() {
+    this.visitsByMonthArray = this.aggregateVisitsByMonth(
+      this.visits,
+      new Date(this.startDate),
+      new Date(this.endDate)
     );
-
-    for (let i = 0; i < 5; i++) {
-      const monthStartDate = new Date(
-        firstDayOfCurrentMonth.getFullYear(),
-        firstDayOfCurrentMonth.getMonth() - i,
-        1
-      );
-      const monthEndDate = new Date(
-        firstDayOfCurrentMonth.getFullYear(),
-        firstDayOfCurrentMonth.getMonth() - i + 1,
-        0
-      );
-
-      const visitsInMonth = visits.filter((visit) => {
-        const visitDate = new Date(visit.visit_date);
-        return visitDate >= monthStartDate && visitDate <= monthEndDate;
-      });
-
-      const monthYearKey = `${
-        monthStartDate.getMonth() + 1
-      }/${monthStartDate.getFullYear()}`;
-      visitsByMonthArray.push({
-        month: monthYearKey,
-        numberOfVisits: visitsInMonth.length,
-      });
-    }
-
-    return visitsByMonthArray;
   }
 
-  //Visited Doctors by Day current month
-  aggregateVisitsByDay(visits: any[]) {
+  onMonthChangeeeeeee() {
+    const startDate = new Date(this.selectedMonth + '-01');
+    const endDate = new Date(
+      startDate.getFullYear(),
+      startDate.getMonth() + 1,
+      0
+    );
+    this.visitsByDay = this.aggregateVisitsByDay(
+      this.visits,
+      startDate,
+      endDate
+    );
+    this.noVisitsByDay = this.aggregateNoVisitsByDay(
+      this.visits,
+      startDate,
+      endDate
+    );
+  }
+
+  aggregateVisitsByDay(visits: any[], startDate: Date, endDate: Date) {
     const visitsByDay: { date: string; numberOfVisits: number }[] = [];
 
-    const currentDate = new Date();
-    const firstDayOfCurrentMonth = new Date(
-      currentDate.getFullYear(),
-      currentDate.getMonth(),
-      1
-    );
+    const visitsInMonth = visits.filter((visit) => {
+      const visitDate = new Date(visit.visit_date);
+      return visitDate >= startDate && visitDate <= endDate;
+    });
 
-    for (let i = 0; i < 1; i++) {
-      const monthStartDate = new Date(
-        firstDayOfCurrentMonth.getFullYear(),
-        firstDayOfCurrentMonth.getMonth() - i,
-        1
-      );
-      const monthEndDate = new Date(
-        firstDayOfCurrentMonth.getFullYear(),
-        firstDayOfCurrentMonth.getMonth() - i + 1,
-        0
-      );
+    const groupedVisits = visitsInMonth.reduce((acc, visit) => {
+      const visitDate = new Date(visit.visit_date).toLocaleDateString();
 
-      const visitsInMonth = visits.filter((visit) => {
-        const visitDate = new Date(visit.visit_date);
-        return visitDate >= monthStartDate && visitDate <= monthEndDate;
-      });
+      if (!acc[visitDate]) {
+        acc[visitDate] = 0;
+      }
 
-      const groupedVisits = visitsInMonth.reduce((acc, visit) => {
-        const visitDate = new Date(visit.visit_date).toLocaleDateString();
+      acc[visitDate]++;
 
-        if (!acc[visitDate]) {
-          acc[visitDate] = 0;
-        }
+      return acc;
+    }, {});
 
-        acc[visitDate]++;
-
-        return acc;
-      }, {});
-
-      for (const date in groupedVisits) {
-        if (Object.prototype.hasOwnProperty.call(groupedVisits, date)) {
-          visitsByDay.push({ date, numberOfVisits: groupedVisits[date] });
-        }
+    for (const date in groupedVisits) {
+      if (Object.prototype.hasOwnProperty.call(groupedVisits, date)) {
+        visitsByDay.push({ date, numberOfVisits: groupedVisits[date] });
       }
     }
+
     visitsByDay.sort((a, b) => {
       const dateA = new Date(b.date);
       const dateB = new Date(a.date);
       return dateA.getTime() - dateB.getTime();
     });
+
+    return visitsByDay;
+  }
+
+  aggregateNoVisitsByDay(visits: any[], startDate: Date, endDate: Date) {
+    const visitsByDay: { date: string; day: string; numberOfVisits: number }[] =
+      [];
+    const visitDates = new Set<string>();
+
+    // Collect visit dates
+    visits.forEach((visit) => {
+      const visitDate = new Date(visit.visit_date).toLocaleDateString();
+      visitDates.add(visitDate);
+    });
+
+    // Generate days in the selected month
+    const currentDate = new Date(startDate);
+    while (currentDate <= endDate) {
+      const dateKey = currentDate.toLocaleDateString();
+      const dayName = currentDate.toLocaleDateString('en-US', {
+        weekday: 'long',
+      });
+      if (!visitDates.has(dateKey)) {
+        visitsByDay.push({ date: dateKey, day: dayName, numberOfVisits: 0 });
+      }
+      currentDate.setDate(currentDate.getDate() + 1);
+    }
+
     return visitsByDay;
   }
 }

@@ -2,76 +2,106 @@
   <ion-grid class="margin">
     <ion-row>
       <!-- Sidebar -->
-      <ion-col size="12" size-md="4">
-        <ion-card>
+      <ion-col size="12" size-lg="4">
+        <!-- Total Doctors -->
+        <ion-card class="ion-margin-bottom">
           <ion-card-content>
             <ion-card-title>Total Doctors</ion-card-title>
             <ion-text>{{ totalDoctorsCount }}</ion-text>
           </ion-card-content>
         </ion-card>
 
-        <ion-card>
+        <!-- Doctors Visited -->
+        <ion-card class="ion-margin-bottom">
           <ion-card-content>
-            <ion-card-title>Doctors Visited Today</ion-card-title>
-            <ion-text>{{ doctorsVisitedToday }}</ion-text>
+            <ion-card-title>Doctors Visited</ion-card-title>
+            <ion-item>
+              <ion-label position="floating">Select Date</ion-label>
+              <ion-input
+                type="date"
+                [(ngModel)]="selectedDate"
+                (ionChange)="onDateChange()"
+              ></ion-input>
+            </ion-item>
+            <ion-text
+              *ngIf="doctorVisitsInSelectedDate > 0; else noVisits"
+              class="ion-text-success"
+            >
+              Total Visits: {{ doctorVisitsInSelectedDate }}
+            </ion-text>
+
+            <p class="text-success">Doctor Visits:</p>
+            <ul>
+              <ng-container
+                *ngFor="let visitData of nameOfDoctorVisitsInSelectedDate"
+              >
+                <li *ngFor="let doctor of visitData">{{ doctor.doctor_id }}</li>
+              </ng-container>
+            </ul>
+
+            <ng-template #noVisits>
+              <ion-text color="danger">No visits for this date.</ion-text>
+            </ng-template>
           </ion-card-content>
         </ion-card>
       </ion-col>
 
       <!-- Main Content -->
-      <ion-col size="12" size-md="8">
-        <!-- Visited Doctor every Month Last 5 Months -->
-        <ion-card>
+      <ion-col size="12" size-lg="8">
+        <!-- Visited Doctor every Month -->
+        <ion-card class="ion-margin-bottom">
           <ion-card-content>
             <ion-card-title
               >Visited Doctor every Month Last 5 Months</ion-card-title
             >
+            <ion-item>
+              <ion-label position="floating">Start Date</ion-label>
+              <ion-input
+                type="date"
+                [(ngModel)]="startDate"
+                (ionChange)="onMonthChange()"
+              ></ion-input>
+            </ion-item>
+            <ion-item>
+              <ion-label position="floating">End Date</ion-label>
+              <ion-input
+                type="date"
+                [(ngModel)]="endDate"
+                (ionChange)="onMonthChange()"
+              ></ion-input>
+            </ion-item>
             <ion-list>
               <ion-item *ngFor="let visit of visitsByMonthArray; let i = index">
-                <ion-label>
-                  <h2>{{ visit.key }}</h2>
-                  <p>Number of Visits: {{ visit.value }}</p>
-                  <p>
-                    Percentage of Visit: {{ ((visit.value / totalDoctorsCount) *
-                    100).toFixed(2) }}%
-                  </p>
-                </ion-label>
+                <ion-label>{{ visit.key }}</ion-label>
+                <ion-label>{{ visit.uniqueDoctors }}</ion-label>
+                <ion-label
+                  >{{ ((visit.uniqueDoctors / totalDoctorsCount) *
+                  100).toFixed(2) }}%</ion-label
+                >
+                <ion-label>{{ visit.numberOfVisits }}</ion-label>
               </ion-item>
             </ion-list>
           </ion-card-content>
         </ion-card>
 
-        <!-- All Visited Doctors Last 5 Months -->
-        <ion-card>
-          <ion-card-content>
-            <ion-card-title>All Visited Doctors Last 5 Months</ion-card-title>
-            <ion-list>
-              <ion-item
-                *ngFor="let visit of visitsByMonthArrayThreeMonths; let i = index"
-              >
-                <ion-label>
-                  <h2>{{ i + 1 }}. {{ visit.month }}</h2>
-                  <p>Number of Visits: {{ visit.numberOfVisits }}</p>
-                </ion-label>
-              </ion-item>
-            </ion-list>
-          </ion-card-content>
-        </ion-card>
-
-        <!-- Visited Doctors by Day current Months -->
         <ion-row>
           <ion-col size="12" size-md="6">
+            <!-- Visited Doctors by Day -->
             <ion-card class="ion-margin-bottom">
               <ion-card-content>
-                <ion-card-title
-                  >Visited Doctors by Day current Month</ion-card-title
-                >
+                <ion-card-title>Visited Doctors by Day</ion-card-title>
+                <ion-item>
+                  <ion-label position="floating">Select Month</ion-label>
+                  <ion-input
+                    type="month"
+                    [(ngModel)]="selectedMonth"
+                    (ionChange)="onMonthChangeeeeeee()"
+                  ></ion-input>
+                </ion-item>
                 <ion-list>
                   <ion-item *ngFor="let visit of visitsByDay; let i = index">
-                    <ion-label>
-                      <h2>{{ i + 1 }}. {{ visit.date }}</h2>
-                      <p>Number of Visits: {{ visit.numberOfVisits }}</p>
-                    </ion-label>
+                    <ion-label>{{ visit.date }}</ion-label>
+                    <ion-label>{{ visit.numberOfVisits }}</ion-label>
                   </ion-item>
                 </ion-list>
               </ion-card-content>
@@ -79,16 +109,13 @@
           </ion-col>
 
           <ion-col size="12" size-md="6">
+            <!-- Days Off (No Visits) -->
             <ion-card class="ion-margin-bottom">
               <ion-card-content>
-                <ion-card-title
-                  >Days Off (No Visits) current Month</ion-card-title
-                >
+                <ion-card-title>Days Off (No Visits)</ion-card-title>
                 <ion-list>
                   <ion-item *ngFor="let visit of noVisitsByDay; let i = index">
-                    <ion-label>
-                      <h2>{{ i + 1 }}. {{ visit.day }}, {{ visit.date }}</h2>
-                    </ion-label>
+                    <ion-label>{{ visit.day }}, {{ visit.date }}</ion-label>
                   </ion-item>
                 </ion-list>
               </ion-card-content>

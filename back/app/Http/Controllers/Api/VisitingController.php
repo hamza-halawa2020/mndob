@@ -32,27 +32,19 @@ class VisitingController extends Controller
             return response()->json($e, 500);
         }
     }
-    /**
-     * Store a newly created resource in storage.
-     */
-    // public function store(Request $request)
-    // {
-    //     try {
-    //         $authenticatedUserId = Auth::id();
-    //         $this->validate($request, [
-    //             'doctor_id' => 'required',
-    //             'visit_date' => 'required',
-    //         ]);
-    //         $visit = Visiting::create([
-    //             "user_id" => $authenticatedUserId,
-    //             "doctor_id" => $request->doctor_id,
-    //             'visit_date' => $request->visit_date,
-    //         ]);
-    //         return response()->json(['data' => new VisitingResource($visit)], 200);
-    //     } catch (Exception $e) {
-    //         return response()->json($e, 500);
-    //     }
-    // }
+
+    public function VisitedByDay($visit_date)
+    {
+        try {
+            $loggedInUserId = Auth::id();
+            $visits = Visiting::where('visit_date', $visit_date)
+                ->where('user_id', $loggedInUserId)
+                ->get();
+            return new VisitingResource($visits);
+        } catch (Exception $e) {
+            return response()->json($e, 500);
+        }
+    }
 
     public function store(Request $request)
     {

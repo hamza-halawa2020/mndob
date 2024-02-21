@@ -2,26 +2,79 @@
   <div class="row">
     <!-- Sidebar -->
     <div class="col-lg-4">
+      <!-- Total Doctors -->
       <div class="card mb-4">
         <div class="card-body">
           <h5 class="card-title">Total Doctors</h5>
           <p class="card-text">{{ totalDoctorsCount }}</p>
         </div>
       </div>
+
+      <!-- Doctors Visited -->
       <div class="card mb-4">
         <div class="card-body">
-          <h5 class="card-title">Doctors Visited Today</h5>
-          <p class="card-text">{{ doctorsVisitedToday }}</p>
+          <h5 class="card-title">Doctors Visited</h5>
+          <div class="form-group">
+            <label for="visitDate">Select Date:</label>
+            <input
+              id="visitDate"
+              class="form-control"
+              type="date"
+              [(ngModel)]="selectedDate"
+              (change)="onDateChange()"
+            />
+          </div>
+          <h3>Visits for {{ selectedDate }}</h3>
+          <div *ngIf="doctorVisitsInSelectedDate > 0; else off">
+            <p class="text-success">
+              Total Visits: {{ doctorVisitsInSelectedDate }}
+            </p>
+            <p class="text-success">Doctor Visits:</p>
+            <ul>
+              <ng-container
+                *ngFor="let visitData of nameOfDoctorVisitsInSelectedDate"
+              >
+                <li *ngFor="let doctor of visitData">
+                  {{ doctor.doctor_id }}
+                </li>
+              </ng-container>
+            </ul>
+          </div>
+          <ng-template #off>
+            <p class="text-danger">No visits for this date.</p>
+          </ng-template>
         </div>
       </div>
     </div>
 
     <!-- Main Content -->
     <div class="col-lg-8">
-      <!-- Visited Doctor every Month Last 3 Months -->
+      <!-- Visited Doctor every Month -->
       <div class="card mb-4">
         <div class="card-body">
           <h4 class="card-title">Visited Doctor every Month Last 5 Months</h4>
+          <div class="form-group">
+            <label for="startDate">Start Date:</label>
+            <input
+              id="startDate"
+              class="form-control"
+              type="date"
+              [(ngModel)]="startDate"
+              (change)="onMonthChange()"
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="endDate">End Date:</label>
+            <input
+              id="endDate"
+              class="form-control"
+              type="date"
+              [(ngModel)]="endDate"
+              (change)="onMonthChange()"
+            />
+          </div>
+
           <div class="table-responsive">
             <table class="table table-striped">
               <thead>
@@ -30,16 +83,22 @@
                   <th>Date</th>
                   <th>Number of Visits</th>
                   <th>Percentage of Visit</th>
+                  <th>Number of Visited All Doctors</th>
                 </tr>
               </thead>
               <tbody>
                 <tr *ngFor="let visit of visitsByMonthArray; let i = index">
                   <td>{{ i + 1 }}</td>
                   <td>{{ visit.key }}</td>
-                  <td>{{ visit.value }}</td>
+                  <td>{{ visit.uniqueDoctors }}</td>
                   <td>
-                    {{ ((visit.value / totalDoctorsCount) * 100).toFixed(2) }}%
+                    {{
+                      ((visit.uniqueDoctors / totalDoctorsCount) * 100).toFixed(
+                        2
+                      )
+                    }}%
                   </td>
+                  <td>{{ visit.numberOfVisits }}</td>
                 </tr>
               </tbody>
             </table>
@@ -47,45 +106,20 @@
         </div>
       </div>
 
-      <!-- All Visited Doctors Last 3 Months -->
-      <div class="card mb-4">
-        <div class="card-body">
-          <h5 class="card-title">All Visited Doctors Last 5 Months</h5>
-          <div class="table-responsive">
-            <table class="table table-striped">
-              <thead>
-                <tr>
-                  <th>Index</th>
-                  <th>Month</th>
-                  <th>Number of Visits</th>
-                </tr>
-              </thead>
-              <tbody>
-                <ng-container
-                  *ngFor="
-                    let visit of visitsByMonthArrayThreeMonths;
-                    let i = index
-                  "
-                >
-                  <tr>
-                    <td>{{ i + 1 }}</td>
-                    <td>{{ visit.month }}</td>
-                    <td>{{ visit.numberOfVisits }}</td>
-                  </tr>
-                </ng-container>
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </div>
-
-      <!-- Visited Doctors by Day Last 3 Months -->
       <div class="row">
         <div class="card mb-4 col-6">
           <div class="card-body">
-            <h5 class="card-title mb-6">
-              Visited Doctors by Day current Month
-            </h5>
+            <h5 class="card-title mb-6">Visited Doctors by Day</h5>
+            <div class="form-group">
+              <label for="selectedMonth">Select Month:</label>
+              <input
+                id="selectedMonth"
+                class="form-control"
+                type="month"
+                [(ngModel)]="selectedMonth"
+                (change)="onMonthChangeeeeeee()"
+              />
+            </div>
             <div class="table-responsive">
               <table class="table table-striped">
                 <thead>
@@ -113,14 +147,13 @@
 
         <div class="card mb-4 col-6">
           <div class="card-body">
-            <h5 class="card-title mb-4">Days Off (No Visits) current Month</h5>
+            <h5 class="card-title mb-4">Days Off (No Visits)</h5>
             <div class="table-responsive">
               <table class="table table-striped">
                 <thead>
                   <tr>
                     <th>Index</th>
                     <th>Date</th>
-                    <!-- <th>Number of Visits</th> -->
                   </tr>
                 </thead>
                 <tbody>
@@ -129,9 +162,7 @@
                   >
                     <tr>
                       <td>{{ i + 1 }}</td>
-                      <!-- <td>{{ visit.date }}</td> -->
-                      <td>{{ visit.day }}, {{ visit.date }}</td> <!-- Display day name and date -->
-                      <!-- <td>{{ visit.numberOfVisits }}</td> -->
+                      <td>{{ visit.day }}, {{ visit.date }}</td>
                     </tr>
                   </ng-container>
                 </tbody>

@@ -28,6 +28,8 @@ Route::apiResource('governates', GovernateController::class);
 Route::apiResource('doctors', DoctorController::class);
 Route::apiResource('visit_rates', VisitRateController::class);
 Route::apiResource('visits', VisitingController::class);
+// Route::get('visits-by-date', [VisitingController::class,'VisitedByDay']);
+Route::get('/visits-by-date/{visit_date}', [VisitingController::class, 'VisitedByDay']);
 
 
 Route::post('login', [AuthController::class, 'login']);
