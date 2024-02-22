@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">rimansan</string>
+    <string name="title_activity_main">rimansan</string>
+    <string name="package_name">rimansanId.app</string>
+    <string name="custom_url_scheme">rimansanId.app</string>
+</resources>

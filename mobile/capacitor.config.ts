@@ -1,8 +1,8 @@
 import { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
-  appId: 'rimansanId.app',
-  appName: 'rimansan',
+  appId: 'io.ionic.starter',
+  appName: 'mobile',
   webDir: 'www',
   server: {
     androidScheme: 'https'
