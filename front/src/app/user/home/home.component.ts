@@ -10,7 +10,7 @@ import { VisitsService } from '../services/visit/visits.service';
 export class HomeComponent {
   totalDoctorsCount: any;
   visitsByMonthArray: any;
-  visits: any[] = []; // Assuming you have a data source for visits
+  visits: any[] = [];
   doctorsVisitedToday: any;
   visitsByDoctorAndWeek: any;
   visitsByDay: any;
@@ -21,7 +21,7 @@ export class HomeComponent {
   nameOfDoctorVisitsInSelectedDate: any;
   startDate: any;
   endDate: any;
-  selectedMonth: string = new Date().toISOString().substring(0, 7); // Initialize selectedMonth with current month
+  selectedMonth: string = new Date().toISOString().substring(0, 7);
 
   constructor(
     private doctorsService: DoctorService,
@@ -34,6 +34,7 @@ export class HomeComponent {
     this.getAllDoctors();
     this.getAllVisits();
     this.getVisitsCount(this.selectedDate);
+    
     
   }
   //Total Doctors
@@ -48,6 +49,7 @@ export class HomeComponent {
     this.visitsService.getVisitsByDate(selectedDate).subscribe((data) => {
       this.doctorVisitsInSelectedDate = Object.values(data)[0].length;
       this.nameOfDoctorVisitsInSelectedDate = Object.values(data);
+      
     });
   }
   onDateChange(): void {
@@ -192,13 +194,11 @@ export class HomeComponent {
       [];
     const visitDates = new Set<string>();
 
-    // Collect visit dates
     visits.forEach((visit) => {
       const visitDate = new Date(visit.visit_date).toLocaleDateString();
       visitDates.add(visitDate);
     });
 
-    // Generate days in the selected month
     const currentDate = new Date(startDate);
     while (currentDate <= endDate) {
       const dateKey = currentDate.toLocaleDateString();

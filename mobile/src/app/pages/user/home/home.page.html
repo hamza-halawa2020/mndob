@@ -35,7 +35,9 @@
               <ng-container
                 *ngFor="let visitData of nameOfDoctorVisitsInSelectedDate"
               >
-                <li *ngFor="let doctor of visitData">{{ doctor.doctor_id }}</li>
+                <ol *ngFor="let doctor of visitData;let i = index">
+                  {{i+1}} - {{ doctor.doctor_name_ar }}
+                </ol>
               </ng-container>
             </ul>
 
@@ -51,11 +53,9 @@
         <!-- Visited Doctor every Month -->
         <ion-card class="ion-margin-bottom">
           <ion-card-content>
-            <ion-card-title
-              >Visited Doctor every Month Last 5 Months</ion-card-title
-            >
+            <ion-card-title>Visited Doctor every Month</ion-card-title>
             <ion-item>
-              <ion-label position="floating">Start Date</ion-label>
+              <ion-label position="">Start Date</ion-label>
               <ion-input
                 type="date"
                 [(ngModel)]="startDate"
@@ -63,7 +63,7 @@
               ></ion-input>
             </ion-item>
             <ion-item>
-              <ion-label position="floating">End Date</ion-label>
+              <ion-label position="">End Date</ion-label>
               <ion-input
                 type="date"
                 [(ngModel)]="endDate"
@@ -71,7 +71,18 @@
               ></ion-input>
             </ion-item>
             <ion-list>
+              <ion-item>
+                <ion-label>Index</ion-label>
+                <ion-label>Date</ion-label>
+                <ion-label>Number of Visits</ion-label>
+                <ion-label>Percentage of Visit</ion-label>
+                <ion-label>Number of Visited All Doctors</ion-label>
+              </ion-item>
+            </ion-list>
+
+            <ion-list>
               <ion-item *ngFor="let visit of visitsByMonthArray; let i = index">
+                <ion-label>{{ i+1 }}</ion-label>
                 <ion-label>{{ visit.key }}</ion-label>
                 <ion-label>{{ visit.uniqueDoctors }}</ion-label>
                 <ion-label
@@ -100,6 +111,7 @@
                 </ion-item>
                 <ion-list>
                   <ion-item *ngFor="let visit of visitsByDay; let i = index">
+                    <ion-label>{{ i+1}}</ion-label>
                     <ion-label>{{ visit.date }}</ion-label>
                     <ion-label>{{ visit.numberOfVisits }}</ion-label>
                   </ion-item>
@@ -115,7 +127,9 @@
                 <ion-card-title>Days Off (No Visits)</ion-card-title>
                 <ion-list>
                   <ion-item *ngFor="let visit of noVisitsByDay; let i = index">
-                    <ion-label>{{ visit.day }}, {{ visit.date }}</ion-label>
+                    <ion-label>{{i+1}}</ion-label>
+                    <ion-label> {{ visit.day }}</ion-label>
+                    <ion-label> {{ visit.date }}</ion-label>
                   </ion-item>
                 </ion-list>
               </ion-card-content>

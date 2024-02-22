@@ -42,6 +42,7 @@ export class VisitRateComponent {
   getAllDoctors() {
     this.doctor.getAllDoctors().subscribe((data) => {
       this.allDoctors = Object.values(data)[0];
+      this.allDoctors.sort((a:any, b: any) => a.doctor.name_ar.localeCompare(b.doctor.name_ar));
       // console.log('allDoctors', this.allDoctors);
     });
   }

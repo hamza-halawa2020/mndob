@@ -34,9 +34,14 @@
               <ng-container
                 *ngFor="let visitData of nameOfDoctorVisitsInSelectedDate"
               >
-                <li *ngFor="let doctor of visitData">
-                  {{ doctor.doctor_id }}
-                </li>
+                <ol *ngFor="let doctor of visitData; let i = index">
+                  {{
+                    i + 1
+                  }}-
+                  {{
+                    doctor.doctor_name_ar
+                  }}
+                </ol>
               </ng-container>
             </ul>
           </div>
@@ -113,12 +118,15 @@
             <div class="form-group">
               <label for="selectedMonth">Select Month:</label>
               <input
-                id="selectedMonth"
-                class="form-control"
-                type="month"
-                [(ngModel)]="selectedMonth"
-                (change)="onMonthChangeeeeeee()"
-              />
+  id="selectedMonth"
+  class="form-control ion-padding"
+  type="month"
+  [(ngModel)]="selectedMonth"
+  (change)="onMonthChangeeeeeee()"
+  placeholder="Select Month"
+  style="border-radius: 10px; border: 2px solid #ccc; background-color: #f9f9f9; padding: 10px;"
+/>
+
             </div>
             <div class="table-responsive">
               <table class="table table-striped">

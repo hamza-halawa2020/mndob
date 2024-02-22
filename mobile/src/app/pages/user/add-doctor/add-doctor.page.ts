@@ -41,6 +41,8 @@ export class AddDoctorPage implements OnInit {
   getGovernorates() {
     this.gov.getGovernorates().subscribe((data) => {
       this.governorates = Object.values(data)[0];
+      this.governorates.sort((a:any, b: any) => a.name_en.localeCompare(b.name_en));
+
       console.log('governorates', this.governorates);
     });
   }

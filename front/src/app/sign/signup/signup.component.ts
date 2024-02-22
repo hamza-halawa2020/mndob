@@ -57,7 +57,9 @@ export class SignupComponent {
   getGovernorates() {
     this.gov.getGovernorates().subscribe((data) => {
       this.governorates = Object.values(data)[0];
-      // console.log('governorates', this.governorates);
+      this.governorates.sort((a:any, b: any) => a.name_en.localeCompare(b.name_en));
+
+      console.log('governorates', this.governorates);
     });
   }
 

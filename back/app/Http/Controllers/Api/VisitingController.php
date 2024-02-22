@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\VisitingResource;
 use App\Models\Visiting;
+use App\Models\Doctor;
 use App\Models\users_and_doctors;
 use Illuminate\Http\Request;
 use Exception;
@@ -40,6 +41,10 @@ class VisitingController extends Controller
             $visits = Visiting::where('visit_date', $visit_date)
                 ->where('user_id', $loggedInUserId)
                 ->get();
+            foreach ($visits as $visit) {
+                $doctorName = Doctor::where('id', $visit->doctor_id)->value('name_ar');
+                $visit->doctor_name_ar = $doctorName;
+            }
             return new VisitingResource($visits);
         } catch (Exception $e) {
             return response()->json($e, 500);

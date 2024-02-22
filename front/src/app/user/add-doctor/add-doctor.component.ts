@@ -45,9 +45,11 @@ export class AddDoctorComponent {
   getGovernorates() {
     this.gov.getGovernorates().subscribe((data) => {
       this.governorates = Object.values(data)[0];
-      console.log('governorates', this.governorates);
+      this.governorates.sort((a:any, b: any) => a.name_ar.localeCompare(b.name_ar));
+      // console.log('Sorted governorates:', this.governorates);
     });
   }
+  
 
   loginSubmitted() {
     if (this.loginForm.valid) {
