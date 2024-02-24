@@ -7,14 +7,30 @@ import { SignService } from '../../sign/services/sign/sign.service';
   styleUrls: ['./navbar.page.scss'],
 })
 export class NavbarPage implements OnInit {
-  constructor(private authService: SignService) {}
-  ngOnInit(): void {}
+  isLoggedIn: boolean = false; // Initially assuming user is not logged in
 
-  isLoggedIn(): boolean {
-    return !!this.authService.isLoggedIn();
+  constructor(private authService: SignService) {}
+  ngOnInit() {
+    // Call checkLoginStatus when the component initializes
+    this.checkLoginStatus();
   }
 
-  logout() {
-    this.authService.logout();
+  async checkLoginStatus() {
+    try {
+      // Assuming your AuthService has a method to check login status asynchronously
+      this.isLoggedIn = await this.authService.isLoggedIn();
+    } catch (error) {
+      console.error('Error checking login status:', error);
+    }
+  }
+
+  async logout() {
+    try {
+      // Call your authentication service logout method asynchronously
+      await this.authService.logout(); 
+      this.isLoggedIn = false; // Update the isLoggedIn property after logout
+    } catch (error) {
+      console.error('Error logging out:', error);
+    }
   }
 }
