@@ -1,121 +1,153 @@
 <ion-content>
   <div class="flex-center">
-    <ion-card>
+    <ion-card class="sign-card">
       <ion-card-header>
-        <ion-card-title mode="ios" class="ion-text-center"
+        <ion-card-title mode="ios" class="ion-text-center" color="primary"
           >👋Welcome</ion-card-title
         >
       </ion-card-header>
+
+      
       <ion-card-content>
         <form (ngSubmit)="login()" [formGroup]="loginForm">
           <!-- Name Ar and Name En side by side -->
           <ion-row>
             <ion-col size="6">
               <ion-item [class.invalid]="formSubmitted && name_ar.invalid">
-
-                <ion-label position="floating"
-                  >Name Ar<ion-text color="danger"><span>*</span></ion-text>
-                </ion-label>
-                <ion-input type="text" formControlName="name_ar" required></ion-input>
+                <ion-label position="floating" color="primary"
+                  >Name Ar<ion-text color="danger"
+                    ><span>*</span></ion-text
+                  ></ion-label
+                >
+                <ion-icon name="person" slot="start"></ion-icon>
+                <ion-input
+                  type="text"
+                  formControlName="name_ar"
+                  required
+                ></ion-input>
               </ion-item>
-              <!-- Add validation messages here if needed -->
-              <div *ngIf="formSubmitted && name_ar.invalid" class="error-message">
-                <ion-text color="danger" class="ion-padding-start">
-                  Please enter a valid name_ar address.
-                </ion-text>
+              <div
+                *ngIf="formSubmitted && name_ar.invalid"
+                class="error-message"
+              >
+                <ion-text color="danger" class="ion-padding-start"
+                  >Please enter a valid name_ar address.</ion-text
+                >
               </div>
             </ion-col>
             <ion-col size="6">
               <ion-item [class.invalid]="formSubmitted && name_en.invalid">
-
-                <ion-label position="floating"
-                  >Name En<ion-text color="danger"><span>*</span></ion-text>
-                </ion-label>
-                <ion-input type="text" formControlName="name_en" required></ion-input>
+                <ion-label position="floating" color="primary"
+                  >Name En<ion-text color="danger"
+                    ><span>*</span></ion-text
+                  ></ion-label
+                >
+                <ion-icon name="person" slot="start"></ion-icon>
+                <ion-input
+                  type="text"
+                  formControlName="name_en"
+                  required
+                ></ion-input>
               </ion-item>
-              <!-- Add validation messages here if needed -->
-              <div *ngIf="formSubmitted && name_en.invalid" class="error-message">
-                <ion-text color="danger" class="ion-padding-start">
-                  Please enter a valid name_en address.
-                </ion-text>
+              <div
+                *ngIf="formSubmitted && name_en.invalid"
+                class="error-message"
+              >
+                <ion-text color="danger" class="ion-padding-start"
+                  >Please enter a valid name_en address.</ion-text
+                >
               </div>
             </ion-col>
           </ion-row>
 
+          <!-- Governorate selection -->
           <ion-list mode="ios">
             <ion-item>
-              <ion-label position="floating"
-                >Governate<ion-text color="danger"><span>*</span></ion-text>
-              </ion-label>
-              <ion-select label-placement="floating" formControlName="gov_id">
+              <ion-label position="floating" color="primary"
+                >Governate<ion-text color="danger"
+                  ><span>*</span></ion-text
+                ></ion-label
+              >
+              <ion-icon name="pin" slot="start"></ion-icon>
+              <ion-select
+                label-placement="floating"
+                formControlName="gov_id"
+                color="primary"
+              >
                 <ion-select-option
                   *ngFor="let governorate of governorates"
-                  value="{{ governorate.id }}"
+                  [value]="governorate.id"
                   >{{ governorate.name_en }}</ion-select-option
                 >
               </ion-select>
             </ion-item>
           </ion-list>
-          <!-- Add validation messages here if needed -->
           <div *ngIf="formSubmitted && gov_id.invalid" class="error-message">
-            <ion-text color="danger" class="ion-padding-start">
-              Please enter a valid gov_id address.
-            </ion-text>
+            <ion-text color="danger" class="ion-padding-start"
+              >Please enter a valid gov_id address.</ion-text
+            >
           </div>
 
-          <!-- Email and Password side by side -->
+          <!-- Email and Password -->
           <ion-row>
             <ion-col size="6">
               <ion-item [class.invalid]="formSubmitted && email.invalid">
-                <ion-label position="floating"
-                  >E-mail<ion-text color="danger"><span>*</span></ion-text>
-                </ion-label>
+                <ion-label position="floating" color="primary"
+                  >E-mail<ion-text color="danger"
+                    ><span>*</span></ion-text
+                  ></ion-label
+                >
+                <ion-icon name="mail" slot="start"></ion-icon>
                 <ion-input
                   type="email"
                   formControlName="email"
                   required
                 ></ion-input>
               </ion-item>
-              <!-- Add validation messages here if needed -->
               <div *ngIf="formSubmitted && email.invalid" class="error-message">
-                <ion-text color="danger" class="ion-padding-start">
-                  Please enter a valid email address.
-                </ion-text>
+                <ion-text color="danger" class="ion-padding-start"
+                  >Please enter a valid email address.</ion-text
+                >
               </div>
             </ion-col>
             <ion-col size="6">
               <ion-item [class.invalid]="formSubmitted && password.invalid">
-                <ion-label position="floating"
+                <ion-label position="floating" color="primary"
                   >Password<ion-text color="danger"
                     ><span>*</span></ion-text
                   ></ion-label
                 >
+                <ion-icon name="lock-closed" slot="start"></ion-icon>
                 <ion-input
                   type="password"
                   formControlName="password"
                   required
                 ></ion-input>
               </ion-item>
-              <!-- Add validation messages here if needed -->
               <div
                 *ngIf="formSubmitted && password.invalid"
                 class="error-message"
               >
-                <ion-text color="danger" class="ion-padding-start">
-                  Password is required and must be at least 6 characters long.
-                </ion-text>
+                <ion-text color="danger" class="ion-padding-start"
+                  >Password is required and must be at least 6 characters
+                  long.</ion-text
+                >
               </div>
             </ion-col>
           </ion-row>
 
+          <!-- Submit Button -->
           <ion-button
             mode="ios"
             [disabled]="loginForm.invalid"
             type="submit"
             expand="block"
+            color="primary"
             >Submit</ion-button
           >
         </form>
+
+        <!-- Error Message -->
         <div *ngIf="error" class="error-message">
           <ion-text color="danger" class="ion-padding-start"
             >{{ error }}</ion-text

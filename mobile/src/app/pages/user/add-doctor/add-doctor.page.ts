@@ -2,6 +2,7 @@ import { GovernatesService } from './../services/governates/governates.service';
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { DoctorService } from '../services/doctor/doctor.service';
+import { AnimationBuilder, style, animate } from '@angular/animations';
 
 @Component({
   selector: 'app-add-doctor',
@@ -13,11 +14,29 @@ export class AddDoctorPage implements OnInit {
   governorates: any;
   error: any;
 
-  constructor(private gov: GovernatesService, private doctor: DoctorService) {}
+  constructor(private gov: GovernatesService, private doctor: DoctorService,    private animationBuilder: AnimationBuilder
+    ) {}
 
   ngOnInit(): void {
     this.getGovernorates();
+    this.animateForm();
+
   }
+
+  animateForm() {
+    const animation = this.animationBuilder.build([
+      style({ transform: 'translateY(-50px)', opacity: 0 }), 
+      animate('500ms ease', style({ transform: 'translateY(0)', opacity: 1 })), 
+    ]);
+
+    const element = document.querySelector('.add-doctor');
+    if (element) {
+      const player = animation.create(element);
+      player.play();
+    }
+  }
+
+
 
   loginForm = new FormGroup({
     name_en: new FormControl('', [Validators.required]),

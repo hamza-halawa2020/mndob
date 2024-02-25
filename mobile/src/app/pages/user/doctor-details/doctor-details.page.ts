@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { DoctorService } from '../services/doctor/doctor.service';
+import { AnimationBuilder, style, animate } from '@angular/animations';
 
 @Component({
   selector: 'app-doctor-details',
@@ -13,12 +14,30 @@ export class DoctorDetailsPage implements OnInit {
   visitTimes: any[] = [];
   constructor(
     private activateRoute: ActivatedRoute,
-    private doctorDetails: DoctorService
+    private doctorDetails: DoctorService,
+    private animationBuilder: AnimationBuilder
+
   ) {}
 
   ngOnInit(): void {
     this.getDoctor();
+    this.animateForm();
+
   }
+
+  animateForm() {
+    const animation = this.animationBuilder.build([
+      style({ transform: 'translateY(-50px)', opacity: 0 }), 
+      animate('500ms ease', style({ transform: 'translateY(0)', opacity: 1 })), 
+    ]);
+
+    const element = document.querySelector('.doctor-details');
+    if (element) {
+      const player = animation.create(element);
+      player.play();
+    }
+  }
+
 
   getDoctor() {
     this.activateRoute.params.subscribe((params) => {

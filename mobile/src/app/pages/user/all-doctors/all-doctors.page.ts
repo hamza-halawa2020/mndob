@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { DoctorService } from '../services/doctor/doctor.service';
+import { AnimationBuilder, style, animate } from '@angular/animations';
 
 @Component({
   selector: 'app-all-doctors',
@@ -12,11 +13,30 @@ export class AllDoctorsPage implements OnInit {
   searchTerm: string = '';
   selectedCategoryId: any = 'all';
 
-  constructor(private doctorService: DoctorService) {}
+  constructor(private doctorService: DoctorService,
+    private animationBuilder: AnimationBuilder
+    ) {}
 
   ngOnInit(): void {
     this.getAllDoctors();
+    this.animateForm();
+
   }
+
+  
+  animateForm() {
+    const animation = this.animationBuilder.build([
+      style({ transform: 'translateY(-50px)', opacity: 0 }), 
+      animate('500ms ease', style({ transform: 'translateY(0)', opacity: 1 })), 
+    ]);
+
+    const element = document.querySelector('.allDcotors');
+    if (element) {
+      const player = animation.create(element);
+      player.play();
+    }
+  }
+
 
   getAllDoctors() {
     this.doctorService.getAllDoctors().subscribe(

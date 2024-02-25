@@ -1,17 +1,17 @@
 <ion-header>
-  <ion-toolbar>
+  <ion-toolbar color="primary">
     <ion-title class="ion-text-center">All Doctors</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
+<ion-content class="allDoctors"  color="medium">
   <ion-grid>
     <!-- Filter and search bar row -->
     <ion-row class="ion-align-items-center">
       <ion-col size="12" size-md="8">
         <ion-item>
-          <ion-label position="stacked">Filter :</ion-label>
-          <ion-select (ionChange)="filterCategory($event)" [(ngModel)]="selectedCategoryId">
+          <ion-label position="stacked" color="primary">Filter :</ion-label>
+          <ion-select (ionChange)="filterCategory($event)" [(ngModel)]="selectedCategoryId" color="primary">
             <ion-select-option value="all" selected>ِAll</ion-select-option>
             <ion-select-option value="{{ option.doctor_id }}" *ngFor="let option of doctors">
               {{ option.doctor.name_ar }}
@@ -20,15 +20,16 @@
         </ion-item>
       </ion-col>
       <ion-col size="12" size-md="4">
-        <ion-searchbar [(ngModel)]="searchTerm" (ionInput)="filterDoctors()" placeholder="Search"></ion-searchbar>
+        <ion-searchbar [(ngModel)]="searchTerm" (ionInput)="filterDoctors()" placeholder="Search" color="primary"></ion-searchbar>
       </ion-col>
     </ion-row>
 
     <!-- Doctor cards row -->
     <ion-row>
       <ion-col size="12" size-md="6" size-lg="4" *ngFor="let doctor of filteredDoctors;let i = index">
-        <ion-card class="ion-margin-top card-wrapper">
+        <ion-card class="ion-margin-top card-wrapper" color="dark">
           <ion-card-content [routerLink]="'/doctor-details/'+ doctor.doctor.id">
+            <ion-icon name="person" class="ion-text-center" color="primary"></ion-icon>
             <p class="ion-text-center">Index: {{ i+1 }}</p>
             <p class="ion-text-center">ID: {{ doctor.doctor.id }}</p>
             <h5 class="ion-text-center">{{ doctor.doctor.name_ar }}</h5>
@@ -38,6 +39,7 @@
 
             <!-- Last visit rate -->
             <p class="ion-text-center" *ngIf="doctor.doctor.visit_rates.length > 0">
+              <ion-icon name="calendar" class="ion-text-center" color="primary"></ion-icon>
               Last Visit Rate: {{ getNewestVisitRate(doctor.doctor.visit_rates).visit_rate_min }}
             </p>
 

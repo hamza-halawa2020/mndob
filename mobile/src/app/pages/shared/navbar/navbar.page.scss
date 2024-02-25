@@ -1,0 +1,12 @@
+.scrollable-content {
+    display: flex;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch; /* Enables smooth scrolling on iOS devices */
+  }
+  
+  /* Adjust the styles as needed */
+  .scrollable-content ion-buttons {
+    margin: 0 10px; /* Add some margin between buttons */
+  }
+  

@@ -9,7 +9,8 @@ import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { IonicStorageModule } from '@ionic/storage-angular';
 import { TokenAuthInterceptor } from './interceptors/token-auth.interceptor';
 import { DatePipe } from '@angular/common';
-import { Geolocation } from '@ionic-native/geolocation/ngx'; // Import Geolocation
+import { Geolocation } from '@ionic-native/geolocation/ngx';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 @NgModule({
   declarations: [AppComponent],
   imports: [
@@ -17,6 +18,7 @@ import { Geolocation } from '@ionic-native/geolocation/ngx'; // Import Geolocati
     IonicModule.forRoot(),
     AppRoutingModule,
     NavbarPageModule,
+    BrowserAnimationsModule,
     HttpClientModule,
     IonicStorageModule.forRoot(),
   ],

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { DoctorService } from '../services/doctor/doctor.service';
 import { VisitService } from '../services/visit/visit.service';
+import { AnimationBuilder, style, animate } from '@angular/animations';
 
 @Component({
   selector: 'app-home',
@@ -25,16 +26,31 @@ export class HomePage implements OnInit {
 
   constructor(
     private doctorsService: DoctorService,
-    private visitsService: VisitService
+    private visitsService: VisitService,
+    private animationBuilder: AnimationBuilder
   ) {
     this.selectedDate = new Date().toISOString().substring(0, 10);
   }
 
+  animateForm() {
+    const animation = this.animationBuilder.build([
+      style({ transform: 'translateY(-50px)', opacity: 0 }),
+      animate('500ms ease', style({ transform: 'translateY(0)', opacity: 1 })),
+    ]);
+
+    const element = document.querySelector('.home');
+    if (element) {
+      const player = animation.create(element);
+      player.play();
+    }
+  }
+
   ngOnInit(): void {
+    this.animateForm();
+
     this.getAllDoctors();
     this.getAllVisits();
     this.getVisitsCount(this.selectedDate);
-    
   }
   //Total Doctors
   getAllDoctors() {
@@ -71,7 +87,6 @@ export class HomePage implements OnInit {
         );
         const doctorsVisitedTodayCount = uniqueDoctorsVisitedToday.size;
         this.doctorsVisitedToday = doctorsVisitedTodayCount;
-
       },
       (error) => {
         console.error('Error fetching visits:', error);

@@ -9,7 +9,7 @@ import { SignService } from '../../sign/services/sign/sign.service';
 export class NavbarPage implements OnInit {
   isLoggedIn: boolean = false; // Initially assuming user is not logged in
 
-  constructor(private authService: SignService) {}
+  constructor(public authService: SignService) {}
   ngOnInit() {
     // Call checkLoginStatus when the component initializes
     this.checkLoginStatus();

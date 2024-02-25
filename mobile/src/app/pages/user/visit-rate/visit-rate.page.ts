@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { DoctorService } from '../services/doctor/doctor.service';
 import { VisitRateService } from '../services/visit-rate/visit-rate.service';
+import { AnimationBuilder, style, animate } from '@angular/animations';
 
 @Component({
   selector: 'app-visit-rate',
@@ -14,13 +15,30 @@ export class VisitRatePage implements OnInit {
   error: any;
   constructor(
     private doctor: DoctorService,
-    private visitRate: VisitRateService
+    private visitRate: VisitRateService,
+    private animationBuilder: AnimationBuilder
+
   ) {}
 
   ngOnInit(): void {
     this.getAllDoctors();
-    
+    this.animateForm();
+
   }
+
+  animateForm() {
+    const animation = this.animationBuilder.build([
+      style({ transform: 'translateY(-50px)', opacity: 0 }), 
+      animate('500ms ease', style({ transform: 'translateY(0)', opacity: 1 })), 
+    ]);
+
+    const element = document.querySelector('.visit-rate');
+    if (element) {
+      const player = animation.create(element);
+      player.play();
+    }
+  }
+
 
   loginForm = new FormGroup({
     visit_rate_min: new FormControl('', [Validators.required, Validators.pattern(/^[1-9]$/)]),

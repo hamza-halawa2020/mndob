@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { SignService } from '../services/sign/sign.service';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-
+import { AnimationBuilder, style, animate } from '@angular/animations';
 @Component({
   selector: 'app-login',
   templateUrl: './login.page.html',
@@ -12,7 +12,28 @@ export class LoginPage implements OnInit {
   formSubmitted: boolean = false;
   error: any;
 
-  constructor(private router: Router, private signService: SignService) {}
+  constructor(
+    private router: Router,
+    private signService: SignService,
+    private animationBuilder: AnimationBuilder
+  ) {}
+
+  ngOnInit() {
+    this.animateForm();
+  }
+
+  animateForm() {
+    const animation = this.animationBuilder.build([
+      style({ transform: 'translateY(-50px)', opacity: 0 }), 
+      animate('500ms ease', style({ transform: 'translateY(0)', opacity: 1 })), 
+    ]);
+
+    const element = document.querySelector('.login-card');
+    if (element) {
+      const player = animation.create(element);
+      player.play();
+    }
+  }
 
   loginForm = new FormGroup({
     email: new FormControl('', [
@@ -33,8 +54,6 @@ export class LoginPage implements OnInit {
   get password(): FormControl {
     return this.loginForm.get('password') as FormControl;
   }
-
-  ngOnInit() {}
 
   async login() {
     if (this.loginForm.valid) {

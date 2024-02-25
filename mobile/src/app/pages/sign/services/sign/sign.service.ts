@@ -37,8 +37,8 @@ export class SignService {
     await this.storage.set(TOKEN_KEY, token);
   }
 
-  async isLoggedIn(): Promise<boolean> {
-    return await this.getToken();
+   isLoggedIn() {
+    return this.getToken();
   }
 
   async getToken() {

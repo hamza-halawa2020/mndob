@@ -76,6 +76,7 @@ const routes: Routes = [
         (m) => m.NavbarPageModule
       ),
   },
+
 ];
 
 @NgModule({

@@ -3,7 +3,7 @@ import { GovernatesService } from '../../user/services/governates/governates.ser
 import { SignService } from '../services/sign/sign.service';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-
+import { AnimationBuilder, style, animate } from '@angular/animations';
 @Component({
   selector: 'app-signup',
   templateUrl: './signup.page.html',
@@ -17,11 +17,27 @@ export class SignupPage implements OnInit {
   constructor(
     private gov: GovernatesService,
     private signService: SignService,
-    private router: Router
+    private router: Router,
+    private animationBuilder: AnimationBuilder
   ) {}
+
+  animateForm() {
+    const animation = this.animationBuilder.build([
+      style({ transform: 'translateY(-50px)', opacity: 0 }),
+      animate('500ms ease', style({ transform: 'translateY(0)', opacity: 1 })),
+    ]);
+
+    const element = document.querySelector('.sign-card');
+    if (element) {
+      const player = animation.create(element);
+      player.play();
+    }
+  }
 
   ngOnInit() {
     this.getGovernorates();
+    this.animateForm();
+
   }
 
   loginForm = new FormGroup({
@@ -37,7 +53,6 @@ export class SignupPage implements OnInit {
     name_en: new FormControl('', [Validators.required]),
     name_ar: new FormControl('', [Validators.required]),
     gov_id: new FormControl('', [Validators.required]),
-
   });
 
   get name_en(): FormControl {
@@ -60,7 +75,9 @@ export class SignupPage implements OnInit {
   getGovernorates() {
     this.gov.getGovernorates().subscribe((data) => {
       this.governorates = Object.values(data)[0];
-      this.governorates.sort((a:any, b: any) => a.name_en.localeCompare(b.name_en));
+      this.governorates.sort((a: any, b: any) =>
+        a.name_en.localeCompare(b.name_en)
+      );
 
       // console.log('governorates', this.governorates);
     });
