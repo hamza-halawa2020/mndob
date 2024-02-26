@@ -30,20 +30,24 @@
               Total Visits: {{ doctorVisitsInSelectedDate }}
             </p>
             <p class="text-success">Doctor Visits:</p>
-            <ul>
-              <ng-container
-                *ngFor="let visitData of nameOfDoctorVisitsInSelectedDate"
-              >
-                <ol *ngFor="let doctor of visitData; let i = index">
-                  {{
-                    i + 1
-                  }}-
-                  {{
-                    doctor.doctor_name_ar
-                  }}
-                </ol>
-              </ng-container>
-            </ul>
+            <div class="card">
+              <ul class="list-group list-group-flush">
+                <ng-container *ngFor="let visitData of nameOfDoctorVisitsInSelectedDate">
+                  <ng-container *ngFor="let doctor of visitData; let i = index">
+                    <li class="list-group-item">
+                      <div class="card bg-dark ">
+                        
+                        <a class="text-warning" [routerLink]="['/doctors', doctor.doctor_id]">
+                          <span class="text-warning">
+                            {{ i + 1 }}- 
+                          </span>{{ doctor.doctor_name_ar }}
+                        </a>
+                      </div>
+                    </li>
+                  </ng-container>
+                </ng-container>
+              </ul>
+            </div>
           </div>
           <ng-template #off>
             <p class="text-danger">No visits for this date.</p>
