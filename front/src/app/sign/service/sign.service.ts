@@ -20,6 +20,14 @@ export class LoginService {
     });
   }
 
+  updateME(userId: string, userData: any) {
+    return this.http.put(`${this.apiUrl}users/${userId}`, userData);
+  }
+  
+  getUserData() {
+    return this.http.get(`${this.apiUrl}users`);
+  }
+
   registerUser(userData: any) {
     return this.http.post(`${this.apiUrl}users`, userData);
   }

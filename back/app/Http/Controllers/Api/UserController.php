@@ -5,10 +5,11 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Http\Resources\UserResource;
-use Gate;
 use App\Models\User;
 use App\Http\Requests\StoreUserRequest;
+use App\Http\Requests\UpdateUserRequest;
 use Exception;
+use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
@@ -22,10 +23,16 @@ class UserController extends Controller
     public function index()
     {
         try {
-            $users = User::all();
-            return UserResource::collection($users);
+            $authenticatedUserId = Auth::id();
+
+            // Fetch a single user by ID
+            $user = User::findOrFail($authenticatedUserId);
+
+            // Wrap the user data in a resource for consistent output format
+            return new UserResource($user);
         } catch (Exception $e) {
-            return response()->json($e, 500);
+            // Handle any exceptions and return a JSON response with 500 status code
+            return response()->json(['error' => $e->getMessage()], 500);
         }
     }
 
@@ -63,7 +70,8 @@ class UserController extends Controller
     public function show(string $id)
     {
         try {
-            $user = User::findOrFail($id);
+            $authenticatedUserId = Auth::id();
+            $user = User::findOrFail($authenticatedUserId);
             return new UserResource($user);
         } catch (Exception $e) {
             return response()->json($e, 500);
@@ -73,10 +81,22 @@ class UserController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+
+    public function update(UpdateUserRequest $request, string $id)
     {
-        //
+        try {
+            $authenticatedUserId = Auth::id();
+            if ($id != $authenticatedUserId) {
+                return response()->json(['error' => 'Unauthorized'], 401);
+            }
+            $user = User::findOrFail($authenticatedUserId);
+            $user->update($request->validated());
+            return response()->json(['data' => new UserResource($user)], 200);
+        } catch (Exception $e) {
+            return response()->json($e, 500);
+        }
     }
+
 
     /**
      * Remove the specified resource from storage.

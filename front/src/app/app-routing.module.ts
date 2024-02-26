@@ -10,11 +10,17 @@ import { AllDoctorsComponent } from './user/all-doctors/all-doctors.component';
 import { DoctorDetailsComponent } from './user/doctor-details/doctor-details.component';
 import { VisitRateComponent } from './user/visit-rate/visit-rate.component';
 import { NotFoundComponent } from './shared/not-found/not-found.component';
+import { ProfileComponent } from './user/profile/profile.component';
 
 const routes: Routes = [
   {
     path: '',
     component: HomeComponent,
+    canActivate: [AuthGuard],
+  },
+  {
+    path: 'profile',
+    component: ProfileComponent,
     canActivate: [AuthGuard],
   },
   {

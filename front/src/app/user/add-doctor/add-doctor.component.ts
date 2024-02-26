@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
 import { GovernatesService } from '../services/governates/governates.service';
 import { DoctorService } from '../services/doctor/doctor.service';
 
@@ -14,10 +13,7 @@ export class AddDoctorComponent {
   governorates: any;
   error: any;
 
-  constructor(
-    private gov: GovernatesService,
-    private doctor: DoctorService
-  ) {}
+  constructor(private gov: GovernatesService, private doctor: DoctorService) {}
 
   ngOnInit(): void {
     this.getGovernorates();
@@ -45,11 +41,11 @@ export class AddDoctorComponent {
   getGovernorates() {
     this.gov.getGovernorates().subscribe((data) => {
       this.governorates = Object.values(data)[0];
-      this.governorates.sort((a:any, b: any) => a.name_ar.localeCompare(b.name_ar));
-      // console.log('Sorted governorates:', this.governorates);
+      this.governorates.sort((a: any, b: any) =>
+        a.name_ar.localeCompare(b.name_ar)
+      );
     });
   }
-  
 
   loginSubmitted() {
     if (this.loginForm.valid) {

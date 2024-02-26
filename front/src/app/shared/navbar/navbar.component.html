@@ -19,6 +19,11 @@
           <a class="nav-link" routerLink="">Home</a>
         </li>
         <li class="nav-item">
+          <a class="nav-link" *ngIf="isLoggedIn()" routerLink="profile"
+            >profile</a
+          >
+        </li>
+        <li class="nav-item">
           <a class="nav-link" *ngIf="isLoggedIn()" routerLink="all-doctors"
             >All Doctors</a
           >
