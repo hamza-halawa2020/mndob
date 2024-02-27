@@ -59,6 +59,8 @@ export class VisitRateComponent {
   loginSubmitted() {
     if (this.loginForm.valid) {
       this.formSubmitted = true;
+      console.log(this.loginForm.value);
+
       this.visitRate.addVisitRate(this.loginForm.value).subscribe(
         () => {
           // this.loginForm.reset();
@@ -66,6 +68,7 @@ export class VisitRateComponent {
           this.loginForm.get('visit_rate_min')!.reset();
           this.loginForm.get('doctor_id')!.reset();
           this.error = 'done';
+          
         },
         () => {
           this.error = 'Error doctors';

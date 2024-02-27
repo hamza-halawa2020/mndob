@@ -49,7 +49,7 @@ export class HomeComponent {
     this.visitsService.getVisitsByDate(selectedDate).subscribe((data) => {
       this.doctorVisitsInSelectedDate = Object.values(data)[0].length;
       this.nameOfDoctorVisitsInSelectedDate = Object.values(data);
-      console.log('nameOfDoctorVisitsInSelectedDate',this.nameOfDoctorVisitsInSelectedDate);
+      // console.log('nameOfDoctorVisitsInSelectedDate',this.nameOfDoctorVisitsInSelectedDate);
       
       
     });
