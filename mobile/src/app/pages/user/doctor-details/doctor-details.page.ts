@@ -5,6 +5,7 @@ import { AnimationBuilder, style, animate } from '@angular/animations';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Geolocation } from '@ionic-native/geolocation/ngx';
 import { VisitService } from '../services/visit/visit.service';
+import { VisitRateService } from '../services/visit-rate/visit-rate.service';
 
 @Component({
   selector: 'app-doctor-details',
@@ -18,13 +19,15 @@ export class DoctorDetailsPage implements OnInit {
   formSubmitted: boolean = false;
   error: any;
   visitDate: any = {};
+  rateError: any;
 
   constructor(
     private activateRoute: ActivatedRoute,
     private visitService: VisitService,
     private doctorDetails: DoctorService,
     private animationBuilder: AnimationBuilder,
-    private geolocation: Geolocation
+    private geolocation: Geolocation,
+    private visitRate: VisitRateService
   ) {}
 
   ngOnInit(): void {
@@ -63,8 +66,7 @@ export class DoctorDetailsPage implements OnInit {
         this.visitDate.doctor_id = this.id;
         this.saveVisit();
       },
-      (error) => {
-        console.log('Error getting location:', error);
+      () => {
         this.error = 'Error getting location';
       }
     );
@@ -89,6 +91,49 @@ export class DoctorDetailsPage implements OnInit {
       this.error = 'Form is invalid. Please fill all the required fields.';
     }
   }
+
+  visitRateForm = new FormGroup({
+    visit_rate_min: new FormControl('', [
+      Validators.required,
+      Validators.pattern(/^[1-9]$/),
+    ]),
+    month: new FormControl(new Date().getMonth() + 1, [Validators.required]),
+  });
+  get visit_rate_min(): FormControl {
+    return this.visitRateForm.get('visit_rate_min') as FormControl;
+  }
+
+  get month(): FormControl {
+    return this.visitRateForm.get('month') as FormControl;
+  }
+
+  saveRate() {
+    if (this.visitRateForm.valid) {
+      this.formSubmitted = true;
+
+      const currentYear = new Date().getFullYear();
+
+      const visitData = {
+        ...this.visitRateForm.value,
+        doctor_id: this.id,
+        year: currentYear,
+      };
+
+      this.visitRate.addVisitRate(visitData).subscribe(
+        () => {
+          this.rateError = 'success';
+        },
+        () => {
+          console.log(visitData);
+
+          this.rateError = 'error';
+        }
+      );
+    } else {
+      this.rateError = 'Form is invalid. Please fill all the required fields.';
+    }
+  }
+
   getDoctor() {
     this.activateRoute.params.subscribe((params) => {
       this.id = +params['id'];

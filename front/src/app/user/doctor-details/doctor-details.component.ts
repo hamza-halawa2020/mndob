@@ -3,6 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { DoctorService } from '../services/doctor/doctor.service';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { VisitsService } from '../services/visit/visits.service';
+import { VisitRateService } from '../services/visit_rate/visit-rate.service';
 
 @Component({
   selector: 'app-doctor-details',
@@ -21,7 +22,8 @@ export class DoctorDetailsComponent {
   constructor(
     private activateRoute: ActivatedRoute,
     private doctorDetails: DoctorService,
-    private visitService: VisitsService
+    private visitService: VisitsService,
+    private visitRate : VisitRateService
   ) {}
 
   ngOnInit(): void {
@@ -62,7 +64,7 @@ export class DoctorDetailsComponent {
         year: currentYear,
       };
 
-      this.visitService.addVisit(visitData).subscribe(
+      this.visitRate.addVisitRate(visitData).subscribe(
         () => {
           this.rateError = 'success';
         },

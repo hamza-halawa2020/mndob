@@ -34,18 +34,29 @@
               class="ion-text-success"
             >
               Total Visits: {{ doctorVisitsInSelectedDate }}
+              <p class="text-success">Doctor Visits:</p>
             </ion-text>
 
-            <p class="text-success">Doctor Visits:</p>
-            <ul>
+            <ion-list lines="full">
               <ng-container
                 *ngFor="let visitData of nameOfDoctorVisitsInSelectedDate"
               >
-                <ol *ngFor="let doctor of visitData;let i = index">
-                  {{i+1}} - {{ doctor.doctor_name_ar }}
-                </ol>
+                <ng-container *ngFor="let doctor of visitData; let i = index">
+                  <ion-item>
+                    <ion-label>
+                      <span>{{ i + 1 }}-</span>{{ doctor.doctor_name_ar }}
+                    </ion-label>
+                    <ion-button
+                      fill="clear"
+                      slot="end"
+                      [routerLink]="'/doctor-details/'+ doctor.doctor_id"
+                    >
+                      View Details
+                    </ion-button>
+                  </ion-item>
+                </ng-container>
               </ng-container>
-            </ul>
+            </ion-list>
 
             <ng-template #noVisits>
               <ion-text color="danger">No visits for this date.</ion-text>

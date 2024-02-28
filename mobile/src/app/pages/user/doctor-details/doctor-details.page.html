@@ -99,13 +99,13 @@
         <ion-item *ngFor="let visitTime of visitTimes">
           <ion-label>{{ visitTime.monthYear }}</ion-label>
           <ion-label>{{ visitTime.count }}</ion-label>
-          <ion-label>
+          <!-- <ion-label>
             <ion-list>
               <ion-item *ngFor="let time of visitTime.visitTimes">
                 {{ time }}
               </ion-item>
             </ion-list>
-          </ion-label>
+          </ion-label> -->
         </ion-item>
       </ion-list>
     </ion-card-content>
@@ -113,6 +113,78 @@
 
   <!-- Visit Rates Table -->
   <ion-card *ngIf="Details" class="mt-4">
+
+
+
+
+    <form (ngSubmit)="saveRate()" [formGroup]="visitRateForm">
+      <div *ngIf="formSubmitted && visit_rate_min.invalid" class="error-message">
+        <ion-text color="danger" class="ion-padding-start">
+          Add visit Rate To The Doctor.
+        </ion-text>
+      </div>
+      <ion-item [class.invalid]="formSubmitted && visit_rate_min.invalid">
+        <ion-label position=""
+          ><ion-text color="danger"><span>*</span></ion-text>
+        </ion-label>
+        <ion-input
+          type="text"
+          formControlName="visit_rate_min"
+          required
+        ></ion-input>
+      </ion-item>
+
+      <ion-col size="6">
+        <div *ngIf="formSubmitted && month.invalid" class="error-message">
+          <ion-text color="danger" class="ion-padding-start">
+            Please enter a valid month .
+          </ion-text>
+        </div>
+        <ion-list mode="ios">
+          <ion-item>
+            <ion-label position="floating">Month<ion-text color="danger"><span>*</span></ion-text></ion-label>
+            <ion-select formControlName="month" label-placement="floating" id="month">
+              <ion-select-option value="1">January</ion-select-option>
+              <ion-select-option value="2">February</ion-select-option>
+              <ion-select-option value="3">March</ion-select-option>
+              <ion-select-option value="4">April</ion-select-option>
+              <ion-select-option value="5">May</ion-select-option>
+              <ion-select-option value="6">June</ion-select-option>
+              <ion-select-option value="7">July</ion-select-option>
+              <ion-select-option value="8">August</ion-select-option>
+              <ion-select-option value="9">September</ion-select-option>
+              <ion-select-option value="10">October</ion-select-option>
+              <ion-select-option value="11">November</ion-select-option>
+              <ion-select-option value="12">December</ion-select-option>
+            </ion-select>
+          </ion-item>
+        </ion-list>
+      </ion-col>
+
+
+      <ion-button
+        [disabled]="visitRateForm.invalid"
+        mode="ios"
+        type="submit"
+        expand="block"
+        color="warning"
+        >Submit</ion-button
+      >
+    </form>
+
+    <div *ngIf="rateError" class="error-message">
+      <ion-text color="danger" class="ion-padding-start">{{ rateError }}</ion-text>
+    </div>
+
+
+
+
+
+
+
+
+
+
     <ion-card-header>
       <ion-card-title
         ><ion-icon name="trending-up" slot="start"></ion-icon> Visit

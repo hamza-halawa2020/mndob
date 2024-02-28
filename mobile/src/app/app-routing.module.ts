@@ -76,7 +76,14 @@ const routes: Routes = [
         (m) => m.NavbarPageModule
       ),
   },
-
+  {
+    path: 'profile',
+    canActivate: [AuthGuard],
+    loadChildren: () =>
+      import('./pages/user/profile/profile.module').then(
+        (m) => m.ProfilePageModule
+      ),
+  },
 ];
 
 @NgModule({

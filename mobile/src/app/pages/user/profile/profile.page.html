@@ -1,0 +1,136 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>profile</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <div class="ion-text-center">
+    <h3 class="ion-padding">My Profile</h3>
+    <div
+      class="container alert alert-warning text-center"
+      *ngIf="error"
+      role="alert"
+    >
+      {{ error }}
+    </div>
+  </div>
+
+  <ion-card class="ion-margin">
+    <ion-card-content>
+      <form [formGroup]="loginForm" (ngSubmit)="loginSubmitted()">
+        <ion-row class="ion-margin-bottom">
+          <ion-col size="6">
+            <ion-item>
+              <ion-label position="floating"
+                >Email<span class="ion-text-danger">*</span></ion-label
+              >
+              <ion-input
+                formControlName="email"
+                type="email"
+                placeholder="Enter your email"
+              ></ion-input>
+            </ion-item>
+            <ion-text
+              color="success"
+              *ngIf="email.valid && (email.touched || email.dirty)"
+            >
+              <ion-icon name="checkmark-circle-outline"></ion-icon> Looks good!
+            </ion-text>
+            <ion-text
+              color="danger"
+              *ngIf="email.invalid && (email.dirty || email.touched)"
+            >
+              <ion-icon name="alert-circle-outline"></ion-icon> Email is invalid
+              or required.
+            </ion-text>
+          </ion-col>
+          <ion-col size="6">
+            <ion-item>
+              <ion-label position="floating"
+                >Password<span class="ion-text-danger">*</span></ion-label
+              >
+              <ion-input
+                formControlName="password"
+                type="password"
+                placeholder="Enter your password"
+              ></ion-input>
+            </ion-item>
+            <ion-text
+              color="success"
+              *ngIf="password.valid && (password.touched || password.dirty)"
+            >
+              <ion-icon name="checkmark-circle-outline"></ion-icon> Looks good!
+            </ion-text>
+            <ion-text
+              color="danger"
+              *ngIf="password.invalid && (password.dirty || password.touched)"
+            >
+              <ion-icon name="alert-circle-outline"></ion-icon> Password is
+              invalid or required.
+            </ion-text>
+          </ion-col>
+        </ion-row>
+
+        <ion-row class="ion-margin-bottom">
+          <ion-col size="6">
+            <ion-item>
+              <ion-label position="floating"
+                >Name (English)<span class="ion-text-danger">*</span></ion-label
+              >
+              <ion-input
+                formControlName="name_en"
+                type="text"
+                placeholder="Enter your name (English)"
+              ></ion-input>
+            </ion-item>
+            <!-- Validation messages for name_en -->
+          </ion-col>
+          <ion-col size="6">
+            <ion-item>
+              <ion-label position="floating"
+                >Name (Arabic)<span class="ion-text-danger">*</span></ion-label
+              >
+              <ion-input
+                formControlName="name_ar"
+                type="text"
+                placeholder="Enter your name (Arabic)"
+              ></ion-input>
+            </ion-item>
+            <!-- Validation messages for name_ar -->
+          </ion-col>
+        </ion-row>
+
+        <ion-row class="ion-margin-bottom">
+          <ion-col>
+            <ion-item>
+              <ion-label position="floating"
+                >Governorate<span class="ion-text-danger">*</span></ion-label
+              >
+              <ion-select
+                formControlName="gov_id"
+                placeholder="Select your governorate"
+              >
+                <ion-select-option
+                  *ngFor="let governorate of governorates"
+                  [value]="governorate.id"
+                  >{{ governorate.name_en }}</ion-select-option
+                >
+              </ion-select>
+            </ion-item>
+            <!-- Validation messages for gov_id -->
+          </ion-col>
+        </ion-row>
+
+        <div class="ion-text-center">
+          <ion-button
+            expand="block"
+            type="submit"
+            [disabled]="loginForm.invalid"
+            >Update Your Profile</ion-button
+          >
+        </div>
+      </form>
+    </ion-card-content>
+  </ion-card>
+</ion-content>

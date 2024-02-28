@@ -32,6 +32,12 @@ export class SignService {
   registerUser(userData: any) {
     return this.http.post(`${this.apiUrl}users`, userData);
   }
+  updateME(userId: string, userData: any) {
+    return this.http.put(`${this.apiUrl}users/${userId}`, userData);
+  }
+  getUserData() {
+    return this.http.get(`${this.apiUrl}users`);
+  }
 
   async setToken(token: string) {
     await this.storage.set(TOKEN_KEY, token);
