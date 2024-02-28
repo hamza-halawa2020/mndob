@@ -90,7 +90,7 @@ export class DoctorDetailsComponent {
           this.visitDate.doctor_id = this.id;
           this.saveVisit();
         },
-        (error) => {
+        () => {
           this.error = 'Error getting location';
         }
       );
