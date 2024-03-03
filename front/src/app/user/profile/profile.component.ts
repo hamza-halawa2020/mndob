@@ -58,8 +58,6 @@ export class ProfileComponent {
     this.user.getUserData().subscribe((data) => {
       this.myProfile = Object.values(data)[0];
       this.userId = this.myProfile.id;
-      // console.log('myProfile', this.myProfile);
-      // console.log('userId', this.userId);
 
       this.loginForm.patchValue({
         name_en: this.myProfile.name_en,

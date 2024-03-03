@@ -5,10 +5,10 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\DoctroResource;
 use App\Http\Requests\StoreDoctorRequest;
+use App\Http\Requests\UpdateDoctorRequest;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Doctor;
 use App\Models\Governate;
-use App\Models\Visit_rate;
 use Illuminate\Http\Request;
 use Exception;
 use App\Models\User;
@@ -116,10 +116,29 @@ class DoctorController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(UpdateDoctorRequest $request, string $id)
     {
-        //
+        try {
+            $doctor = Doctor::findOrFail($id);
+            $validatedData = $request->validate([
+                'name_ar' => 'required|string',
+                'name_en' => 'required|string',
+                'class' => 'required|string',
+                'gov_id' => 'required|exists:governates,id',
+            ]);
+            $doctor->name_ar = $validatedData['name_ar'];
+            $doctor->name_en = $validatedData['name_en'];
+            $doctor->class = $validatedData['class'];
+            $doctor->gov_id = $validatedData['gov_id'];
+
+            $doctor->save();
+
+            return response()->json(['data' => new DoctroResource($doctor)], 200);
+        } catch (Exception $e) {
+            return response()->json($e, 500);
+        }
     }
+
 
     /**
      * Remove the specified resource from storage.

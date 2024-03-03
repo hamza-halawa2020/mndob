@@ -4,6 +4,7 @@ import { DoctorService } from '../services/doctor/doctor.service';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { VisitsService } from '../services/visit/visits.service';
 import { VisitRateService } from '../services/visit_rate/visit-rate.service';
+import { GovernatesService } from '../services/governates/governates.service';
 
 @Component({
   selector: 'app-doctor-details',
@@ -18,16 +19,67 @@ export class DoctorDetailsComponent {
   error: any;
   rateError: any;
   visitDate: any = {};
+  governorates: any;
+  errorUpdate: any;
 
   constructor(
     private activateRoute: ActivatedRoute,
     private doctorDetails: DoctorService,
     private visitService: VisitsService,
-    private visitRate : VisitRateService
+    private visitRate: VisitRateService,
+    private gov: GovernatesService
   ) {}
 
   ngOnInit(): void {
     this.getDoctor();
+    this.getGovernorates();
+  }
+
+  loginForm = new FormGroup({
+    name_en: new FormControl('', [Validators.required]),
+    name_ar: new FormControl('', [Validators.required]),
+    gov_id: new FormControl('', [Validators.required]),
+    class: new FormControl('', [Validators.required]),
+  });
+  get name_en(): FormControl {
+    return this.loginForm.get('name_en') as FormControl;
+  }
+  get name_ar(): FormControl {
+    return this.loginForm.get('name_ar') as FormControl;
+  }
+
+  get gov_id(): FormControl {
+    return this.loginForm.get('gov_id') as FormControl;
+  }
+  get class(): FormControl {
+    return this.loginForm.get('class') as FormControl;
+  }
+  getGovernorates() {
+    this.gov.getGovernorates().subscribe((data) => {
+      this.governorates = Object.values(data)[0];
+      this.governorates.sort((a: any, b: any) =>
+        a.name_ar.localeCompare(b.name_ar)
+      );
+    });
+  }
+
+  loginSubmitted() {
+    if (this.loginForm.valid) {
+      this.formSubmitted = true;
+      this.doctorDetails
+        .updateDoctorByID(this.id, this.loginForm.value)
+        .subscribe(
+          () => {
+            // this.loginForm.reset();
+            this.errorUpdate = 'done';
+          },
+          () => {
+            this.errorUpdate = 'Error doctors';
+          }
+        );
+    } else {
+      this.errorUpdate = 'Error doctors';
+    }
   }
 
   submitForm = new FormGroup({
@@ -129,6 +181,12 @@ export class DoctorDetailsComponent {
         this.Details = Object.values(data)[0];
         this.extractVisitTimes();
         this.sortVisits();
+        this.loginForm.patchValue({
+          name_en: this.Details.doctor.name_en,
+          name_ar: this.Details.doctor.name_ar,
+          gov_id: this.Details.doctor.gov_id,
+          class: this.Details.doctor.class,
+        });
       });
     });
   }
