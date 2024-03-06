@@ -22,7 +22,8 @@ export class HomeComponent {
   startDate: any;
   endDate: any;
   selectedMonth: string = new Date().toISOString().substring(0, 7);
-
+  selectedMonthPerDay: string = new Date().toISOString().substring(0, 7);
+  averageVisitsPerDay: any;
   constructor(
     private doctorsService: DoctorService,
     private visitsService: VisitsService
@@ -33,10 +34,33 @@ export class HomeComponent {
   ngOnInit(): void {
     this.getAllDoctors();
     this.getAllVisits();
-    this.getVisitsCount(this.selectedDate);
-    
-    
   }
+
+  onMonthChangePerDay() {
+    const [year, month] = this.selectedMonthPerDay.split('-');
+    const startDate = new Date(parseInt(year), parseInt(month) - 1, 1);
+    const endDate = new Date(parseInt(year), parseInt(month), 0);
+    const visitsInMonth = this.visits.filter((visit) => {
+      const visitDate = new Date(visit.visit_date);
+      return visitDate >= startDate && visitDate <= endDate;
+    });
+
+    const uniqueVisitDates = new Set(
+      visitsInMonth.map((visit) => visit.visit_date.slice(0, 10))
+    );
+
+    const totalVisits = visitsInMonth.length;
+
+    this.averageVisitsPerDay = totalVisits / uniqueVisitDates.size;
+  }
+
+  getVisitsCount(selectedDate: any): void {
+    this.visitsService.getVisitsByDate(selectedDate).subscribe((data) => {
+      this.doctorVisitsInSelectedDate = Object.values(data)[0].length;
+      this.nameOfDoctorVisitsInSelectedDate = Object.values(data);
+    });
+  }
+
   //Total Doctors
   getAllDoctors() {
     this.doctorsService.getAllDoctors().subscribe((count) => {
@@ -44,16 +68,6 @@ export class HomeComponent {
     });
   }
 
-  //Doctors Visited
-  getVisitsCount(selectedDate: any): void {
-    this.visitsService.getVisitsByDate(selectedDate).subscribe((data) => {
-      this.doctorVisitsInSelectedDate = Object.values(data)[0].length;
-      this.nameOfDoctorVisitsInSelectedDate = Object.values(data);
-      // console.log('nameOfDoctorVisitsInSelectedDate',this.nameOfDoctorVisitsInSelectedDate);
-      
-      
-    });
-  }
   onDateChange(): void {
     this.getVisitsCount(this.selectedDate);
   }
@@ -75,7 +89,6 @@ export class HomeComponent {
         );
         const doctorsVisitedTodayCount = uniqueDoctorsVisitedToday.size;
         this.doctorsVisitedToday = doctorsVisitedTodayCount;
-
       },
       (error) => {
         console.error('Error fetching visits:', error);

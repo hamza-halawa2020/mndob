@@ -13,6 +13,38 @@ export class NavbarComponent {
     private router: Router
   ) {}
 
+  ngOnInit(): void {
+    this.toggleNavar();
+  }
+
+  toggleNavar() {
+    const documentClickHandler = (event: any) => {
+      const element = document.querySelector('.navbar-collapse');
+      if (element && element.classList.contains('show') && !element.contains(event.target)) 
+      {
+        element.classList.remove('show');
+        document.removeEventListener('click', documentClickHandler);
+      }
+      document.addEventListener('click', documentClickHandler);
+    };
+    this.router.events.subscribe((event: any) => {
+      if (event) {
+        const element = document.querySelector('.navbar-collapse');
+        if (element && element.classList.contains('show')) {
+          element.classList.remove('show');
+        }
+      }
+      document.addEventListener('click', documentClickHandler);
+    });
+    
+  }
+
+
+
+
+
+
+
 
   isLoggedIn(): boolean {
     return !!this.authService.isLoggedIn();

@@ -6,6 +6,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Geolocation } from '@ionic-native/geolocation/ngx';
 import { VisitService } from '../services/visit/visit.service';
 import { VisitRateService } from '../services/visit-rate/visit-rate.service';
+import { GovernatesService } from '../services/governates/governates.service';
 
 @Component({
   selector: 'app-doctor-details',
@@ -20,6 +21,8 @@ export class DoctorDetailsPage implements OnInit {
   error: any;
   visitDate: any = {};
   rateError: any;
+  governorates: any;
+  errorUpdate: any;
 
   constructor(
     private activateRoute: ActivatedRoute,
@@ -27,7 +30,9 @@ export class DoctorDetailsPage implements OnInit {
     private doctorDetails: DoctorService,
     private animationBuilder: AnimationBuilder,
     private geolocation: Geolocation,
-    private visitRate: VisitRateService
+    private visitRate: VisitRateService,
+    private gov: GovernatesService
+
   ) {}
 
   ngOnInit(): void {
@@ -47,6 +52,68 @@ export class DoctorDetailsPage implements OnInit {
       player.play();
     }
   }
+
+
+  loginForm = new FormGroup({
+    name_en: new FormControl('', [Validators.required]),
+    name_ar: new FormControl('', [Validators.required]),
+    gov_id: new FormControl('', [Validators.required]),
+    class: new FormControl('', [Validators.required]),
+  });
+  get name_en(): FormControl {
+    return this.loginForm.get('name_en') as FormControl;
+  }
+  get name_ar(): FormControl {
+    return this.loginForm.get('name_ar') as FormControl;
+  }
+
+  get gov_id(): FormControl {
+    return this.loginForm.get('gov_id') as FormControl;
+  }
+  get class(): FormControl {
+    return this.loginForm.get('class') as FormControl;
+  }
+  getGovernorates() {
+    this.gov.getGovernorates().subscribe((data) => {
+      this.governorates = Object.values(data)[0];
+      this.governorates.sort((a: any, b: any) =>
+        a.name_ar.localeCompare(b.name_ar)
+      );
+    });
+  }
+
+  loginSubmitted() {
+    if (this.loginForm.valid) {
+      this.formSubmitted = true;
+      this.doctorDetails
+        .updateDoctorByID(this.id, this.loginForm.value)
+        .subscribe(
+          () => {
+            // this.loginForm.reset();
+            this.errorUpdate = 'done';
+          },
+          () => {
+            this.errorUpdate = 'Error doctors';
+          }
+        );
+    } else {
+      this.errorUpdate = 'Error doctors';
+    }
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
   submitForm = new FormGroup({
     visit_date: new FormControl('', [Validators.required]),

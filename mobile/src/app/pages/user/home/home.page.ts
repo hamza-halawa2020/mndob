@@ -23,7 +23,8 @@ export class HomePage implements OnInit {
   startDate: any;
   endDate: any;
   selectedMonth: string = new Date().toISOString().substring(0, 7); // Initialize selectedMonth with current month
-
+  selectedMonthPerDay: string = new Date().toISOString().substring(0, 7);
+  averageVisitsPerDay: any;
   constructor(
     private doctorsService: DoctorService,
     private visitsService: VisitService,
@@ -58,6 +59,25 @@ export class HomePage implements OnInit {
       this.totalDoctorsCount = Object.values(count)[0].length;
     });
   }
+  
+  onMonthChangePerDay() {
+    const [year, month] = this.selectedMonthPerDay.split('-');
+    const startDate = new Date(parseInt(year), parseInt(month) - 1, 1);
+    const endDate = new Date(parseInt(year), parseInt(month), 0);
+    const visitsInMonth = this.visits.filter((visit) => {
+      const visitDate = new Date(visit.visit_date);
+      return visitDate >= startDate && visitDate <= endDate;
+    });
+
+    const uniqueVisitDates = new Set(
+      visitsInMonth.map((visit) => visit.visit_date.slice(0, 10))
+    );
+
+    const totalVisits = visitsInMonth.length;
+
+    this.averageVisitsPerDay = totalVisits / uniqueVisitDates.size;
+  }
+
 
   //Doctors Visited
   getVisitsCount(selectedDate: any): void {

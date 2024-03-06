@@ -32,15 +32,18 @@
             <p class="text-success">Doctor Visits:</p>
             <div class="card">
               <ul class="list-group list-group-flush">
-                <ng-container *ngFor="let visitData of nameOfDoctorVisitsInSelectedDate">
+                <ng-container
+                  *ngFor="let visitData of nameOfDoctorVisitsInSelectedDate"
+                >
                   <ng-container *ngFor="let doctor of visitData; let i = index">
                     <li class="list-group-item">
-                      <div class="card bg-dark ">
-                        
-                        <a class="text-warning" [routerLink]="['/doctors', doctor.doctor_id]">
-                          <span class="text-warning">
-                            {{ i + 1 }}- 
-                          </span>{{ doctor.doctor_name_ar }}
+                      <div class="card bg-dark">
+                        <a
+                          class="text-warning"
+                          [routerLink]="['/doctors', doctor.doctor_id]"
+                        >
+                          <span class="text-warning"> {{ i + 1 }}- </span
+                          >{{ doctor.doctor_name_ar }}
                         </a>
                       </div>
                     </li>
@@ -54,6 +57,33 @@
           </ng-template>
         </div>
       </div>
+
+      <!-- Average Visits per Doctor and per Day -->
+      <div class="card mb-4">
+        <div class="card-body">
+          <div class="form-group">
+            <label for="selectedMonth">Select Month:</label>
+            <input
+              id="selectedMonth"
+              class="form-control ion-padding"
+              type="month"
+              [(ngModel)]="selectedMonthPerDay"
+              (change)="onMonthChangePerDay()"
+              placeholder="Select Month"
+              style="
+                border-radius: 10px;
+                border: 2px solid #ccc;
+                background-color: #f9f9f9;
+                padding: 10px;
+              "
+            />
+          </div>
+          <div *ngIf="averageVisitsPerDay">
+            <p>Average visits per day: {{ averageVisitsPerDay.toFixed(2) }}</p>
+          </div>
+        </div>
+      </div>
+      
     </div>
 
     <!-- Main Content -->
@@ -61,7 +91,7 @@
       <!-- Visited Doctor every Month -->
       <div class="card mb-4">
         <div class="card-body">
-          <h4 class="card-title">Visited Doctor every Month Last 5 Months</h4>
+          <h4 class="card-title">Visited Doctor every Month</h4>
           <div class="form-group">
             <label for="startDate">Start Date:</label>
             <input

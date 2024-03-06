@@ -21,4 +21,8 @@ export class DoctorService {
   addDoctor(doctor: any) {
     return this.http.post(`${this.apiUrl}doctors`, doctor);
   }
+  updateDoctorByID(id: string, data: any) {
+    return this.http.put(`${this.apiUrl}doctors/${id}`, data);
+  }
+  
 }

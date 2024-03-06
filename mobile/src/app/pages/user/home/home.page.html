@@ -63,6 +63,30 @@
             </ng-template>
           </ion-card-content>
         </ion-card>
+
+        <!-- Average Visits per Doctor and per Day -->
+        <ion-card>
+              <ion-item>
+                <ion-label position="floating">Select Month:</ion-label>
+                <ion-input
+                  id="selectedMonth"
+                  type="month"
+                  [(ngModel)]="selectedMonthPerDay"
+                  (ionChange)="onMonthChangePerDay()"
+                  style="
+                    border-radius: 10px;
+                    border: 2px solid #ccc;
+                    background-color: #f9f9f9;
+                    padding: 10px;
+                  "
+                ></ion-input>
+              </ion-item>
+              <div *ngIf="averageVisitsPerDay">
+                <p>
+                  Average visits per day: {{ averageVisitsPerDay.toFixed(2) }}
+                </p>
+              </div>
+        </ion-card>
       </ion-col>
 
       <!-- Main Content -->

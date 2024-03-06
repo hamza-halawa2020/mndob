@@ -16,7 +16,6 @@
       >
     </ion-card-header>
     <ion-card-content>
-      <app-add-visit [doctorId]="Details?.doctor.id"></app-add-visit>
       <ion-list>
         <ion-item>
           <ion-label
@@ -113,12 +112,11 @@
 
   <!-- Visit Rates Table -->
   <ion-card *ngIf="Details" class="mt-4">
-
-
-
-
     <form (ngSubmit)="saveRate()" [formGroup]="visitRateForm">
-      <div *ngIf="formSubmitted && visit_rate_min.invalid" class="error-message">
+      <div
+        *ngIf="formSubmitted && visit_rate_min.invalid"
+        class="error-message"
+      >
         <ion-text color="danger" class="ion-padding-start">
           Add visit Rate To The Doctor.
         </ion-text>
@@ -142,8 +140,16 @@
         </div>
         <ion-list mode="ios">
           <ion-item>
-            <ion-label position="floating">Month<ion-text color="danger"><span>*</span></ion-text></ion-label>
-            <ion-select formControlName="month" label-placement="floating" id="month">
+            <ion-label position="floating"
+              >Month<ion-text color="danger"
+                ><span>*</span></ion-text
+              ></ion-label
+            >
+            <ion-select
+              formControlName="month"
+              label-placement="floating"
+              id="month"
+            >
               <ion-select-option value="1">January</ion-select-option>
               <ion-select-option value="2">February</ion-select-option>
               <ion-select-option value="3">March</ion-select-option>
@@ -161,7 +167,6 @@
         </ion-list>
       </ion-col>
 
-
       <ion-button
         [disabled]="visitRateForm.invalid"
         mode="ios"
@@ -173,17 +178,10 @@
     </form>
 
     <div *ngIf="rateError" class="error-message">
-      <ion-text color="danger" class="ion-padding-start">{{ rateError }}</ion-text>
+      <ion-text color="danger" class="ion-padding-start"
+        >{{ rateError }}</ion-text
+      >
     </div>
-
-
-
-
-
-
-
-
-
 
     <ion-card-header>
       <ion-card-title
