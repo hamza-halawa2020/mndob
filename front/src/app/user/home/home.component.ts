@@ -34,6 +34,8 @@ export class HomeComponent {
   ngOnInit(): void {
     this.getAllDoctors();
     this.getAllVisits();
+    this.getVisitsCount(this.selectedDate);
+
   }
 
   onMonthChangePerDay() {
