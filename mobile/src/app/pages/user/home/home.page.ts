@@ -11,7 +11,7 @@ import { AnimationBuilder, style, animate } from '@angular/animations';
 export class HomePage implements OnInit {
   totalDoctorsCount: any;
   visitsByMonthArray: any;
-  visits: any[] = []; // Assuming you have a data source for visits
+  visits: any[] = [];
   doctorsVisitedToday: any;
   visitsByDoctorAndWeek: any;
   visitsByDay: any;
@@ -22,7 +22,7 @@ export class HomePage implements OnInit {
   nameOfDoctorVisitsInSelectedDate: any;
   startDate: any;
   endDate: any;
-  selectedMonth: string = new Date().toISOString().substring(0, 7); // Initialize selectedMonth with current month
+  selectedMonth: string = new Date().toISOString().substring(0, 7);
   selectedMonthPerDay: string = new Date().toISOString().substring(0, 7);
   averageVisitsPerDay: any;
   constructor(
@@ -59,7 +59,7 @@ export class HomePage implements OnInit {
       this.totalDoctorsCount = Object.values(count)[0].length;
     });
   }
-  
+
   onMonthChangePerDay() {
     const [year, month] = this.selectedMonthPerDay.split('-');
     const startDate = new Date(parseInt(year), parseInt(month) - 1, 1);
@@ -77,7 +77,6 @@ export class HomePage implements OnInit {
 
     this.averageVisitsPerDay = totalVisits / uniqueVisitDates.size;
   }
-
 
   //Doctors Visited
   getVisitsCount(selectedDate: any): void {
