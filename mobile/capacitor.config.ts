@@ -1,11 +1,19 @@
-import { CapacitorConfig } from '@capacitor/cli';
+import type { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
-  appId: 'io.ionic.starter',
-  appName: 'mobile',
+  appId: 'net.rimansan.app',
+  appName: 'riman-san',
   webDir: 'www',
-  server: {
-    androidScheme: 'https'
+  cordova: {
+    preferences: {
+      ScrollEnabled: 'false',
+      BackupWebStorage: 'none',
+      SplashMaintainAspectRatio: 'true',
+      FadeSplashScreenDuration: '300',
+      SplashShowOnlyFirstTime: 'false',
+      SplashScreen: 'screen',
+      SplashScreenDelay: '3000'
+    }
   }
 };
 

@@ -1,4 +1,4 @@
-package io.ionic.starter;
+package net.rimansan.app;
 
 import com.getcapacitor.BridgeActivity;
 
