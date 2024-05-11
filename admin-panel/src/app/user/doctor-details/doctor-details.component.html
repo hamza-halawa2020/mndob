@@ -1,0 +1,464 @@
+<div class="container">
+  <div *ngIf="Details">
+    <h2 class="text-center mb-4">Doctor Details</h2>
+
+    <div class="card">
+      <div class="card-body">
+        <h5 class="card-title">ID: {{ Details.doctor.id }}</h5>
+        <div>
+          <div class="container">
+            <div
+              class="container alert alert-warning text-center"
+              *ngIf="errorUpdate"
+              role="alert"
+            >
+              {{ errorUpdate }}
+            </div>
+            <div class="">
+              <form [formGroup]="loginForm" (ngSubmit)="loginSubmitted()">
+                <div class="row mb-3">
+                  <div class="col-md-6">
+                    <label for="name_en" class="form-label"
+                      >Name En<span class="text-danger">*</span></label
+                    >
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="name_en"
+                      formControlName="name_en"
+                      placeholder="name_en"
+                    />
+                    <div
+                      class="form-text text-success"
+                      *ngIf="
+                        name_en.valid && (name_en.touched || name_en.dirty)
+                      "
+                    >
+                      <i class="fa-solid fa-check"></i>looks good!
+                    </div>
+                    <div
+                      class="form-text text-danger"
+                      *ngIf="name_en.errors?.['required'] && (name_en.dirty || name_en.touched)"
+                    >
+                      <i class="fa-solid fa-circle-exclamation"></i>name_en is
+                      important.
+                    </div>
+                    <div
+                      class="form-text text-danger"
+                      *ngIf="name_en.errors?.['pattern'] && (name_en.dirty || name_en.touched)"
+                    >
+                      <i class="fa-solid fa-circle-exclamation"></i>name_en is
+                      invalid
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <label for="name_ar" class="form-label"
+                      >name Ar<span class="text-danger">*</span></label
+                    >
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="name_ar"
+                      formControlName="name_ar"
+                      placeholder="name_ar"
+                    />
+                    <div
+                      class="form-text text-success"
+                      *ngIf="
+                        name_ar.valid && (name_ar.touched || name_ar.dirty)
+                      "
+                    >
+                      <i class="fa-solid fa-check"></i>looks good!
+                    </div>
+                    <div
+                      class="form-text text-danger"
+                      *ngIf="name_ar.errors?.['required'] && (name_ar.dirty || name_ar.touched)"
+                    >
+                      <i class="fa-solid fa-circle-exclamation"></i>name_ar is
+                      important.
+                    </div>
+                    <div
+                      class="form-text text-danger"
+                      *ngIf="name_ar.errors?.['pattern'] && (name_ar.dirty || name_ar.touched)"
+                    >
+                      <i class="fa-solid fa-circle-exclamation"></i>name_ar is
+                      invalid
+                    </div>
+                  </div>
+
+                  <div class="col-md-6">
+                    <label for="governorate_id" class="form-label"
+                      >Governate<span class="text-danger">*</span></label
+                    >
+
+                    <select
+                      class="form-control"
+                      id="governorate_id"
+                      formControlName="gov_id"
+                    >
+                      <option selected value="" disabled>
+                        Enter Your Governate
+                      </option>
+                      <option
+                        value="{{ governorate.id }}"
+                        *ngFor="let governorate of governorates"
+                      >
+                        {{ governorate.name_en }}
+                      </option>
+                    </select>
+                    <div
+                      class="form-text text-success"
+                      *ngIf="gov_id.valid && (gov_id.touched || gov_id.dirty)"
+                    >
+                      <i class="fa-solid fa-check"></i>looks good!
+                    </div>
+                    <div
+                      class="form-text text-danger"
+                      *ngIf="gov_id.errors?.['required'] && (gov_id.dirty || gov_id.touched)"
+                    >
+                      <i class="fa-solid fa-circle-exclamation"></i>
+                      insert your Governate
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <label for="Class" class="form-label"
+                      >Class<span class="text-danger">*</span></label
+                    >
+
+                    <select
+                      class="form-control"
+                      id="Class"
+                      formControlName="class"
+                    >
+                      <option
+                        selected
+                        value="{{ Details.doctor.class }}"
+                        disabled
+                      >
+                        {{ Details.doctor.class }}
+                      </option>
+                      <option>A</option>
+                      <option>B</option>
+                      <option>C</option>
+                    </select>
+                    <div
+                      class="form-text text-success"
+                      *ngIf="class.valid && (class.touched || class.dirty)"
+                    >
+                      <i class="fa-solid fa-check"></i>looks good!
+                    </div>
+                    <div
+                      class="form-text text-danger"
+                      *ngIf="class.errors?.['required'] && (class.dirty || class.touched)"
+                    >
+                      <i class="fa-solid fa-circle-exclamation"></i>
+                      insert your Class
+                    </div>
+                  </div>
+                  <div class="d-grid mb-3">
+                    <button
+                      type="submit"
+                      [disabled]="loginForm.invalid"
+                      class="btn btn-primary mt-3"
+                    >
+                      Update Doctor Data
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="16"
+                        height="16"
+                        fill="currentColor"
+                        class="bi bi-box-arrow-in-right"
+                        viewBox="0 0 16 16"
+                      >
+                        <path
+                          fill-rule="evenodd"
+                          d="M6 3.5a.5.5 0 0 1 .5-.5h8a.5.5 0 0 1 .5.5v9a.5.5 0 0 1-.5.5h-8a.5.5 0 0 1-.5-.5v-2a.5.5 0 0 0-1 0v2A1.5 1.5 0 0 0 6.5 14h8a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 14.5 2h-8A1.5 1.5 0 0 0 5 3.5v2a.5.5 0 0 0 1 0z"
+                        />
+                        <path
+                          fill-rule="evenodd"
+                          d="M11.854 8.354a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5H1.5a.5.5 0 0 0 0 1h8.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3z"
+                        />
+                      </svg>
+                    </button>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Visit Times by Month Table -->
+    <div class="card mt-4">
+      <div class="">
+        <div class="container text-center w-50 mt-1 mb-1">
+          <div
+            class="container alert alert-warning text-center"
+            *ngIf="error"
+            role="alert"
+          >
+            {{ error }}
+          </div>
+
+          <form class="" [formGroup]="submitForm" (ngSubmit)="addVisit()">
+            <div class="">
+              <label for="visit_date" class="form-label"
+                >Add Your Visit Date<span class="text-danger">*</span></label
+              >
+              <div
+                class="form-text text-success"
+                *ngIf="
+                  visit_date.valid && (visit_date.touched || visit_date.dirty)
+                "
+              >
+                <i class="fa-solid fa-check"></i>looks good!
+              </div>
+              <div
+                class="form-text text-danger"
+                *ngIf="visit_date.errors?.['required'] && (visit_date.dirty || visit_date.touched)"
+              >
+                <i class="fa-solid fa-circle-exclamation"></i>visit_date is
+                important.
+              </div>
+              <input
+                type="date"
+                class="form-control"
+                id="visit_date"
+                formControlName="visit_date"
+              />
+            </div>
+            <div class="d-grid mt-2">
+              <button type="submit" class="btn btn-success">
+                Add Visit By Date
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="16"
+                  height="16"
+                  fill="currentColor"
+                  class="bi bi-box-arrow-in-right"
+                  viewBox="0 0 16 16"
+                >
+                  <path
+                    fill-rule="evenodd"
+                    d="M6 3.5a.5.5 0 0 1 .5-.5h8a.5.5 0 0 1 .5.5v9a.5.5 0 0 1-.5.5h-8a.5.5 0 0 1-.5-.5v-2a.5.5 0 0 0-1 0v2A1.5 1.5 0 0 0 6.5 14h8a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 14.5 2h-8A1.5 1.5 0 0 0 5 3.5v2a.5.5 0 0 0 1 0z"
+                  />
+                  <path
+                    fill-rule="evenodd"
+                    d="M11.854 8.354a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5H1.5a.5.5 0 0 0 0 1h8.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3z"
+                  />
+                </svg>
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <div class="card-body">
+        <h5 class="card-title">Visit Times by Month</h5>
+        <div class="table-responsive">
+          <table class="table table-striped">
+            <thead class="thead-dark">
+              <tr>
+                <th>Month</th>
+                <th>Number of Visits</th>
+                <!-- <th>Visit Dates</th> -->
+              </tr>
+            </thead>
+            <tbody>
+              <ng-container *ngFor="let visitTime of visitTimes">
+                <tr>
+                  <td>{{ visitTime.monthYear }}</td>
+                  <td>{{ visitTime.count }}</td>
+                  <!-- <td>
+                    <ul class="list-unstyled">
+                      <li *ngFor="let time of visitTime.visitTimes">
+                        {{ time }}
+                      </li>
+                    </ul>
+                  </td> -->
+                </tr>
+              </ng-container>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- Visit Rates Table -->
+    <div class="card mt-4">
+      <div class="">
+        <div class="container text-center w-50 mt-1 mb-1">
+          <div
+            class="container alert alert-warning text-center"
+            *ngIf="rateError"
+            role="alert"
+          >
+            {{ rateError }}
+          </div>
+
+          <form class="" [formGroup]="visitRateForm" (ngSubmit)="saveRate()">
+            <div class="">
+              <label for="visit_date" class="form-label"
+                >Add visit Rate To The Doctor<span class="text-danger"
+                  >*</span
+                ></label
+              >
+              <div
+                class="form-text text-success"
+                *ngIf="
+                  visit_rate_min.valid &&
+                  (visit_rate_min.touched || visit_rate_min.dirty)
+                "
+              >
+                <i class="fa-solid fa-check"></i>looks good!
+              </div>
+              <div
+                class="form-text text-danger"
+                *ngIf="visit_rate_min.errors?.['required'] && (visit_rate_min.dirty || visit_rate_min.touched)"
+              >
+                <i class="fa-solid fa-circle-exclamation"></i>visit_rate_min is
+                important.
+              </div>
+              <div
+                class="form-text text-danger"
+                *ngIf="visit_rate_min.errors?.['pattern'] && (visit_rate_min.dirty || visit_rate_min.touched)"
+              >
+                <i class="fa-solid fa-circle-exclamation"></i>visit_rate_min is
+                invalid
+              </div>
+              <input
+                type="text"
+                class="form-control"
+                id="visit_rate_min"
+                formControlName="visit_rate_min"
+                placeholder="visit_rate_min"
+              />
+            </div>
+
+            <div class="">
+              <label for="month" class="form-label"
+                >Month<span class="text-danger">*</span></label
+              >
+              <select class="form-control" id="month" formControlName="month">
+                <option value="1">January</option>
+                <option value="2">February</option>
+                <option value="3">March</option>
+                <option value="4">April</option>
+                <option value="5">May</option>
+                <option value="6">June</option>
+                <option value="7">July</option>
+                <option value="8">August</option>
+                <option value="9">September</option>
+                <option value="10">October</option>
+                <option value="11">November</option>
+                <option value="12">December</option>
+              </select>
+            </div>
+
+            <div class="d-grid mt-2">
+              <button type="submit" class="btn btn-success">
+                Add Visit Rate
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="16"
+                  height="16"
+                  fill="currentColor"
+                  class="bi bi-box-arrow-in-right"
+                  viewBox="0 0 16 16"
+                >
+                  <path
+                    fill-rule="evenodd"
+                    d="M6 3.5a.5.5 0 0 1 .5-.5h8a.5.5 0 0 1 .5.5v9a.5.5 0 0 1-.5.5h-8a.5.5 0 0 1-.5-.5v-2a.5.5 0 0 0-1 0v2A1.5 1.5 0 0 0 6.5 14h8a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 14.5 2h-8A1.5 1.5 0 0 0 5 3.5v2a.5.5 0 0 0 1 0z"
+                  />
+                  <path
+                    fill-rule="evenodd"
+                    d="M11.854 8.354a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5H1.5a.5.5 0 0 0 0 1h8.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3z"
+                  />
+                </svg>
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <div class="card-body">
+        <h5 class="card-title">Visit Rates</h5>
+        <div class="table-responsive">
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th>Visit Rate</th>
+                <th>Month</th>
+                <th>Year</th>
+              </tr>
+            </thead>
+            <tbody>
+              <ng-container
+                *ngIf="
+                  Details.doctor.visit_rates &&
+                    Details.doctor.visit_rates.length > 0;
+                  else noRates
+                "
+              >
+                <tr *ngFor="let rate of Details.doctor.visit_rates">
+                  <td>{{ rate.visit_rate_min }}</td>
+                  <td>{{ rate.month }}</td>
+                  <td>{{ rate.year }}</td>
+                </tr>
+              </ng-container>
+              <ng-template #noRates>
+                <tr>
+                  <td colspan="3" class="text-center">
+                    No visit rates available.
+                  </td>
+                </tr>
+              </ng-template>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- Visit Dates Table -->
+    <div class="card mt-4">
+      <div class="card-body">
+        <h5 class="card-title">Visit Dates</h5>
+        <div class="table-responsive">
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th>Visit Date</th>
+                <th>latitude</th>
+                <th>longitude</th>
+              </tr>
+            </thead>
+            <tbody>
+              <ng-container
+                *ngIf="
+                  Details.doctor.visiting && Details.doctor.visiting.length > 0;
+                  else noDate
+                "
+              >
+                <tr *ngFor="let visit of Details.doctor.visiting">
+                  <td>{{ visit.visit_date }}</td>
+                  <td>{{ visit.latitude }}</td>
+                  <td>{{ visit.longitude }}</td>
+                </tr>
+              </ng-container>
+              <ng-template #noDate>
+                <tr>
+                  <td colspan="3" class="text-center">No visits available.</td>
+                </tr>
+              </ng-template>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="!Details" class="text-center mt-3">
+    <p>Loading doctor details...</p>
+  </div>
+</div>

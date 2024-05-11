@@ -1,0 +1,10 @@
+<div
+  class="container alert alert-warning text-center"
+  *ngIf="error"
+  role="alert"
+>
+  {{ error }}
+</div>
+<button class="btn btn-warning text-black w-100" (click)="addVisit()">
+  Add Visit
+</button>
