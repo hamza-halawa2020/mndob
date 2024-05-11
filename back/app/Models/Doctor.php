@@ -23,6 +23,10 @@ class Doctor extends Model
     {
         return $this->hasMany(Visiting::class);
     }
+    public function users_and_doctors()
+    {
+        return $this->hasMany(users_and_doctors::class);
+    }
 
 
 }

@@ -14,4 +14,8 @@ class Visit_rate extends Model
         'year',
         'doctor_id'
     ];
+    public function doctor()
+    {
+        return $this->belongsTo(Doctor::class);
+    }
 }

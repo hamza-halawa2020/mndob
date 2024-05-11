@@ -1,6 +1,7 @@
 <?php
 
 namespace Database\Seeders;
+
 use \App\Models\Governate;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
