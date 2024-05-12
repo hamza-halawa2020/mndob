@@ -12,6 +12,7 @@ class users_and_doctors extends Model
     protected $fillable = [
         'user_id',
         'doctor_id',
+        
     ];
 
     public function user()

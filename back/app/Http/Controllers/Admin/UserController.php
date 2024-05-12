@@ -5,6 +5,9 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use App\Http\Resources\UserResource;
+use Exception;
 
 class UserController extends Controller
 {
@@ -17,39 +20,47 @@ class UserController extends Controller
     }
     public function index()
     {
-        $users = User::where('role', 'representative')->all();
-        return response()->json(['users' => $users], 200);
+        try {
+            $users = User::where('role', 'representative')->get();
+            return response()->json(['users' => $users], 200);
+        } catch (Exception $e) {
+            return response()->json($e, 500);
+        }
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
+
+    public function profile()
     {
-        //
+        try {
+            $authenticatedUserId = Auth::id();
+            $user = User::findOrFail($authenticatedUserId);
+            return new UserResource($user);
+        } catch (Exception $e) {
+            return response()->json($e, 500);
+        }
     }
 
-    /**
-     * Display the specified resource.
-     */
     public function show(string $id)
     {
-        //
+        try {
+            $user = User::where('role', 'representative')->findOrFail($id);
+            return new UserResource($user);
+        } catch (Exception $e) {
+            return response()->json($e, 500);
+        }
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(string $id)
     {
-        //
+        try {
+            $doctor = User::findOrFail($id);
+            $doctor->delete();
+
+            return response()->json(['message' => 'deleted'], 200);
+
+        } catch (Exception $e) {
+            return response()->json($e, 500);
+        }
     }
 }

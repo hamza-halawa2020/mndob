@@ -24,14 +24,9 @@ class UserController extends Controller
     {
         try {
             $authenticatedUserId = Auth::id();
-
-            // Fetch a single user by ID
             $user = User::findOrFail($authenticatedUserId);
-
-            // Wrap the user data in a resource for consistent output format
             return new UserResource($user);
         } catch (Exception $e) {
-            // Handle any exceptions and return a JSON response with 500 status code
             return response()->json(['error' => $e->getMessage()], 500);
         }
     }
