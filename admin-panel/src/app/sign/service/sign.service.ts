@@ -28,6 +28,10 @@ export class LoginService {
     return this.http.get(`${this.apiUrl}users`);
   }
 
+  profile() {
+    return this.http.get(`${this.apiUrl}profile`);
+  }
+
   registerUser(userData: any) {
     return this.http.post(`${this.apiUrl}users`, userData);
   }

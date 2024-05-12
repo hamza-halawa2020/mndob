@@ -138,34 +138,6 @@
               </div>
             </div>
 
-            <div class="col">
-              <select
-                class="form-control"
-                id="governorate_id"
-                formControlName="gov_id"
-              >
-                <option selected value="" disabled>Enter Your Governate</option>
-                <option
-                  value="{{ governorate.id }}"
-                  *ngFor="let governorate of governorates"
-                >
-                  {{ governorate.name_en }}
-                </option>
-              </select>
-              <div
-                class="form-text text-success"
-                *ngIf="gov_id.valid && (gov_id.touched || gov_id.dirty)"
-              >
-                <i class="fa-solid fa-check"></i>looks good!
-              </div>
-              <div
-                class="form-text text-danger"
-                *ngIf="gov_id.errors?.['required'] && (gov_id.dirty || gov_id.touched)"
-              >
-                <i class="fa-solid fa-circle-exclamation"></i>
-                insert your Governate
-              </div>
-            </div>
 
             <div class="d-grid mb-3">
               <button
