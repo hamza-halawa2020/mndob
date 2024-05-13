@@ -16,10 +16,7 @@ export class DoctorService {
     const url = `${this.apiUrl}doctors/${doctorId}`;
     return this.http.get(url);
   }
-  addDoctor(doctor: any) {
+  delete(doctor: any) {
     return this.http.post(`${this.apiUrl}doctors`, doctor);
-  }
-  updateDoctorByID(id: string, data: any) {
-    return this.http.put(`${this.apiUrl}doctors/${id}`, data);
   }
 }
