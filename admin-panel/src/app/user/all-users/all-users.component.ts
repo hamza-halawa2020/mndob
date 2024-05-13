@@ -1,7 +1,5 @@
 import { Component } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { GovernatesService } from '../services/governates/governates.service';
-import { DoctorService } from '../services/doctor/doctor.service';
+import { UserService } from '../services/user/user.service';
 
 @Component({
   selector: 'app-all-users',
@@ -9,58 +7,74 @@ import { DoctorService } from '../services/doctor/doctor.service';
   styleUrls: ['./all-users.component.css'],
 })
 export class AllUsersComponent {
-  formSubmitted: boolean = false;
-  governorates: any;
-  error: any;
-
-  constructor(private gov: GovernatesService, private doctor: DoctorService) {}
+  users: any;
+  filteredusers: any;
+  selectedCategoryId: any = 'all';
+  constructor(private userService: UserService) {}
 
   ngOnInit(): void {
-    this.getGovernorates();
+    this.getAllusers();
   }
 
-  loginForm = new FormGroup({
-    name_en: new FormControl('', [Validators.required]),
-    name_ar: new FormControl('', [Validators.required]),
-    gov_id: new FormControl('', [Validators.required]),
-    class: new FormControl('', [Validators.required]),
-  });
-  get name_en(): FormControl {
-    return this.loginForm.get('name_en') as FormControl;
-  }
-  get name_ar(): FormControl {
-    return this.loginForm.get('name_ar') as FormControl;
+  getAllusers() {
+    this.userService.getAllusers().subscribe(
+      (data: any) => {
+        this.users = Object.values(data)[0];
+        this.filteredusers = this.users;
+        this.sortusersByName();
+      },
+      (error) => {
+        console.log('Error fetching users:', error);
+      }
+    );
   }
 
-  get gov_id(): FormControl {
-    return this.loginForm.get('gov_id') as FormControl;
+  getNewestVisitRate(visitRates: any[]): any {
+    if (visitRates.length === 0) {
+      return null;
+    }
+    visitRates.sort((a, b) => {
+      const yearDiff = parseInt(b.year) - parseInt(a.year);
+      if (yearDiff !== 0) {
+        return yearDiff;
+      }
+      return parseInt(b.month) - parseInt(a.month);
+    });
+    return visitRates[0];
   }
-  get class(): FormControl {
-    return this.loginForm.get('class') as FormControl;
+
+  filterCategory(event: any) {
+    let value = event.target.value;
+    if (value == 'all') {
+      this.getAllusers();
+    } else {
+      this.getuserById(value);
+    }
   }
-  getGovernorates() {
-    this.gov.getGovernorates().subscribe((data) => {
-      this.governorates = Object.values(data)[0];
-      this.governorates.sort((a: any, b: any) =>
-        a.name_ar.localeCompare(b.name_ar)
-      );
+
+  sortusersByName() {
+    this.filteredusers.sort((a: any, b: any) => {
+      const nameA = a.name_ar.toUpperCase();
+      const nameB = b.name_ar.toUpperCase();
+      if (nameA < nameB) {
+        return -1;
+      }
+      if (nameA > nameB) {
+        return 1;
+      }
+      return 0;
     });
   }
 
-  loginSubmitted() {
-    if (this.loginForm.valid) {
-      this.formSubmitted = true;
-      this.doctor.addDoctor(this.loginForm.value).subscribe(
-        () => {
-          this.loginForm.reset();
-          this.error = 'done';
-        },
-        () => {
-          this.error = 'Error doctors';
-        }
-      );
-    } else {
-      this.error = 'Error doctors';
-    }
+  getuserById(keyWord: number) {
+    this.userService.getuserById(keyWord).subscribe((data) => {
+      if (data && typeof data === 'object') {
+        this.filteredusers = [Object.values(data)[0]];
+      } else {
+        this.filteredusers = [];
+      }
+    });
   }
+
+
 }

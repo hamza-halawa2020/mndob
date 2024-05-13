@@ -3,7 +3,6 @@ import { ActivatedRoute } from '@angular/router';
 import { DoctorService } from '../services/doctor/doctor.service';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { VisitsService } from '../services/visit/visits.service';
-import { VisitRateService } from '../services/visit_rate/visit-rate.service';
 import { GovernatesService } from '../services/governates/governates.service';
 
 @Component({
@@ -26,7 +25,6 @@ export class DoctorDetailsComponent {
     private activateRoute: ActivatedRoute,
     private doctorDetails: DoctorService,
     private visitService: VisitsService,
-    private visitRate: VisitRateService,
     private gov: GovernatesService
   ) {}
 
@@ -115,17 +113,6 @@ export class DoctorDetailsComponent {
         doctor_id: this.id,
         year: currentYear,
       };
-
-      this.visitRate.addVisitRate(visitData).subscribe(
-        () => {
-          this.rateError = 'success';
-        },
-        () => {
-          console.log(visitData);
-
-          this.rateError = 'error';
-        }
-      );
     } else {
       this.rateError = 'Form is invalid. Please fill all the required fields.';
     }

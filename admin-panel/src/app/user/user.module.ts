@@ -5,11 +5,10 @@ import { AllUsersComponent } from './all-users/all-users.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { AllDoctorsComponent } from './all-doctors/all-doctors.component';
-import { DoctorDetailsComponent } from './doctor-details/doctor-details.component';
-import { VisitRateComponent } from './visit-rate/visit-rate.component';
-import { AddVisitComponent } from './add-visit/add-visit.component';
 import { ProfileComponent } from './profile/profile.component';
 import { SubNavComponent } from './sub-nav/sub-nav.component';
+import { UserDetailsComponent } from './user-details/user-details.component';
+import { DoctorDetailsComponent } from './doctor-details/doctor-details.component';
 
 @NgModule({
   declarations: [
@@ -17,10 +16,9 @@ import { SubNavComponent } from './sub-nav/sub-nav.component';
     AllUsersComponent,
     AllDoctorsComponent,
     DoctorDetailsComponent,
-    VisitRateComponent,
-    AddVisitComponent,
     ProfileComponent,
     SubNavComponent,
+    UserDetailsComponent,
   ],
   imports: [CommonModule, ReactiveFormsModule, RouterLink, FormsModule],
 })

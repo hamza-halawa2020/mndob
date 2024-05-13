@@ -5,7 +5,6 @@ import { AppComponent } from './app.component';
 import { SignModule } from './sign/sign.module';
 import { SharedModule } from './shared/shared.module';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
-import { UserModule } from './user/user.module';
 import { TokenAuthInterceptor } from './interceptor/token-auth.interceptor';
 import { DatePipe } from '@angular/common';
 
@@ -17,7 +16,6 @@ import { DatePipe } from '@angular/common';
     SignModule,
     HttpClientModule,
     SharedModule,
-    UserModule,
   ],
   providers: [
     {

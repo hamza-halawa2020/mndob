@@ -1,16 +1,15 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { LoginComponent } from './sign/login/login.component';
-import { SignupComponent } from './sign/signup/signup.component';
 import { HomeComponent } from './user/home/home.component';
 import { AuthGuard } from './guards/auth.guard';
 import { unauthGuard } from './guards/unauth.guard';
 import { AllDoctorsComponent } from './user/all-doctors/all-doctors.component';
 import { DoctorDetailsComponent } from './user/doctor-details/doctor-details.component';
-import { VisitRateComponent } from './user/visit-rate/visit-rate.component';
 import { NotFoundComponent } from './shared/not-found/not-found.component';
 import { ProfileComponent } from './user/profile/profile.component';
 import { AllUsersComponent } from './user/all-users/all-users.component';
+import { UserDetailsComponent } from './user/user-details/user-details.component';
 
 const routes: Routes = [
   {
@@ -29,6 +28,11 @@ const routes: Routes = [
     canActivate: [AuthGuard],
   },
   {
+    path: 'users/:id',
+    component: UserDetailsComponent,
+    canActivate: [AuthGuard],
+  },
+  {
     path: 'all-doctors',
     component: AllDoctorsComponent,
     canActivate: [AuthGuard],
@@ -39,18 +43,8 @@ const routes: Routes = [
     canActivate: [AuthGuard],
   },
   {
-    path: 'visit-rate',
-    component: VisitRateComponent,
-    canActivate: [AuthGuard],
-  },
-  {
     path: 'login',
     component: LoginComponent,
-    canActivate: [unauthGuard],
-  },
-  {
-    path: 'signup',
-    component: SignupComponent,
     canActivate: [unauthGuard],
   },
   {

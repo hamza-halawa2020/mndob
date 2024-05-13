@@ -29,16 +29,8 @@
         <li class="nav-item" *ngIf="isLoggedIn()">
           <a class="nav-link" routerLink="add-doctor">All Products</a>
         </li>
-        <li class="nav-item" *ngIf="isLoggedIn()">
-          <a class="nav-link" routerLink="visit-rate"
-            >Add Visit Rate to the Doctor</a
-          >
-        </li>
         <li class="nav-item" *ngIf="!isLoggedIn()">
           <a class="nav-link" routerLink="login">Login</a>
-        </li>
-        <li class="nav-item" *ngIf="!isLoggedIn()">
-          <a class="nav-link" routerLink="signup">Sign Up</a>
         </li>
         <li class="nav-item" *ngIf="isLoggedIn()">
           <a class="nav-link" routerLink="login" (click)="logout()">Log Out</a>
