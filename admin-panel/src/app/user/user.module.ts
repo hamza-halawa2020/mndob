@@ -20,6 +20,6 @@ import { DoctorDetailsComponent } from './doctor-details/doctor-details.componen
     SubNavComponent,
     UserDetailsComponent,
   ],
-  imports: [CommonModule, ReactiveFormsModule, RouterLink, FormsModule],
+  imports: [CommonModule, ReactiveFormsModule, RouterLink, FormsModule,RouterLink],
 })
 export class UserModule {}

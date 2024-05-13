@@ -7,7 +7,7 @@ use App\Http\Requests\UpdateUserRequest;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use App\Http\Resources\UserResource;
+use App\Http\Resources\AdminUserResource;
 use Exception;
 
 class UserController extends Controller
@@ -23,7 +23,7 @@ class UserController extends Controller
     {
         try {
             $users = User::where('role', 'representative')->get();
-            return response()->json(['users' => $users], 200);
+            return AdminUserResource::collection($users);
         } catch (Exception $e) {
             return response()->json($e, 500);
         }
@@ -35,13 +35,13 @@ class UserController extends Controller
         try {
             $authenticatedUserId = Auth::id();
             $user = User::findOrFail($authenticatedUserId);
-            return new UserResource($user);
+            return new AdminUserResource($user);
         } catch (Exception $e) {
             return response()->json($e, 500);
         }
     }
 
-    
+
     public function update(UpdateUserRequest $request, string $id)
     {
         try {
@@ -51,7 +51,7 @@ class UserController extends Controller
             }
             $user = User::findOrFail($authenticatedUserId);
             $user->update($request->validated());
-            return response()->json(['data' => new UserResource($user)], 200);
+            return response()->json(['data' => new AdminUserResource($user)], 200);
         } catch (Exception $e) {
             return response()->json($e, 500);
         }
@@ -61,7 +61,7 @@ class UserController extends Controller
     {
         try {
             $user = User::where('role', 'representative')->findOrFail($id);
-            return new UserResource($user);
+            return new AdminUserResource($user);
         } catch (Exception $e) {
             return response()->json($e, 500);
         }

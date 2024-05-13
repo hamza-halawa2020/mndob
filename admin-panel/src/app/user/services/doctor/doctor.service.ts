@@ -17,6 +17,6 @@ export class DoctorService {
     return this.http.get(url);
   }
   delete(doctor: any) {
-    return this.http.post(`${this.apiUrl}doctors`, doctor);
+    return this.http.delete(`${this.apiUrl}doctors/${doctor}`);
   }
 }

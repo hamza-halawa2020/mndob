@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { UserService } from '../services/user/user.service';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-user-details',
@@ -9,21 +10,21 @@ import { UserService } from '../services/user/user.service';
 export class UserDetailsComponent {
   users: any;
   id: any;
-  constructor(private userService: UserService) {}
+  constructor(
+    private userService: UserService,
+    private activateRoute: ActivatedRoute,
+    private route: Router
+  ) {}
 
-  ngOnInit(): void {
-    this.deleteUser();
-  }
+  ngOnInit(): void {}
 
   deleteUser() {
-    this.userService.deleteUser(this.id).subscribe(
-      (data: any) => {
-        this.id = Object.values(data)[0];
-        console.log(this.id);
-      },
-      (error) => {
-        console.log('Error fetching users:', error);
-      }
-    );
+    this.activateRoute.params.subscribe((params) => {
+      this.id = +params['id'];
+      this.userService.deleteUser(this.id).subscribe((data) => {
+        this.users = Object.values(data)[0];
+        this.route.navigate(['/users']);
+      });
+    });
   }
 }

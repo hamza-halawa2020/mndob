@@ -10,7 +10,6 @@ use Laravel\Sanctum\HasApiTokens;
 
 
 class User extends Authenticatable
-
 {
     use HasApiTokens, HasFactory, Notifiable;
 
@@ -27,7 +26,16 @@ class User extends Authenticatable
         'email',
         'password',
     ];
-    
+    public function visitings()
+    {
+        return $this->hasMany(Visiting::class);
+    }
+
+    // Define the relationship with users_and_doctors
+    public function users_and_doctors()
+    {
+        return $this->hasMany(users_and_doctors::class);
+    }
 
 
     /**
