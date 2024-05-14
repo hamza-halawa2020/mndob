@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\AdminVisitingResource;
 use App\Http\Resources\VisitingResource;
 use App\Models\User;
 use App\Models\Visiting;
@@ -67,28 +68,28 @@ class VisitingController extends Controller
             if (!checkdate($month, 1, $year)) {
                 return response()->json(['error' => 'Invalid month or year.'], 400);
             }
-            
+
             $user = User::findOrFail($id);
-            
+
             $totalVisited = Visiting::whereYear('visit_date', $year)
                 ->whereMonth('visit_date', $month)
                 ->where('user_id', $user->id)
                 ->distinct()
                 ->count();
-            
+
             $distinctDates = Visiting::whereYear('visit_date', $year)
                 ->whereMonth('visit_date', $month)
                 ->where('user_id', $user->id)
                 ->distinct('visit_date')
                 ->count();
-                $averageVisits = ($distinctDates > 0) ? $totalVisited / $distinctDates : 0;
-    
+            $averageVisits = ($distinctDates > 0) ? $totalVisited / $distinctDates : 0;
+
             $totalDoctors = Visiting::whereYear('visit_date', $year)
                 ->whereMonth('visit_date', $month)
                 ->where('user_id', $user->id)
                 ->distinct('doctor_id')
                 ->count();
-    
+
             return response()->json([
                 'total_visited_this_month' => $totalVisited,
                 'average_visits_per_date' => $averageVisits,
@@ -107,7 +108,7 @@ class VisitingController extends Controller
             $visits = Visiting::whereDate('visit_date', $date)
                 ->where('user_id', $user->id)
                 ->get();
-            return VisitingResource::collection($visits);
+            return AdminVisitingResource::collection($visits);
         } catch (Exception $e) {
             return response()->json($e, 500);
         }

@@ -20,9 +20,18 @@ export class VisitsService {
     return this.http.post(`${this.apiUrl}visits`, id);
   }
 
-  getVisitsByDate(date: any){
+  getVisitsByDate(date: any) {
     const url = `${this.apiUrl}visits-by-date/${date}`;
     return this.http.get(url);
   }
-  
+
+  getVisitsForOneMonth(year: any, month: any, userId: any) {
+    const url = `${this.apiUrl}calculate-total-doctors-for-month/${year}/${month}/${userId}`;
+    return this.http.get(url);
+  }
+
+  getVisitsForOneDay(date: any, userId: any) {
+    const url = `${this.apiUrl}visit-date/${date}/user/${userId}`;
+    return this.http.get(url);
+  }
 }

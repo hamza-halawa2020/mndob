@@ -1,26 +1,36 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { UserService } from '../services/user/user.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DoctorService } from '../services/doctor/doctor.service';
+import { VisitsService } from '../services/visit/visits.service';
 
 @Component({
   selector: 'app-user-details',
   templateUrl: './user-details.component.html',
   styleUrls: ['./user-details.component.css'],
 })
-export class UserDetailsComponent {
+export class UserDetailsComponent implements OnInit {
   users: any;
+  totalDoctors: any;
   id: any;
-
   filteredusers: any;
   selectedCategoryId: any = 'all';
+  date: any;
+  doctorVisited: any;
 
   constructor(
     private userService: UserService,
     private doctorService: DoctorService,
     private activateRoute: ActivatedRoute,
+    private visitService: VisitsService,
     private route: Router
   ) {}
+
+  ngOnInit(): void {
+    this.getAllDoctors();
+  }
+
+  // CRUD Operations
 
   deleteUser() {
     this.activateRoute.params.subscribe((params) => {
@@ -32,17 +42,35 @@ export class UserDetailsComponent {
     });
   }
 
+  // Data Fetching
+
   getAllDoctors() {
     this.activateRoute.params.subscribe((params) => {
       this.id = +params['id'];
       this.doctorService.getAllDoctorsForUser(this.id).subscribe((data) => {
-        this.users = Object.values(data)[0];
-        console.log('Users in doctors only', this.users);
-        this.filteredusers = this.users;
-        this.sortusersByName();
+        this.totalDoctors = data;
+        // this.filteredusers = this.users;
+        // this.sortusersByName();
       });
     });
   }
+
+  doctorVisitedForOneDay(event: Event) {
+    const selectedDate = (event.target as HTMLInputElement).value;
+    if (selectedDate) {
+      this.date = selectedDate;
+      this.activateRoute.params.subscribe((params) => {
+        this.id = +params['id'];
+        this.visitService
+          .getVisitsForOneDay(selectedDate, this.id)
+          .subscribe((data) => {
+            this.doctorVisited = data;
+          });
+      });
+    }
+  }
+
+  // Filtering and Sorting
 
   filterCategory(event: any) {
     let value = event.target.value;

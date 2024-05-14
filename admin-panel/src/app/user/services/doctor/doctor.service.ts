@@ -12,10 +12,11 @@ export class DoctorService {
   getAllDoctors() {
     return this.http.get(`${this.apiUrl}doctors`);
   }
-  getAllDoctorsForUser($doctorId: any) {
-    const url = `${this.apiUrl}total-doctors/${$doctorId}`;
+  getAllDoctorsForUser($userId: any) {
+    const url = `${this.apiUrl}total-doctors/${$userId}`;
     return this.http.get(url);
   }
+  
   getDoctorById(doctorId: number) {
     const url = `${this.apiUrl}doctors/${doctorId}`;
     return this.http.get(url);

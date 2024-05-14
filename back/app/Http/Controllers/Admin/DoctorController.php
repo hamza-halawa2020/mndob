@@ -37,14 +37,21 @@ class DoctorController extends Controller
             $user = User::findOrFail($id);
             $totalDoctorsByUser = users_and_doctors::select(DB::raw('COUNT(*) as total_doctors'))
                 ->where('user_id', $user->id)
-                ->groupBy('user_id')
                 ->get();
-            return response()->json($totalDoctorsByUser, 200);
+
+            $getData = users_and_doctors::join('doctors', 'users_and_doctors.doctor_id', '=', 'doctors.id')
+                ->where('users_and_doctors.user_id', $user->id)
+                ->get();
+
+            return response()->json([
+                'getData' => $getData,
+                'totalDoctorsByUser' => $totalDoctorsByUser,
+            ], 200);
+
         } catch (Exception $e) {
             return response()->json($e, 500);
         }
     }
-
 
 
     public function show(string $id)
