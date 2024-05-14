@@ -59,30 +59,6 @@
             </ng-template>
           </div>
         </div>
-
-        <!-- Average Visits per Doctor and per Day -->
-        <div class="card mb-4">
-          <div class="card-body">
-            <div class="form-group">
-              <label for="selectedMonth">Select Month:</label>
-              <input
-                id="selectedMonth"
-                class="form-control ion-padding"
-                type="month"
-                placeholder="Select Month"
-                style="
-                  border-radius: 10px;
-                  border: 2px solid #ccc;
-                  background-color: #f9f9f9;
-                  padding: 10px;
-                "
-              />
-            </div>
-            <div>
-              <p>Average visits per day: averageVisitsPerDay.toFixed(2)</p>
-            </div>
-          </div>
-        </div>
       </div>
 
       <!-- Main Content -->
@@ -92,25 +68,30 @@
           <div class="card-body">
             <h4 class="card-title">Visited Doctor this Month</h4>
             <div class="form-group">
-              <label for="Date"> Date:</label>
-              <input id="Date" class="form-control" type="date" />
+              <label for="selectedMonth">Select Month:</label>
+              <input
+                id="selectedMonth"
+                class="form-control"
+                type="date"
+                (change)="visitedDoctorForMonth($event)"
+              />
             </div>
 
             <div class="table-responsive">
               <table class="table table-striped">
                 <thead>
                   <tr>
+                    <th>Total Visited</th>
                     <th>Number of Visits</th>
                     <th>Percentage of Visit</th>
-                    <th>Number of Visited All Doctors</th>
+                    <th>Average visits per day</th>
                   </tr>
                 </thead>
                 <tbody>
-                  <tr>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                  </tr>
+                  <td>{{ visit?.total_visited_this_month }}</td>
+                  <td>{{ visit?.total_doctors_visited_this_month }}</td>
+                  <td>Percentage of Visit %</td>
+                  <td>{{ visit?.average_visits_per_date }}</td>
                 </tbody>
               </table>
             </div>

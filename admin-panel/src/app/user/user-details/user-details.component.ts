@@ -16,7 +16,10 @@ export class UserDetailsComponent implements OnInit {
   filteredusers: any;
   selectedCategoryId: any = 'all';
   date: any;
+  visitDate: any;
   doctorVisited: any;
+
+  visit: any;
 
   constructor(
     private userService: UserService,
@@ -65,6 +68,23 @@ export class UserDetailsComponent implements OnInit {
           .getVisitsForOneDay(selectedDate, this.id)
           .subscribe((data) => {
             this.doctorVisited = data;
+          });
+      });
+    }
+  }
+
+  visitedDoctorForMonth(event: Event) {
+    const selectedDate = (event.target as HTMLInputElement).value;
+    if (selectedDate) {
+      this.visitDate = selectedDate;
+      this.activateRoute.params.subscribe((params) => {
+        this.id = +params['id'];
+        const [year, month] = this.visitDate.split('-');
+        this.visitService
+          .getVisitsForOneMonth(year, month, this.id)
+          .subscribe((data: any) => {
+            this.visit = data;
+            console.log('sdfsdfdsf', this.visit);
           });
       });
     }

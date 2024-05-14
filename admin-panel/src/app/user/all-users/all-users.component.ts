@@ -21,6 +21,8 @@ export class AllUsersComponent {
       (data: any) => {
         this.users = Object.values(data)[0];
         this.filteredusers = this.users;
+        console.log(this.filteredusers);
+        
         this.sortusersByName();
       },
       (error) => {
