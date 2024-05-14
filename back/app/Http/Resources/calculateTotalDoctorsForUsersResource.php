@@ -16,20 +16,18 @@ class calculateTotalDoctorsForUsersResource extends JsonResource
     {
         // return parent::toArray($request);
         return [
+            'getData' => $this->getData,
             'id' => $this->id,
+            'class' => $this->class,
             'created_at' => $this->created_at,
-            // 'doctor_id' => $this->doctor_id,
-            'visit_date' => $this->visit_date,
-            'latitude' => $this->visit_date,
-            'longitude' => $this->visit_date,
-
-            'doctor_id' => $this->users_and_doctors->map(function ($usersAndDoctors) {
-                return [
-                    'id' => $usersAndDoctors->id,
-                    'name_en' => $usersAndDoctors->name_en,
-                    'name_ar' => $usersAndDoctors->name_ar,
-                ];
-            }),
+            'doctor_id' => $this->doctor_id,
+            'doctor' => new AdminDoctorResource($this->doctor), // Assuming doctor is the relationship
+            'gov_id' => $this->gov_id,
+            'name_ar' => $this->name_ar,
+            'name_en' => $this->name_en,
+            'user_id' => $this->user_id,
         ];
     }
 }
+
+

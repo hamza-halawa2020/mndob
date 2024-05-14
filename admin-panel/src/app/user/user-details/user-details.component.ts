@@ -51,7 +51,11 @@ export class UserDetailsComponent implements OnInit {
     this.activateRoute.params.subscribe((params) => {
       this.id = +params['id'];
       this.doctorService.getAllDoctorsForUser(this.id).subscribe((data) => {
-        this.totalDoctors = data;
+        // this.totalDoctors = data;
+        this.totalDoctors = Object.values(data)[0];
+
+        console.log(this.totalDoctors);
+
         // this.filteredusers = this.users;
         // this.sortusersByName();
       });
@@ -84,7 +88,6 @@ export class UserDetailsComponent implements OnInit {
           .getVisitsForOneMonth(year, month, this.id)
           .subscribe((data: any) => {
             this.visit = data;
-            console.log('sdfsdfdsf', this.visit);
           });
       });
     }

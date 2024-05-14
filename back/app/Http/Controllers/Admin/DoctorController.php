@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\AdminDoctorResource;
+use App\Http\Resources\calculateTotalDoctorsForUsersResource;
 use Illuminate\Http\Request;
 use App\Models\Doctor;
 use App\Models\User;
@@ -35,18 +36,16 @@ class DoctorController extends Controller
     {
         try {
             $user = User::findOrFail($id);
-            $totalDoctorsByUser = users_and_doctors::select(DB::raw('COUNT(*) as total_doctors'))
-                ->where('user_id', $user->id)
-                ->get();
+            // $totalDoctorsByUser = users_and_doctors::select(DB::raw('COUNT(*) as total_doctors'))
+            //     ->where('user_id', $user->id)
+            //     ->get();
 
             $getData = users_and_doctors::join('doctors', 'users_and_doctors.doctor_id', '=', 'doctors.id')
                 ->where('users_and_doctors.user_id', $user->id)
                 ->get();
 
-            return response()->json([
-                'getData' => $getData,
-                'totalDoctorsByUser' => $totalDoctorsByUser,
-            ], 200);
+            return calculateTotalDoctorsForUsersResource::collection($getData);
+            // return response()->json(['total_visited_this_month' => $getData,], 200);
 
         } catch (Exception $e) {
             return response()->json($e, 500);

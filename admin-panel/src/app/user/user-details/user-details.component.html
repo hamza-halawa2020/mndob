@@ -12,7 +12,7 @@
           <div class="card-body">
             <h5 class="card-title">Total Doctors</h5>
             <p class="card-text">
-              {{ totalDoctors?.totalDoctorsByUser[0].total_doctors }}
+              {{ totalDoctors?.length }}
             </p>
           </div>
         </div>
@@ -41,7 +41,7 @@
                   <li
                     class="list-group-item pointer"
                     *ngFor="let doctor of doctorVisited.data"
-                    [routerLink]="'/doctors/' + doctor.doctor_id"
+                    [routerLink]="'/doctors/' + doctor.doctor_id.id"
                   >
                     <div class="card bg-dark">
                       <a class="text-warning">
@@ -168,29 +168,78 @@
     </div>
   </div>
 
-  <!-- User Table -->
-  <div class="table-responsive">
-    <table class="table table-striped table-bordered">
-      <thead class="thead-dark">
-        <tr>
-          <th>#</th>
-          <th>ID</th>
-          <th>Name</th>
-          <th>Joined At</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr
-          *ngFor="let user of totalDoctors?.getData; let i = index"
-          [routerLink]="'/doctors/' + user.id"
-          class="pointer"
-        >
-          <td>{{ i + 1 }}</td>
-          <td>{{ user.id }}</td>
-          <td>{{ user.name_en }} - {{ user.name_ar }}</td>
-          <td>{{ user.created_at }}</td>
-        </tr>
-      </tbody>
-    </table>
+  <div class="container-fluid">
+    <!-- User Table -->
+    <div class="table-responsive">
+      <table class="table table-striped table-bordered">
+        <thead class="thead-dark">
+          <tr>
+            <th>#</th>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Joined At</th>
+            <th>Class</th>
+            <th>Visit Rate</th>
+            <th>Total Visits In the Month</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let user of totalDoctors; let i = index">
+            <td>{{ i + 1 }}</td>
+            <td>{{ user.id }}</td>
+            <td class="pointer" [routerLink]="'/doctors/' + user.id">
+              {{ user.name_en }} - {{ user.name_ar }}
+            </td>
+            <td>{{ user.created_at }}</td>
+            <td>{{ user.class }}</td>
+            <td>
+              <!-- Visit Rates -->
+              <table class="table table-sm table-hover">
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Month</th>
+                    <th>Year</th>
+                    <th>Visit Rate Min</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let doctor of user.doctor.visit_rates">
+                    <td>{{ doctor.id }}</td>
+                    <td>{{ doctor.month }}</td>
+                    <td>{{ doctor.year }}</td>
+                    <td>{{ doctor.visit_rate_min }}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </td>
+            <td>
+              <!-- Visiting Details -->
+              <table class="table table-sm table-hover">
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Visit Date</th>
+                  </tr>
+                </thead>
+
+                <tbody>
+                  <tr *ngFor="let doctor of user.doctor.visiting">
+                    <td>{{ doctor.id }}</td>
+                    <td>{{ doctor.visit_date }}</td>
+                  </tr>
+                </tbody>
+                <thead>
+                  <tr>
+                    <th>Total</th>
+                    <td>22</td>
+                  </tr>
+                </thead>
+              </table>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
   </div>
 </div>
