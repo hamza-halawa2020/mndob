@@ -22,7 +22,7 @@ class AdminUserResource extends JsonResource
             'name_ar' => $this->name_ar,
             'email' => $this->email,
             'role' => $this->role,
-            'created_at' => $this->created_at,
+            'created_at' => $this->created_at->format('Y-m-d'),
             'gov_id' => $this->gov_id ? [
                 'id' => Governate::find($this->gov_id)->id,
                 'name_en' => Governate::find($this->gov_id)->name_en,

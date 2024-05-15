@@ -19,9 +19,9 @@ class calculateTotalDoctorsForUsersResource extends JsonResource
             'getData' => $this->getData,
             'id' => $this->id,
             'class' => $this->class,
-            'created_at' => $this->created_at,
+            'created_at' => $this->created_at->format('Y-m-d'),
             'doctor_id' => $this->doctor_id,
-            'doctor' => new AdminDoctorResource($this->doctor), // Assuming doctor is the relationship
+            'doctor' => new AdminDoctorResource($this->doctor),
             'gov_id' => $this->gov_id,
             'name_ar' => $this->name_ar,
             'name_en' => $this->name_en,

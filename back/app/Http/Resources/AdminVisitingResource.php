@@ -18,7 +18,7 @@ class AdminVisitingResource extends JsonResource
         // return parent::toArray($request);
         return [
             'id' => $this->id,
-            'created_at' => $this->created_at,
+            'created_at' => $this->created_at->format('Y-m-d'), 
             'visit_date' => $this->visit_date,
             'latitude' => $this->visit_date,
             'longitude' => $this->visit_date,
