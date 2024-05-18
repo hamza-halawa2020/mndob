@@ -20,8 +20,8 @@ class AdminVisitingResource extends JsonResource
             'id' => $this->id,
             'created_at' => $this->created_at->format('Y-m-d'), 
             'visit_date' => $this->visit_date,
-            'latitude' => $this->visit_date,
-            'longitude' => $this->visit_date,
+            'latitude' => $this->latitude,
+            'longitude' => $this->longitude,
             'doctor_id' => $this->doctor_id ? [
                 'id' => Doctor::find($this->doctor_id)->id,
                 'name_en' => Doctor::find($this->doctor_id)->name_en,

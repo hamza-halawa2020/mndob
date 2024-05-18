@@ -4,8 +4,11 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\AdminVisitingResource;
+use App\Http\Resources\showVisitByMonthForOneUserResource;
 use App\Http\Resources\VisitingResource;
+use App\Models\Doctor;
 use App\Models\User;
+use App\Models\users_and_doctors;
 use App\Models\Visiting;
 use Exception;
 use Illuminate\Support\Facades\DB;
@@ -47,18 +50,42 @@ class VisitingController extends Controller
                 return response()->json(['error' => 'Invalid month or year.'], 400);
             }
             $user = User::findOrFail($userId);
-
+            $doctors = Doctor::whereHas('users_and_doctors', function ($query) use ($userId) {
+                $query->where('user_id', $userId);
+            })->get();
             $visits = Visiting::whereYear('visit_date', $year)
                 ->whereMonth('visit_date', $month)
                 ->where('user_id', $user->id)
                 ->get();
 
-            return VisitingResource::collection($visits);
+
+            return new showVisitByMonthForOneUserResource([
+                'doctors' => $doctors,
+                'visits' => $visits
+            ]);
+
         } catch (Exception $e) {
 
             return response()->json($e, 500);
         }
     }
+
+    // public function showVisitByDateForOneUser($date, $userId)
+    // {
+    //     try {
+    //         $user = User::findOrFail($userId);
+    //         $doctors = Doctor::whereHas('users_and_doctors', function ($query) use ($userId) {
+    //             $query->where('user_id', $userId);
+    //         })->get();
+    //         $visits = Visiting::whereDate('visit_date', $date)
+    //             ->where('user_id', $user->id)
+    //             ->get()
+    //             ->keyBy('doctor_id');
+    //         return response()->json(['doctor_id' => $doctors, 'visited' => $visits]);
+    //     } catch (Exception $e) {
+    //         return response()->json(['error' => $e->getMessage()], 500);
+    //     }
+    // }
 
 
 
@@ -113,6 +140,7 @@ class VisitingController extends Controller
             return response()->json($e, 500);
         }
     }
+
 
 
 

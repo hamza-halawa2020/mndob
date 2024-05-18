@@ -9,7 +9,7 @@ import { DatePipe } from '@angular/common';
   selector: 'app-user-details',
   templateUrl: './user-details.component.html',
   styleUrls: ['./user-details.component.css'],
-  providers: [DatePipe]
+  providers: [DatePipe],
 })
 export class UserDetailsComponent implements OnInit {
   users: any;
@@ -24,42 +24,65 @@ export class UserDetailsComponent implements OnInit {
   visitsByDay: any;
   daysOff: any[] = [];
 
+  selectedMonth: any;
+  selectedYear: any;
+  months = [
+    { name: 'January', value: '01' },
+    { name: 'February', value: '02' },
+    { name: 'March', value: '03' },
+    { name: 'April', value: '04' },
+    { name: 'May', value: '05' },
+    { name: 'June', value: '06' },
+    { name: 'July', value: '07' },
+    { name: 'August', value: '08' },
+    { name: 'September', value: '09' },
+    { name: 'October', value: '10' },
+    { name: 'November', value: '11' },
+    { name: 'December', value: '12' },
+  ];
+  years: number[] = [];
+  AllDoctorWithVisit: any;
+
   constructor(
     private userService: UserService,
     private doctorService: DoctorService,
     private activateRoute: ActivatedRoute,
     private visitService: VisitsService,
-    private router: Router,
-    private datePipe: DatePipe
+    private router: Router
   ) {}
 
   ngOnInit(): void {
-    this.activateRoute.params.subscribe(params => {
+    this.activateRoute.params.subscribe((params) => {
       this.id = +params['id'];
       this.getAllDoctors();
     });
+
+    const currentYear = new Date().getFullYear();
+    for (let year = currentYear; year >= currentYear - 10; year--) {
+      this.years.push(year);
+    }
+    this.selectedMonth = this.months[0].value;
+    this.selectedYear = currentYear;
   }
 
-  // CRUD Operations
   deleteUser() {
     this.userService.deleteUser(this.id).subscribe(
-      data => {
+      (data) => {
         this.users = Object.values(data)[0];
         this.router.navigate(['/users']);
       },
-      error => {
+      (error) => {
         console.error('Error deleting user:', error);
       }
     );
   }
 
-  // Data Fetching
   getAllDoctors() {
     this.doctorService.getAllDoctorsForUser(this.id).subscribe(
-      data => {
+      (data) => {
         this.totalDoctors = Object.values(data)[0];
       },
-      error => {
+      (error) => {
         console.error('Error fetching doctors:', error);
       }
     );
@@ -70,15 +93,37 @@ export class UserDetailsComponent implements OnInit {
     if (selectedDate) {
       this.date = selectedDate;
       this.visitService.getVisitsForOneDay(selectedDate, this.id).subscribe(
-        data => {
+        (data) => {
           this.doctorVisited = data;
         },
-        error => {
+        (error) => {
           console.error('Error fetching visits for one day:', error);
         }
       );
     }
   }
+
+  fetchDoctorsWithVisits() {
+    const year = this.selectedYear.toString();
+    const month = this.selectedMonth;
+    const userId = this.id;
+    this.visitService.getAllDoctorsWithVisits(year, month, userId).subscribe(
+      (data: any) => {
+        // if (Array.isArray(data)) {
+        //   this.AllDoctorWithVisit = data;
+        // } else {
+          // Convert object to array if necessary
+          this.AllDoctorWithVisit = Object.values(data);
+        // }
+        console.log('Fetched data:', this.AllDoctorWithVisit);
+      },
+      (error: any) => {
+        console.error('Error fetching visits for the month:', error);
+      }
+    );
+  }
+  
+
 
   visitedDoctorForMonth(event: Event) {
     const selectedDate = (event.target as HTMLInputElement).value;
@@ -86,55 +131,24 @@ export class UserDetailsComponent implements OnInit {
       this.visitDate = selectedDate;
       const [year, month] = this.visitDate.split('-');
       this.visitService.getVisitsForOneMonth(year, month, this.id).subscribe(
-        data => {
+        (data) => {
           this.visit = data;
-          this.determineDaysOff(year, month);
         },
-        error => {
+
+        (error) => {
           console.error('Error fetching visits for one month:', error);
         }
       );
     }
   }
 
-  determineDaysOff(year: string, month: string) {
-    const numberOfDays = new Date(parseInt(year), parseInt(month), 0).getDate();
-    const visitedDates = this.visit.map((v: any) => this.datePipe.transform(v.date, 'yyyy-MM-dd'));
-    this.daysOff = [];
-
-    for (let day = 1; day <= numberOfDays; day++) {
-      const dateStr = `${year}-${month.padStart(2, '0')}-${day.toString().padStart(2, '0')}`;
-      if (!visitedDates.includes(dateStr)) {
-        const dayOfWeek = new Date(dateStr).toLocaleString('en-US', { weekday: 'long' });
-        this.daysOff.push({ date: dateStr, day: dayOfWeek });
-      }
-    }
-  }
-
-  // Filtering and Sorting
-  filterCategory(event: any) {
-    const value = event.target.value;
-    if (value === 'all') {
-      this.getAllDoctors();
-    } else {
-      this.getUserById(value);
-    }
-  }
-
-  sortUsersByName() {
-    this.filteredUsers.sort((a: any, b: any) => {
-      const nameA = a.name_ar.toUpperCase();
-      const nameB = b.name_ar.toUpperCase();
-      return nameA < nameB ? -1 : nameA > nameB ? 1 : 0;
-    });
-  }
-
   getUserById(keyWord: number) {
     this.userService.getuserById(keyWord).subscribe(
-      data => {
-        this.filteredUsers = data && typeof data === 'object' ? [Object.values(data)[0]] : [];
+      (data) => {
+        this.filteredUsers =
+          data && typeof data === 'object' ? [Object.values(data)[0]] : [];
       },
-      error => {
+      (error) => {
         console.error('Error fetching user by ID:', error);
       }
     );

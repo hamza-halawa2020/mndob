@@ -23,7 +23,7 @@ Route::get('visit-date/{id}', [VisitingController::class, 'showVisitByDate']);
 Route::get('visit-date/{date}/user/{userId}', [VisitingController::class, 'showVisitByDateForOneUser']);
 Route::get('visit-month/{year}/{month}/user/{userId}', [VisitingController::class, 'showVisitByMonthForOneUser']);
 Route::delete('visit-delete/{id}', [VisitingController::class, 'destroy']);
-Route::get('calculate-total-doctors-for-month/{year}/{month}', [VisitingController::class, 'calculateTotalDoctorsForMonth']);
+// Route::get('calculate-total-doctors-for-month/{year}/{month}', [VisitingController::class, 'calculateTotalDoctorsForMonth']);
 Route::get('calculate-total-doctors-for-month/{year}/{month}/{id}', [VisitingController::class, 'calculateTotalDoctorsForMonthOneUser']);
 
 

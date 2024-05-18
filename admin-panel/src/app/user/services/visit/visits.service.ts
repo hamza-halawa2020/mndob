@@ -34,4 +34,9 @@ export class VisitsService {
     const url = `${this.apiUrl}visit-date/${date}/user/${userId}`;
     return this.http.get(url);
   }
+
+  getAllDoctorsWithVisits(year: any, month: any, userId: any) {
+    const url = `${this.apiUrl}visit-month/${year}/${month}/user/${userId}`;
+    return this.http.get(url);
+  }
 }
