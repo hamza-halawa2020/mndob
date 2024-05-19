@@ -49,26 +49,29 @@ class VisitingController extends Controller
             if (!checkdate($month, 1, $year)) {
                 return response()->json(['error' => 'Invalid month or year.'], 400);
             }
+
             $user = User::findOrFail($userId);
             $doctors = Doctor::whereHas('users_and_doctors', function ($query) use ($userId) {
                 $query->where('user_id', $userId);
             })->get();
+
             $visits = Visiting::whereYear('visit_date', $year)
                 ->whereMonth('visit_date', $month)
                 ->where('user_id', $user->id)
                 ->get();
 
-
-            return new showVisitByMonthForOneUserResource([
+            $data = [
                 'doctors' => $doctors,
-                'visits' => $visits
-            ]);
+                'visits' => $visits,
+            ];
+
+            return new ShowVisitByMonthForOneUserResource($data);
 
         } catch (Exception $e) {
-
             return response()->json($e, 500);
         }
     }
+
 
     // public function showVisitByDateForOneUser($date, $userId)
     // {

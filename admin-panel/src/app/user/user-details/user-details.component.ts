@@ -109,12 +109,9 @@ export class UserDetailsComponent implements OnInit {
     const userId = this.id;
     this.visitService.getAllDoctorsWithVisits(year, month, userId).subscribe(
       (data: any) => {
-        // if (Array.isArray(data)) {
-        //   this.AllDoctorWithVisit = data;
-        // } else {
-          // Convert object to array if necessary
-          this.AllDoctorWithVisit = Object.values(data);
-        // }
+        this.AllDoctorWithVisit = Object.values(data);
+        // this.AllDoctorWithVisit = [data]; // Wrap the data in an array
+
         console.log('Fetched data:', this.AllDoctorWithVisit);
       },
       (error: any) => {
@@ -122,8 +119,6 @@ export class UserDetailsComponent implements OnInit {
       }
     );
   }
-  
-
 
   visitedDoctorForMonth(event: Event) {
     const selectedDate = (event.target as HTMLInputElement).value;
@@ -141,6 +136,8 @@ export class UserDetailsComponent implements OnInit {
       );
     }
   }
+
+  
 
   getUserById(keyWord: number) {
     this.userService.getuserById(keyWord).subscribe(

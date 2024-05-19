@@ -189,10 +189,10 @@
             <th>Total Visits In the Month</th>
           </tr>
         </thead>
-        <tbody>
-          <tr *ngFor="let doctor of AllDoctorWithVisit; let i = index">
+        <tbody *ngFor="let doctor of AllDoctorWithVisit; let i = index">
+          <tr >
             <td>{{ i + 1 }}</td>
-            <td>{{ doctor.id }}</td>
+            <td>{{ doctor.doctors.id }}</td>
             <td class="pointer" [routerLink]="'/doctors/' + doctor.id">
               {{ doctor.name_en }} - {{ doctor.name_ar }}
             </td>
@@ -209,12 +209,12 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr *ngFor="let rate of doctor.visit_rates">
+                  <!-- <tr *ngFor="let rate of doctor.doctors">
                     <td>{{ rate.id }}</td>
                     <td>{{ rate.month }}</td>
                     <td>{{ rate.year }}</td>
                     <td>{{ rate.visit_rate_min }}</td>
-                  </tr>
+                  </tr> -->
                 </tbody>
               </table>
             </td>
@@ -227,8 +227,9 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr *ngFor="let visit of doctor.visited">
-                    <td>{{ visit.doctor_id }}</td>
+                  <tr *ngFor="let visit of doctor.visits">
+                    <td>{{ visit.doctor_id.id }}</td>
+                    <td>{{ visit.doctor_id.name_ar }}</td>
                     <td>{{ visit.visit_date }}</td>
                   </tr>
                 </tbody>
