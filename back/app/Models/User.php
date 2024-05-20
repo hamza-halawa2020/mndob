@@ -37,6 +37,11 @@ class User extends Authenticatable
         return $this->hasMany(users_and_doctors::class);
     }
 
+    public function doctors()
+{
+    return $this->belongsToMany(Doctor::class, 'users_and_doctors');
+}
+
 
     /**
      * The attributes that should be hidden for serialization.

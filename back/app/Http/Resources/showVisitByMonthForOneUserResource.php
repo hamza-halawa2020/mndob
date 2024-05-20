@@ -17,7 +17,7 @@ class showVisitByMonthForOneUserResource extends JsonResource
         // return parent::toArray($request);
         return [
             'doctors' => AdminDoctorResource::collection($this['doctors']),
-            'visits' => AdminVisitingResource::collection($this['visits']),
+            // 'visits' => AdminVisitingResource::collection($this['visits']),
         ];
     }
 }

@@ -110,7 +110,6 @@ export class UserDetailsComponent implements OnInit {
     this.visitService.getAllDoctorsWithVisits(year, month, userId).subscribe(
       (data: any) => {
         this.AllDoctorWithVisit = Object.values(data);
-        // this.AllDoctorWithVisit = [data]; // Wrap the data in an array
 
         console.log('Fetched data:', this.AllDoctorWithVisit);
       },

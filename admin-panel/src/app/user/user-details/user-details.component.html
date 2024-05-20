@@ -151,31 +151,32 @@
     </div>
   </div>
 
-
-
-
-
-
-
-
   <div class="mt-4">
     <!-- Select Month and Year -->
     <div class="form-group">
       <label for="select-month">Select Month:</label>
-      <select id="select-month" [(ngModel)]="selectedMonth" class="form-control">
-        <option *ngFor="let month of months" [value]="month.value">{{ month.name }}</option>
+      <select
+        id="select-month"
+        [(ngModel)]="selectedMonth"
+        class="form-control"
+      >
+        <option *ngFor="let month of months" [value]="month.value">
+          {{ month.name }}
+        </option>
       </select>
     </div>
-  
+
     <div class="form-group">
       <label for="select-year">Select Year:</label>
       <select id="select-year" [(ngModel)]="selectedYear" class="form-control">
         <option *ngFor="let year of years" [value]="year">{{ year }}</option>
       </select>
     </div>
-  
-    <button (click)="fetchDoctorsWithVisits()" class="btn btn-primary">Fetch Data</button>
-  
+
+    <button (click)="fetchDoctorsWithVisits()" class="btn btn-primary">
+      Fetch Data
+    </button>
+
     <div class="table-responsive mt-4">
       <table class="table table-striped table-bordered align-middle">
         <thead class="thead-dark">
@@ -190,9 +191,9 @@
           </tr>
         </thead>
         <tbody *ngFor="let doctor of AllDoctorWithVisit; let i = index">
-          <tr >
+          <tr>
             <td>{{ i + 1 }}</td>
-            <td>{{ doctor.doctors.id }}</td>
+            <td>{{ doctor.id }}</td>
             <td class="pointer" [routerLink]="'/doctors/' + doctor.id">
               {{ doctor.name_en }} - {{ doctor.name_ar }}
             </td>
@@ -209,12 +210,12 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <!-- <tr *ngFor="let rate of doctor.doctors">
+                  <tr *ngFor="let rate of doctor.visitRates">
                     <td>{{ rate.id }}</td>
                     <td>{{ rate.month }}</td>
                     <td>{{ rate.year }}</td>
                     <td>{{ rate.visit_rate_min }}</td>
-                  </tr> -->
+                  </tr>
                 </tbody>
               </table>
             </td>
@@ -227,112 +228,117 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr *ngFor="let visit of doctor.visits">
-                    <td>{{ visit.doctor_id.id }}</td>
-                    <td>{{ visit.doctor_id.name_ar }}</td>
+                  <tr *ngFor="let visit of doctor.visiting">
+                    <td>{{ visit.id }}</td>
                     <td>{{ visit.visit_date }}</td>
                   </tr>
                 </tbody>
+                <tr>
+                  <th>Total</th>
+                </tr>
+                <td>
+                  {{ doctor.visiting?.length || "No visits this month" }}
+                </td>
               </table>
             </td>
           </tr>
         </tbody>
       </table>
     </div>
-    
 
-  <div class="mt-4">
-    <!-- User Table -->
-    <div class="table-responsive">
-      <div class="container text-center h3">All Doctors</div>
-      <table class="table table-striped table-bordered align-middle">
-        <thead class="thead-dark">
-          <tr>
-            <th>#</th>
-            <th>ID</th>
-            <th>Name</th>
-            <th>Joined At</th>
-            <th>Class</th>
-            <th>Visit Rate</th>
-            <th>Total Visits In the Month</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let user of totalDoctors; let i = index">
-            <td>{{ i + 1 }}</td>
-            <td>{{ user.id }}</td>
-            <td class="pointer" [routerLink]="'/doctors/' + user.id">
-              {{ user.name_en }} - {{ user.name_ar }}
-            </td>
-            <td>{{ user.created_at  }}</td>
-            <td>{{ user.class }}</td>
-            <td>
-              <button
-                class="btn btn-success"
-                data-bs-toggle="collapse"
-                [attr.data-bs-target]="'#collapseVisitRates' + i"
-              >
-                Toggle Visit Rates
-              </button>
-              <div class="collapse" [id]="'collapseVisitRates' + i">
-                <div class="card card-body">
-                  <table class="table table-sm table-hover">
-                    <thead>
-                      <tr>
-                        <th>ID</th>
-                        <th>Month</th>
-                        <th>Year</th>
-                        <th>Visit Rate Min</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr *ngFor="let doctor of user.doctor.visit_rates">
-                        <td>{{ doctor.id }}</td>
-                        <td>{{ doctor.month }}</td>
-                        <td>{{ doctor.year }}</td>
-                        <td>{{ doctor.visit_rate_min }}</td>
-                      </tr>
-                    </tbody>
-                  </table>
+    <div class="mt-4">
+      <!-- User Table -->
+      <div class="table-responsive">
+        <div class="container text-center h3">All Doctors</div>
+        <table class="table table-striped table-bordered align-middle">
+          <thead class="thead-dark">
+            <tr>
+              <th>#</th>
+              <th>ID</th>
+              <th>Name</th>
+              <th>Joined At</th>
+              <th>Class</th>
+              <th>Visit Rate</th>
+              <th>Total Visits In the Month</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let user of totalDoctors; let i = index">
+              <td>{{ i + 1 }}</td>
+              <td>{{ user.id }}</td>
+              <td class="pointer" [routerLink]="'/doctors/' + user.id">
+                {{ user.name_en }} - {{ user.name_ar }}
+              </td>
+              <td>{{ user.created_at }}</td>
+              <td>{{ user.class }}</td>
+              <td>
+                <button
+                  class="btn btn-success"
+                  data-bs-toggle="collapse"
+                  [attr.data-bs-target]="'#collapseVisitRates' + i"
+                >
+                  Toggle Visit Rates
+                </button>
+                <div class="collapse" [id]="'collapseVisitRates' + i">
+                  <div class="card card-body">
+                    <table class="table table-sm table-hover">
+                      <thead>
+                        <tr>
+                          <th>ID</th>
+                          <th>Month</th>
+                          <th>Year</th>
+                          <th>Visit Rate Min</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr *ngFor="let doctor of user.doctor.visit_rates">
+                          <td>{{ doctor.id }}</td>
+                          <td>{{ doctor.month }}</td>
+                          <td>{{ doctor.year }}</td>
+                          <td>{{ doctor.visit_rate_min }}</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
                 </div>
-              </div>
-            </td>
-            <td>
-              <button
-                class="btn btn-primary"
-                data-bs-toggle="collapse"
-                [attr.data-bs-target]="'#collapseVisiting' + i"
-              >
-                Toggle Visiting Details
-              </button>
-              <div class="collapse" [id]="'collapseVisiting' + i">
-                <div class="card card-body">
-                  <table class="table table-sm table-hover">
-                    <thead>
-                      <tr>
-                        <th>ID</th>
-                        <th>Visit Date</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr *ngFor="let doctor of user.doctor.visiting">
-                        <td>{{ doctor.id }}</td>
-                        <td>{{ doctor.visit_date }}</td>
-                      </tr>
-                    </tbody>
-                    <tfoot>
-                      <tr>
-                        <th>Total</th>
-                        <td colspan="2">22</td>
-                      </tr>
-                    </tfoot>
-                  </table>
+              </td>
+              <td>
+                <button
+                  class="btn btn-primary"
+                  data-bs-toggle="collapse"
+                  [attr.data-bs-target]="'#collapseVisiting' + i"
+                >
+                  Toggle Visiting Details
+                </button>
+                <div class="collapse" [id]="'collapseVisiting' + i">
+                  <div class="card card-body">
+                    <table class="table table-sm table-hover">
+                      <thead>
+                        <tr>
+                          <th>ID</th>
+                          <th>Visit Date</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr *ngFor="let doctor of user.doctor.visiting">
+                          <td>{{ doctor.id }}</td>
+                          <td>{{ doctor.visit_date }}</td>
+                        </tr>
+                      </tbody>
+                      <tfoot>
+                        <tr>
+                          <th>Total</th>
+                          <td colspan="2">22</td>
+                        </tr>
+                      </tfoot>
+                    </table>
+                  </div>
                 </div>
-              </div>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
   </div>
 </div>

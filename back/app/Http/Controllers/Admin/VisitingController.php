@@ -12,6 +12,7 @@ use App\Models\users_and_doctors;
 use App\Models\Visiting;
 use Exception;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class VisitingController extends Controller
 {
@@ -43,6 +44,8 @@ class VisitingController extends Controller
     }
 
 
+
+
     public function showVisitByMonthForOneUser($year, $month, $userId)
     {
         try {
@@ -51,26 +54,76 @@ class VisitingController extends Controller
             }
 
             $user = User::findOrFail($userId);
-            $doctors = Doctor::whereHas('users_and_doctors', function ($query) use ($userId) {
-                $query->where('user_id', $userId);
-            })->get();
 
-            $visits = Visiting::whereYear('visit_date', $year)
-                ->whereMonth('visit_date', $month)
-                ->where('user_id', $user->id)
-                ->get();
+            $doctors = $user->doctors()->with([
+                'visiting' => function ($query) use ($year, $month) {
+                    $query->whereYear('visit_date', $year)
+                        ->whereMonth('visit_date', $month);
+                }
+            ])->with('visitRates')->get();
 
-            $data = [
-                'doctors' => $doctors,
-                'visits' => $visits,
-            ];
+            $result = $doctors->map(function ($doctor) {
+                return [
+                    'id' => $doctor->id,
+                    'name_en' => $doctor->name_en,
+                    'name_ar' => $doctor->name_ar,
+                    'created_at' => $doctor->created_at->format('Y-m-d'),
+                    'class' => $doctor->class,
+                    'visiting' => $doctor->visiting,
+                    'visitRates' => $doctor->visitRates
+                ];
+            });
 
-            return new ShowVisitByMonthForOneUserResource($data);
+            return response()->json($result);
 
         } catch (Exception $e) {
-            return response()->json($e, 500);
+
+            return response()->json(['error' => 'An error occurred while fetching data.'], 500);
         }
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    // public function showVisitByMonthForOneUser($year, $month, $userId)
+    // {
+    //     try {
+    //         if (!checkdate($month, 1, $year)) {
+    //             return response()->json(['error' => 'Invalid month or year.'], 400);
+    //         }
+
+    //         $user = User::findOrFail($userId);
+    //         $doctors = Doctor::whereHas('users_and_doctors', function ($query) use ($userId) {
+    //             $query->where('user_id', $userId);
+    //         })->get();
+
+    //         $visits = Visiting::whereYear('visit_date', $year)
+    //             ->whereMonth('visit_date', $month)
+    //             ->where('user_id', $user->id)
+    //             ->get();
+
+    //         $data = [
+    //             'doctors' => $doctors,
+    //             // 'visits' => $visits,
+    //         ];
+
+    //         return new ShowVisitByMonthForOneUserResource($data);
+
+    //     } catch (Exception $e) {
+    //         return response()->json($e, 500);
+    //     }
+    // }
 
 
     // public function showVisitByDateForOneUser($date, $userId)
