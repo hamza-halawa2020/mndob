@@ -12,6 +12,11 @@ export class VisitsService {
   getAllVisits() {
     return this.http.get(`${this.apiUrl}visits`);
   }
+
+  delete(id: any) {
+    return this.http.delete(`${this.apiUrl}visits/${id}`);
+  }
+
   getVisitById(id: number) {
     const url = `${this.apiUrl}visits/${id}`;
     return this.http.get(url);

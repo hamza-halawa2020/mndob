@@ -3,12 +3,14 @@
     <h2 class="text-center mb-4">Doctor Details</h2>
 
     <div class="container mt-4 mb-4">
-      <button class="btn btn-danger w-100" (click)="deleteDoctor()">Delete Doctor</button>
+      <button class="btn btn-danger w-100" (click)="deleteDoctor()">
+        Delete Doctor
+      </button>
     </div>
 
     <!-- Doctor Details Card -->
     <div class="row">
-      <div class="card mb-4 col-md-6" style="height: 12rem">
+      <div class="card mb-4 col-md-6" style="height: 14rem">
         <div class="card-body">
           <h5 class="card-title">Doctor ID: {{ Details.id }}</h5>
           <hr />
@@ -29,7 +31,7 @@
 
       <!-- User Details Cards -->
       <div class="col-md-6" *ngFor="let user of Details.user_id">
-        <div class="card mb-4" style="height: 12rem">
+        <div class="card mb-4" style="height: 14rem">
           <div class="card-body">
             <h5 class="card-title">USER ID: {{ user.id }}</h5>
             <hr />
@@ -42,61 +44,81 @@
       </div>
     </div>
 
- <!-- Visit Rate Table -->
-<div class="row mb-4">
-  <div class="col">
-    <div class="card">
-      <div class="card-body">
-        <h5 class="card-title">Visit Rates</h5>
-        <div class="table-responsive">
-          <table class="table table-bordered">
-            <thead>
-              <tr class="bg-primary text-white">
-                <th>Visit Rate ID</th>
-                <th>Visit Rate (min)</th>
-                <th>Date</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr *ngFor="let rate of Details.visit_rates" class="bg-light">
-                <td>{{ rate.id }}</td>
-                <td>{{ rate.visit_rate_min }}</td>
-                <td>{{ rate.month }}/{{ rate.year }}</td>
-              </tr>
-            </tbody>
-          </table>
+    <!-- Visit Rate Table -->
+    <div class="row mb-4">
+      <div class="col">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">Visit Rates</h5>
+            <div class="table-responsive">
+              <table class="table table-bordered">
+                <thead>
+                  <tr class="bg-primary text-white">
+                    <th>Visit Rate ID</th>
+                    <th>Visit Rate (min)</th>
+                    <th>Date</th>
+                    <th>Action</th>
+
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let rate of Details.visit_rates" class="bg-light">
+                    <td>{{ rate.id }}</td>
+                    <td>{{ rate.visit_rate_min }}</td>
+                    <td>{{ rate.month }}/{{ rate.year }}</td>
+                    <td>
+                      <button
+                        class="btn btn-danger w-100"
+                        (click)="deleteRate(rate.id)"
+                      >
+                        Delete Rate
+                      </button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
         </div>
       </div>
     </div>
-  </div>
-</div>
 
-
-<!-- Visit Details Table -->
-<div class="row">
-  <div class="col">
-    <div class="card">
-      <div class="card-body">
-        <h5 class="card-title">Visit Details</h5>
-        <div class="table-responsive">
-          <table class="table table-bordered table-striped">
-            <thead>
-              <tr class="bg-primary text-white">
-                <th>Visit ID</th>
-                <th>Visit Date</th>
-                <th>Visit Latitude</th>
-                <th>Visit Longitude</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr *ngFor="let visit of Details.visiting" class="bg-light">
-                <td>{{ visit.id }}</td>
-                <td>{{ visit.visit_date }}</td>
-                <td>{{ visit.latitude }}</td>
-                <td>{{ visit.longitude }}</td>
-              </tr>
-            </tbody>
-          </table>
+    <!-- Visit Details Table -->
+    <div class="row">
+      <div class="col">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">Visit Details</h5>
+            <div class="table-responsive">
+              <table class="table table-bordered table-striped">
+                <thead>
+                  <tr class="bg-primary text-white">
+                    <th>Visit ID</th>
+                    <th>Visit Date</th>
+                    <th>Visit Latitude</th>
+                    <th>Visit Longitude</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let visit of Details.visiting" class="bg-light">
+                    <td>{{ visit.id }}</td>
+                    <td>{{ visit.visit_date }}</td>
+                    <td>{{ visit.latitude }}</td>
+                    <td>{{ visit.longitude }}</td>
+                    <td>
+                      <button
+                        class="btn btn-danger w-100"
+                        (click)="deleteVisit(visit.id)"
+                      >
+                        Delete Visit
+                      </button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
         </div>
       </div>
     </div>

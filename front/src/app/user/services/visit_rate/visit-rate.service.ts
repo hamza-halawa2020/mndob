@@ -22,4 +22,6 @@ export class VisitRateService {
   addVisitRate(id: any) {
     return this.http.post(`${this.apiUrl}visit_rates`, id);
   }
+
+
 }

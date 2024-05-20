@@ -2,6 +2,8 @@ import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DoctorService } from '../services/doctor/doctor.service';
 import { GovernatesService } from '../services/governates/governates.service';
+import { VisitsService } from '../services/visit/visits.service';
+import { RateService } from '../services/rate/rate.service';
 
 @Component({
   selector: 'app-doctor-details',
@@ -16,6 +18,8 @@ export class DoctorDetailsComponent {
   constructor(
     private activateRoute: ActivatedRoute,
     private doctorDetails: DoctorService,
+    private visitDetails: VisitsService,
+    private rateDetails: RateService,
     private gov: GovernatesService,
     private router: Router
   ) {}
@@ -47,5 +51,26 @@ export class DoctorDetailsComponent {
         this.router.navigate(['/all-doctors']);
       });
     });
+  }
+
+  deleteVisit(visitId: number) {
+    this.visitDetails.delete(visitId).subscribe(
+      () => {
+        this.getDoctor();
+      },
+      (error) => {
+        console.error('Error deleting visit:', error);
+      }
+    );
+  }
+  deleteRate(rateId: number) {
+    this.rateDetails.delete(rateId).subscribe(
+      () => {
+        this.getDoctor();
+      },
+      (error) => {
+        console.error('Error deleting visit:', error);
+      }
+    );
   }
 }

@@ -111,7 +111,7 @@ export class UserDetailsComponent implements OnInit {
       (data: any) => {
         this.AllDoctorWithVisit = Object.values(data);
 
-        console.log('Fetched data:', this.AllDoctorWithVisit);
+        // console.log('Fetched data:', this.AllDoctorWithVisit);
       },
       (error: any) => {
         console.error('Error fetching visits for the month:', error);
@@ -135,8 +135,6 @@ export class UserDetailsComponent implements OnInit {
       );
     }
   }
-
-  
 
   getUserById(keyWord: number) {
     this.userService.getuserById(keyWord).subscribe(
