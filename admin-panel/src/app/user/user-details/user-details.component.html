@@ -328,12 +328,13 @@
                       <tr *ngFor="let doctor of user.doctor.visiting">
                         <td>{{ doctor.id }}</td>
                         <td>{{ doctor.visit_date }}</td>
+                        <td>{{ doctor.length }}</td>
                       </tr>
                     </tbody>
                     <tfoot>
                       <tr>
                         <th>Total</th>
-                        <td colspan="2">22</td>
+                        <td colspan="2">{{ user.doctor.visiting.length }}</td>
                       </tr>
                     </tfoot>
                   </table>
