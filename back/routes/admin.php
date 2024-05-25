@@ -26,6 +26,7 @@ Route::delete('visit-delete/{id}', [VisitingController::class, 'destroy']);
 // Route::get('calculate-total-doctors-for-month/{year}/{month}', [VisitingController::class, 'calculateTotalDoctorsForMonth']);
 Route::get('calculate-total-doctors-for-month/{year}/{month}/{id}', [VisitingController::class, 'calculateTotalDoctorsForMonthOneUser']);
 
+Route::get('/visit/{year}/{month}/{userId}', [VisitingController::class, 'getVisitsAndDaysOff']);
 
 Route::apiResource('users', UserController::class);
 Route::get('profile', [UserController::class, 'profile']);

@@ -16,14 +16,11 @@ export class UserDetailsComponent implements OnInit {
   totalDoctors: any;
   id: any;
   filteredUsers: any;
-  selectedCategoryId: string = 'all';
   date: any;
   visitDate: any;
   doctorVisited: any;
   visit: any;
-  visitsByDay: any;
-  daysOff: any[] = [];
-
+  vitiedDaysAndOff: any;
   selectedMonth: any;
   selectedYear: any;
   months = [
@@ -110,13 +107,29 @@ export class UserDetailsComponent implements OnInit {
     this.visitService.getAllDoctorsWithVisits(year, month, userId).subscribe(
       (data: any) => {
         this.AllDoctorWithVisit = Object.values(data);
-
-        // console.log('Fetched data:', this.AllDoctorWithVisit);
       },
       (error: any) => {
         console.error('Error fetching visits for the month:', error);
       }
     );
+  }
+
+  visitsAndOff(event: Event) {
+    const selectedDate = (event.target as HTMLInputElement).value;
+    if (selectedDate) {
+      const [year, month] = selectedDate.split('-');
+      this.visitService.getVisitsAndOff(year, month, this.id).subscribe(
+        (data) => {
+          // this.vitiedDaysAndOff = data;
+        this.vitiedDaysAndOff = Object.values(data);
+
+          console.log(this.vitiedDaysAndOff);
+        },
+        (error) => {
+          console.error('Error fetching visits for the month:', error);
+        }
+      );
+    }
   }
 
   visitedDoctorForMonth(event: Event) {

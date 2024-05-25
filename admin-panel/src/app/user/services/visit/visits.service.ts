@@ -44,4 +44,9 @@ export class VisitsService {
     const url = `${this.apiUrl}visit-month/${year}/${month}/user/${userId}`;
     return this.http.get(url);
   }
+
+  getVisitsAndOff(year: any, month: any, userId: any) {
+    const url = `${this.apiUrl}visit/${year}/${month}/${userId}`;
+    return this.http.get(url);
+  }
 }

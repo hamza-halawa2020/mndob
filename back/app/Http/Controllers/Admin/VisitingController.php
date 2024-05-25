@@ -83,65 +83,55 @@ class VisitingController extends Controller
     }
 
 
+    public function getVisitsAndDaysOff($year, $month, $userId)
+    {
+        try {
+            Log::info("Year: $year, Month: $month, User ID: $userId");
+
+            if (!is_numeric($year) || !is_numeric($month) || $year < 1000 || $year > 9999 || $month < 1 || $month > 12) {
+                Log::error("Validation failed for Year: $year, Month: $month");
+                return response()->json(['error' => 'Invalid month or year.'], 400);
+            }
+
+            if (!checkdate($month, 1, $year)) {
+                Log::error("Checkdate failed for Year: $year, Month: $month");
+                return response()->json(['error' => 'Invalid month or year.'], 400);
+            }
+
+            $user = User::findOrFail($userId);
+
+            $visits = Visiting::whereYear('visit_date', $year)
+                ->whereMonth('visit_date', $month)
+                ->where('user_id', $userId)
+                ->get();
+
+            $daysInMonth = cal_days_in_month(CAL_GREGORIAN, $month, $year);
+            $allDays = [];
+            for ($day = 1; $day <= $daysInMonth; $day++) {
+                $allDays[] = sprintf('%04d-%02d-%02d', $year, $month, $day);
+            }
+
+            $visitedDays = $visits->pluck('visit_date')->map(function ($date) {
+                if (is_string($date)) {
+                    $date = \Carbon\Carbon::parse($date);
+                }
+                return $date->format('Y-m-d');
+            })->toArray();
+
+            $daysOff = array_diff($allDays, $visitedDays);
+
+            return response()->json([
+                'visited_days' => $visitedDays,
+                'days_off' => $daysOff,
+            ], 200);
+
+        } catch (Exception $e) {
+            return response()->json(['error' => 'An error occurred while fetching data.'], 500);
+        }
+    }
 
 
 
-
-
-
-
-
-
-
-
-
-
-    // public function showVisitByMonthForOneUser($year, $month, $userId)
-    // {
-    //     try {
-    //         if (!checkdate($month, 1, $year)) {
-    //             return response()->json(['error' => 'Invalid month or year.'], 400);
-    //         }
-
-    //         $user = User::findOrFail($userId);
-    //         $doctors = Doctor::whereHas('users_and_doctors', function ($query) use ($userId) {
-    //             $query->where('user_id', $userId);
-    //         })->get();
-
-    //         $visits = Visiting::whereYear('visit_date', $year)
-    //             ->whereMonth('visit_date', $month)
-    //             ->where('user_id', $user->id)
-    //             ->get();
-
-    //         $data = [
-    //             'doctors' => $doctors,
-    //             // 'visits' => $visits,
-    //         ];
-
-    //         return new ShowVisitByMonthForOneUserResource($data);
-
-    //     } catch (Exception $e) {
-    //         return response()->json($e, 500);
-    //     }
-    // }
-
-
-    // public function showVisitByDateForOneUser($date, $userId)
-    // {
-    //     try {
-    //         $user = User::findOrFail($userId);
-    //         $doctors = Doctor::whereHas('users_and_doctors', function ($query) use ($userId) {
-    //             $query->where('user_id', $userId);
-    //         })->get();
-    //         $visits = Visiting::whereDate('visit_date', $date)
-    //             ->where('user_id', $user->id)
-    //             ->get()
-    //             ->keyBy('doctor_id');
-    //         return response()->json(['doctor_id' => $doctors, 'visited' => $visits]);
-    //     } catch (Exception $e) {
-    //         return response()->json(['error' => $e->getMessage()], 500);
-    //     }
-    // }
 
 
 
