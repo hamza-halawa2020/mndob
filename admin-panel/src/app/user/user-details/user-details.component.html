@@ -84,8 +84,16 @@
                 <tr>
                   <td>{{ visit?.total_visited_this_month }}</td>
                   <td>{{ visit?.total_doctors_visited_this_month }}</td>
-                  <td>{{ visit?.percentage_of_visit }}%</td>
-                  <td>{{ visit?.average_visits_per_date }}</td>
+                  <td>
+                    {{
+                      (
+                        (visit?.total_doctors_visited_this_month /
+                          totalDoctors?.length) *
+                        100
+                      ).toFixed(2)
+                    }}%
+                  </td>
+                  <td>{{ visit?.average_visits_per_date.toFixed(2) }}</td>
                 </tr>
               </tbody>
             </table>
@@ -251,7 +259,14 @@
     </div>
   </div>
 
-  <div class="mt-4">
+  <button
+    class="btn btn-success w-100 mt-5"
+    data-bs-toggle="collapse"
+    [attr.data-bs-target]="'#collapseVisitRates'"
+  >
+    Show All Doctors
+  </button>
+  <div class="" class="collapse" [id]="'collapseVisitRates'">
     <!-- User Table -->
     <div class="table-responsive">
       <div class="container text-center h3">All Doctors</div>
