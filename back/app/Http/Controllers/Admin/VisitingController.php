@@ -82,7 +82,6 @@ class VisitingController extends Controller
         }
     }
 
-
     public function getVisitsAndDaysOff($year, $month, $userId)
     {
         try {
@@ -100,36 +99,44 @@ class VisitingController extends Controller
 
             $user = User::findOrFail($userId);
 
+            // Fetch visits for the given month and year
             $visits = Visiting::whereYear('visit_date', $year)
                 ->whereMonth('visit_date', $month)
                 ->where('user_id', $userId)
-                ->get();
+                ->get()
+                ->groupBy(function ($date) {
+                    return \Carbon\Carbon::parse($date->visit_date)->format('Y-m-d');
+                });
 
+            // Prepare the list of all days in the given month
             $daysInMonth = cal_days_in_month(CAL_GREGORIAN, $month, $year);
             $allDays = [];
             for ($day = 1; $day <= $daysInMonth; $day++) {
                 $allDays[] = sprintf('%04d-%02d-%02d', $year, $month, $day);
             }
 
-            $visitedDays = $visits->pluck('visit_date')->map(function ($date) {
-                if (is_string($date)) {
-                    $date = \Carbon\Carbon::parse($date);
-                }
-                return $date->format('Y-m-d');
-            })->toArray();
+            // Prepare visitedDays with the count of visits
+            $visitedDays = [];
+            foreach ($visits as $date => $visitGroup) {
+                $visitedDays[] = [
+                    'date' => $date,
+                    'count' => $visitGroup->count(),
+                ];
+            }
 
-            $daysOff = array_diff($allDays, $visitedDays);
+            // Calculate days off
+            $visitedDates = array_column($visitedDays, 'date');
+            $daysOff = array_diff($allDays, $visitedDates);
 
             return response()->json([
                 'visited_days' => $visitedDays,
-                'days_off' => $daysOff,
+                'days_off' => array_values($daysOff),
             ], 200);
 
         } catch (Exception $e) {
             return response()->json(['error' => 'An error occurred while fetching data.'], 500);
         }
     }
-
 
 
 

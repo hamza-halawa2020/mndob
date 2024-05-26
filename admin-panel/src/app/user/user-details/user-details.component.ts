@@ -23,6 +23,10 @@ export class UserDetailsComponent implements OnInit {
   vitiedDaysAndOff: any;
   selectedMonth: any;
   selectedYear: any;
+
+  visitedDays: any;
+  daysOff: any;
+
   months = [
     { name: 'January', value: '01' },
     { name: 'February', value: '02' },
@@ -119,17 +123,28 @@ export class UserDetailsComponent implements OnInit {
     if (selectedDate) {
       const [year, month] = selectedDate.split('-');
       this.visitService.getVisitsAndOff(year, month, this.id).subscribe(
-        (data) => {
-          // this.vitiedDaysAndOff = data;
-        this.vitiedDaysAndOff = Object.values(data);
-
-          console.log(this.vitiedDaysAndOff);
+        (data: any) => {
+          this.visitedDays = Object.values(data)[0];
+          this.daysOff = data.days_off
+            .map((date: string) => ({
+              date: date,
+              dayName: this.getDayName(date),
+            }))
+            .filter(
+              (day: { date: string }) => this.getDayName(day.date) !== 'Friday'
+            );
         },
         (error) => {
           console.error('Error fetching visits for the month:', error);
         }
       );
     }
+  }
+
+  getDayName(dateString: string): string {
+    const date = new Date(dateString);
+    const options: Intl.DateTimeFormatOptions = { weekday: 'long' };
+    return date.toLocaleDateString('en-US', options);
   }
 
   visitedDoctorForMonth(event: Event) {
